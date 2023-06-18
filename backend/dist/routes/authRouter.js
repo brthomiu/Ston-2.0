@@ -18,11 +18,10 @@ const config = {
 const router = express_1.default.Router();
 // auth router attaches /login, /logout, and /callback routes to the baseURL
 router.use((0, express_openid_connect_1.auth)(config));
-// GET req.isAuthenticated is provided from the auth router
+// req.isAuthenticated is provided from the auth router
 router.get('/', (req, res) => {
     res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
 });
-// GET return user profile
 router.get('/profile', (0, express_openid_connect_1.requiresAuth)(), (req, res) => {
     res.send(JSON.stringify(req.oidc.user));
 });
