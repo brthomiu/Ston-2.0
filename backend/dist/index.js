@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
+const path = require("path");
 const routes_1 = __importDefault(require("./routes"));
 const connectToDb_1 = __importDefault(require("./utils/connectToDb"));
 dotenv_1.default.config();
@@ -14,9 +15,9 @@ const port = process.env.PORT || 8000;
 app.use(express_1.default.json());
 // Express router
 app.use(routes_1.default);
-app.get('/', (req, res) => {
-    res.send('Express + TypeScript Server');
-});
+// Serve frontend
+app.use(express_1.default.static(path.join(__dirname, '../../frontend/dist')));
+app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, '../', '../', 'frontend', 'dist', 'index.html')));
 // Start server on designated port
 app.listen(port, () => {
     console.log(`⚡️[server]: Server is running at http://localhost:${port}`);

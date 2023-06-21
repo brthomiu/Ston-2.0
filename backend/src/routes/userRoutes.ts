@@ -19,7 +19,7 @@ const router = express.Router();
 router.use(auth(config));
 
 // GET req.isAuthenticated is provided from the auth router
-router.get('/', (req, res) => {
+router.get('/login', (req, res) => {
   res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
 });
 

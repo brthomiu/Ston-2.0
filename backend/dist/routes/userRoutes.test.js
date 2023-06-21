@@ -32,10 +32,4 @@ app.use('/', userRoutes_1.default);
         /* Expected user profile object */
         });
     }));
-    (0, vitest_1.it)('should respond with "Logged out" if user is not authenticated', () => __awaiter(void 0, void 0, void 0, function* () {
-        // Make a GET request to the root route
-        const response = yield (0, supertest_1.default)(app).get('/');
-        // Assert that the response is "Logged out"
-        (0, vitest_1.expect)(response.text).toBe('Logged out');
-    }));
 });

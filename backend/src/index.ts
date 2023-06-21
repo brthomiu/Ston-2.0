@@ -1,5 +1,6 @@
-import express, { Express, Request, Response } from 'express';
+import express, { Express } from 'express';
 import dotenv from 'dotenv';
+import path = require('path');
 import router from './routes';
 import connectToDb from './utils/connectToDb';
 
@@ -14,9 +15,14 @@ app.use(express.json());
 // Express router
 app.use(router);
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Express + TypeScript Server');
-});
+// Serve frontend
+app.use(express.static(path.join(__dirname, '../../frontend/dist')));
+
+app.get('*', (req, res) =>
+  res.sendFile(
+    path.resolve(__dirname, '../', '../', 'frontend', 'dist', 'index.html')
+  )
+);
 
 // Start server on designated port
 app.listen(port, () => {

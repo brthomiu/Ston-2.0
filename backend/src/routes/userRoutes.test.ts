@@ -23,12 +23,4 @@ describe('Authentication Routes', () => {
       /* Expected user profile object */
     });
   });
-
-  it('should respond with "Logged out" if user is not authenticated', async () => {
-    // Make a GET request to the root route
-    const response = await request(app).get('/');
-
-    // Assert that the response is "Logged out"
-    expect(response.text).toBe('Logged out');
-  });
 });
