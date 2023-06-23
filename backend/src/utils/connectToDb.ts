@@ -4,7 +4,7 @@ import log from './logger';
 
 dotenv.config();
 
-async function connectToDb() {
+export async function connectToDb() {
   const dbUri = process.env.TEST_DB_URI!;
   try {
     await mongoose.connect(dbUri);
@@ -14,4 +14,4 @@ async function connectToDb() {
   }
 }
 
-export default connectToDb;
+export const db = mongoose.connection;

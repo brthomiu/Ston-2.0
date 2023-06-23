@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const vitest_1 = require("vitest");
-const connectToDb_1 = __importDefault(require("./utils/connectToDb"));
+const connectToDb_1 = require("./utils/connectToDb");
 (0, vitest_1.describe)('Server Connection to MongoDB', () => {
     (0, vitest_1.beforeAll)(() => {
         // Connect to a mock MongoDB server
@@ -28,7 +28,7 @@ const connectToDb_1 = __importDefault(require("./utils/connectToDb"));
     });
     (0, vitest_1.it)('should connect to the database', () => __awaiter(void 0, void 0, void 0, function* () {
         // Call the connectToDb function
-        yield (0, connectToDb_1.default)();
+        yield (0, connectToDb_1.connectToDb)();
         // Expect the mongoose.connect function to have been called with the correct URI
         (0, vitest_1.expect)(mongoose_1.default.connect).toHaveBeenCalledWith(process.env.TEST_DB_URI);
     }));

@@ -8,94 +8,71 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getMe = exports.loginUser = exports.registerUser = void 0;
-const express_async_handler_1 = __importDefault(require("express-async-handler"));
-const bcryptjs_1 = __importDefault(require("bcryptjs"));
-const jsonwebtoken_1 = require("jsonwebtoken");
+exports.deleteUser = exports.syncUser = exports.getUser = void 0;
 const userModel_1 = require("../models/userModel");
-const secret = () => {
-    const newSecret = process.env.JWT_SECRET;
-    if (typeof newSecret !== 'string') {
-        throw new Error('JWT Secret invalid');
+const connectToDb_1 = require("../utils/connectToDb");
+// GET:/api/user - Retrieve user auth object and sync to mongoDB
+const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // Check for auth0 user object
+    if (!req.oidc.user) {
+        console.log(`getUser failed stage 1, req.oidc.user:${req.oidc.user}`);
+        throw new Error('Failed to find authorized user');
     }
-    else
-        return newSecret;
-};
-// Generate JWT
-const generateToken = (id) => {
-    return (0, jsonwebtoken_1.sign)({ id }, secret(), {
-        expiresIn: '30d',
-    });
-};
-// Register new user
-// POST /api/users
-exports.registerUser = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, email, password } = req.body;
-    const defaultDescription = `${name} has not created a profile yet.`;
-    if (!name || !email || !password) {
-        res.status(400);
-        throw new Error('Please add all fields');
+    // Return current user object
+    const user = {
+        userId: req.oidc.user.sub,
+        name: req.oidc.user.name,
+        email: req.oidc.user.email,
+        // Add any other desired fields from Auth0's user object
+    };
+    console.log(`getUser passed stage 1, req.oidc.user:${req.oidc.user}`);
+    res.json(user);
+});
+exports.getUser = getUser;
+// POST:/api/user - Sync Auth0 user object with MongoDB
+const syncUser = (userData, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // Check for auth0 user object
+    if (!userData) {
+        throw new Error('Failed to find authorized user');
     }
-    // Check if user exists
-    const userExists = yield userModel_1.User.findOne({ email });
-    if (userExists) {
-        res.status(400);
-        throw new Error('User already exists.');
-    }
-    // Hash password
-    const salt = yield bcryptjs_1.default.genSalt(10);
-    const hashedPassword = yield bcryptjs_1.default.hash(password, salt);
-    // Create user
-    const user = yield userModel_1.User.create({
-        name,
-        email,
-        password: hashedPassword,
-        description: defaultDescription,
-        private: false,
-        recipes: [],
-        favorites: [],
-    });
-    if (user) {
-        res.status(201).json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            token: generateToken(user.name),
+    // Get user ID from auth0 and check if user already exists in MongoDB
+    const userId = userData.userId;
+    const name = userData.name;
+    const email = userData.email;
+    const currentUser = yield connectToDb_1.db.collection('users').findOne({ userId });
+    // Create a user object if there is not a match in MongoDB
+    if (!currentUser) {
+        yield userModel_1.User.create({
+            userId,
+            name,
+            email,
+            description: `${name} has not created a profile yet.`,
+            private: false,
+            recipes: [],
+            favorites: [],
         });
+        // Send a response indicating the user has been synced
+        res.status(201).json({ message: 'User synced successfully' });
     }
     else {
-        res.status(400);
-        throw new Error('Invalid user data');
+        // Send a response indicating the user already exists
+        res.status(200).json({ message: 'User already exists' });
     }
-}));
-// Authenticate a user
-// POST /api/login
-exports.loginUser = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email, password } = req.body;
-    // Check for user email
-    const user = yield userModel_1.User.findOne({ email });
-    if (user && (yield bcryptjs_1.default.compare(password, user.password))) {
-        console.log('Authentication successful!');
-        res.json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            token: generateToken(user.name),
-        });
+});
+exports.syncUser = syncUser;
+// DELETE:/api/user - Delete user account from MongoDB and from Auth0
+const deleteUser = (userData, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const userId = userData.userId;
+        // Delete user account from MongoDB
+        yield connectToDb_1.db.collection('users').deleteOne({ userId });
+        // Optionally, you can also implement the deletion of the user account from Auth0 here
+        res.status(200).json({ message: 'User deleted successfully' });
     }
-    else {
-        res.status(400);
-        throw new Error('Invalid credentials.');
+    catch (error) {
+        console.error('Error deleting user:', error);
+        res.status(500).json({ message: 'Server error' });
     }
-}));
-// Get user data
-// POST /api/users/me
-// Private
-exports.getMe = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log('getMe user:', req.user);
-    res.status(200).json(req.user);
-}));
+});
+exports.deleteUser = deleteUser;

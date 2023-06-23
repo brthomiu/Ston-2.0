@@ -26,7 +26,7 @@ app.use('/', userRoutes_1.default);
         // Perform login
         yield agent.get('/login');
         // Make a GET request to the profile route
-        const response = yield agent.get('/profile');
+        const response = yield agent.get('/api/user');
         // Assert that the response contains the user profile
         (0, vitest_1.expect)(response.body).toEqual({
         /* Expected user profile object */

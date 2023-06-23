@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { beforeAll, afterAll, describe, expect, it, vi } from 'vitest';
-import connectToDb from './utils/connectToDb';
+import { connectToDb } from './utils/connectToDb';
 
 describe('Server Connection to MongoDB', () => {
   beforeAll(() => {

@@ -16,7 +16,7 @@ describe('Authentication Routes', () => {
     await agent.get('/login');
 
     // Make a GET request to the profile route
-    const response = await agent.get('/profile');
+    const response = await agent.get('/api/user');
 
     // Assert that the response contains the user profile
     expect(response.body).toEqual({

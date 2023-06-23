@@ -1,6 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { auth, requiresAuth } from 'express-openid-connect';
-import express from 'express';
+import express, { Request } from 'express';
+import { deleteUser, getUser, syncUser } from '../controllers/userController';
 
 const oidSecret = process.env.OID_SECRET;
 
@@ -15,17 +16,43 @@ const config = {
 
 const router = express.Router();
 
-// auth router attaches /login, /logout, and /callback routes to the baseURL
+// Auth router attaches /login, /logout, and /callback routes to the baseURL
 router.use(auth(config));
 
-// GET req.isAuthenticated is provided from the auth router
+// GET:/login - Auth login route
 router.get('/login', (req, res) => {
   res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
 });
 
-// GET return user profile
-router.get('/profile', requiresAuth(), (req, res) => {
-  res.send(JSON.stringify(req.oidc.user));
+// GET:/api/user - Get user auth object
+router.get('/api/user', requiresAuth(), async (req: Request, res) => {
+  try {
+    getUser(req, res);
+  } catch (error) {
+    console.error('Error retrieving user profile:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
 });
 
+// POST:/api/user - Sync user auth object with MongoDB
+router.post('/api/user', requiresAuth(), async (req: Request, res) => {
+  try {
+    const userData = req.body; // User data is sent in the request body
+    syncUser(userData, res);
+  } catch (error) {
+    console.error('Error syncing with database:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// DELETE:/api/user - Delete user account from MongoDB and from Auth0
+router.delete('/api/user', requiresAuth(), async (req: Request, res) => {
+  try {
+    const userData = req.body; // User data is sent in the request body
+    deleteUser(userData, res);
+  } catch (error) {
+    console.error('Error syncing with database:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
 export default router;

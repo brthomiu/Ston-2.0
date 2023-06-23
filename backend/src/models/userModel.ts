@@ -4,9 +4,9 @@ const { Schema } = mongoose;
 
 // Create an interface representing user object.
 export interface IUser {
+  userId: string;
   name: string;
   email: string;
-  password: string;
   description: string;
   private: boolean;
   recipes: string[];
@@ -15,9 +15,9 @@ export interface IUser {
 
 // Create a Schema correspondinsg to the document interface.
 export const userSchema = new Schema<IUser>({
+  userId: { type: String, required: true, unique: true },
   name: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
   description: { type: String, required: false },
   private: { type: Boolean, required: false },
   recipes: { type: [String], required: false },

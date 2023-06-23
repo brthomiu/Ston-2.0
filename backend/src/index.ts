@@ -1,8 +1,9 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import express, { Express } from 'express';
 import dotenv from 'dotenv';
 import path = require('path');
 import router from './routes';
-import connectToDb from './utils/connectToDb';
+import { connectToDb } from './utils/connectToDb';
 
 dotenv.config();
 
