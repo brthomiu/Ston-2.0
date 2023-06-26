@@ -2,6 +2,7 @@
 import express, { Express } from 'express';
 import dotenv from 'dotenv';
 import path = require('path');
+import cookieParser from 'cookie-parser';
 import router from './routes';
 import { connectToDb } from './utils/connectToDb';
 
@@ -12,6 +13,9 @@ const port = process.env.PORT || 8000;
 
 // Middleware for handling JSON requests, called before the router
 app.use(express.json());
+
+// Add the cookie-parser middleware
+app.use(cookieParser());
 
 // Express router
 app.use(router);

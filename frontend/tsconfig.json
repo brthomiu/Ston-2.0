@@ -7,6 +7,7 @@
       "DOM",
       "DOM.Iterable"
     ],
+    "types": ["jest", "@testing-library/jest-dom", "vite/client"],
     "module": "ESNext",
     "skipLibCheck": true,
     /* Bundler mode */

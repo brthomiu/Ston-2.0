@@ -28,10 +28,14 @@ const config = {
 const router = express_1.default.Router();
 // Auth router attaches /login, /logout, and /callback routes to the baseURL
 router.use((0, express_openid_connect_1.auth)(config));
-// GET:/login - Auth login route
-router.get('/login', (req, res) => {
-    res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
-});
+// // GET:/login - Auth login route
+// router.get('/login', (req, res) => {
+//   res.cookie('auth0_compat', 'cookie_value', {
+//     sameSite: 'none',
+//     secure: true, // Make sure to set secure to true if using HTTPS
+//   });
+//   res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
+// });
 // GET:/api/user - Get user auth object
 router.get('/api/user', (0, express_openid_connect_1.requiresAuth)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {

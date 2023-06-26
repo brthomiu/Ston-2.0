@@ -7,6 +7,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const path = require("path");
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const routes_1 = __importDefault(require("./routes"));
 const connectToDb_1 = require("./utils/connectToDb");
 dotenv_1.default.config();
@@ -14,6 +15,8 @@ const app = (0, express_1.default)();
 const port = process.env.PORT || 8000;
 // Middleware for handling JSON requests, called before the router
 app.use(express_1.default.json());
+// Add the cookie-parser middleware
+app.use((0, cookie_parser_1.default)());
 // Express router
 app.use(routes_1.default);
 // Serve frontend

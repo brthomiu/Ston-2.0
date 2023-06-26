@@ -13,4 +13,17 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./src/setupTests.ts'],
   },
+  // Disable minification for debugging
+  build: {
+    minify: false,
+  },
+  esbuild: {
+    keepNames: true,
+  },
+  optimizeDeps: {
+    esbuildOptions: {
+      keepNames: true,
+    },
+  },
+  // Comment above block out for production
 });
