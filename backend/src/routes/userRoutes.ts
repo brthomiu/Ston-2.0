@@ -1,7 +1,12 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { auth, requiresAuth } from 'express-openid-connect';
 import express, { Request } from 'express';
-import { deleteUser, getUser, syncUser } from '../controllers/userController';
+import {
+  deleteUser,
+  getUser,
+  syncUser,
+  getUserProfile,
+} from '../controllers/userController';
 
 const oidSecret = process.env.OID_SECRET;
 
@@ -19,19 +24,20 @@ const router = express.Router();
 // Auth router attaches /login, /logout, and /callback routes to the baseURL
 router.use(auth(config));
 
-// // GET:/login - Auth login route
-// router.get('/login', (req, res) => {
-//   res.cookie('auth0_compat', 'cookie_value', {
-//     sameSite: 'none',
-//     secure: true, // Make sure to set secure to true if using HTTPS
-//   });
-//   res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
-// });
-
 // GET:/api/user - Get user auth object
 router.get('/api/user', requiresAuth(), async (req: Request, res) => {
   try {
     getUser(req, res);
+  } catch (error) {
+    console.error('Could not authenticate user:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// GET:/api/user/profile - Get user data object from MongoDB
+router.get('/api/user/profile', requiresAuth(), async (req: Request, res) => {
+  try {
+    await getUserProfile(req, res);
   } catch (error) {
     console.error('Error retrieving user profile:', error);
     res.status(500).json({ message: 'Server error' });
@@ -58,5 +64,7 @@ router.delete('/api/user', requiresAuth(), async (req: Request, res) => {
     console.error('Error syncing with database:', error);
     res.status(500).json({ message: 'Server error' });
   }
+  // CODE TO DELETE USER FROM AUTH0 GOES HERE
+  // NEED THIS TO BE GDPR COMPLIANT
 });
 export default router;

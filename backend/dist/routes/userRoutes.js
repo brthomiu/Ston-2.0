@@ -28,18 +28,20 @@ const config = {
 const router = express_1.default.Router();
 // Auth router attaches /login, /logout, and /callback routes to the baseURL
 router.use((0, express_openid_connect_1.auth)(config));
-// // GET:/login - Auth login route
-// router.get('/login', (req, res) => {
-//   res.cookie('auth0_compat', 'cookie_value', {
-//     sameSite: 'none',
-//     secure: true, // Make sure to set secure to true if using HTTPS
-//   });
-//   res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
-// });
 // GET:/api/user - Get user auth object
 router.get('/api/user', (0, express_openid_connect_1.requiresAuth)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         (0, userController_1.getUser)(req, res);
+    }
+    catch (error) {
+        console.error('Could not authenticate user:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+}));
+// GET:/api/user/profile - Get user data object from MongoDB
+router.get('/api/user/profile', (0, express_openid_connect_1.requiresAuth)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        yield (0, userController_1.getUserProfile)(req, res);
     }
     catch (error) {
         console.error('Error retrieving user profile:', error);
@@ -67,5 +69,7 @@ router.delete('/api/user', (0, express_openid_connect_1.requiresAuth)(), (req, r
         console.error('Error syncing with database:', error);
         res.status(500).json({ message: 'Server error' });
     }
+    // CODE TO DELETE USER FROM AUTH0 GOES HERE
+    // NEED THIS TO BE GDPR COMPLIANT
 }));
 exports.default = router;

@@ -9,15 +9,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.syncUser = exports.getUser = void 0;
+exports.deleteUser = exports.syncUser = exports.getUserProfile = exports.getUser = void 0;
 const userModel_1 = require("../models/userModel");
 const connectToDb_1 = require("../utils/connectToDb");
 // GET:/api/user - Retrieve user auth object and sync to mongoDB
 const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // Check for auth0 user object
     if (!req.oidc.user) {
-        console.log(`getUser failed stage 1, req.oidc.user:${req.oidc.user}`);
-        throw new Error('Failed to find authorized user');
+        throw new Error('GET:/api/user - Failed to find authorized user');
     }
     // Return current user object
     const user = {
@@ -26,15 +25,37 @@ const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         email: req.oidc.user.email,
         // Add any other desired fields from Auth0's user object
     };
-    console.log(`getUser passed stage 1, req.oidc.user:${req.oidc.user}`);
     res.json(user);
 });
 exports.getUser = getUser;
+// GET:/api/user/profile - Retrieve user auth object and sync to mongoDB
+const getUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // Check for auth0 user object
+    if (!req.oidc.user) {
+        throw new Error('GET:/api/user/profile - Failed to find authorized user');
+    }
+    // Return current user object
+    const user = {
+        userId: req.oidc.user.sub,
+        name: req.oidc.user.name,
+        email: req.oidc.user.email,
+        // Add any other desired fields from Auth0's user object
+    };
+    // Find matching user in MongoDB
+    const userProfile = yield userModel_1.User.find({
+        userId: user.userId,
+    }).exec();
+    if (!userProfile) {
+        throw new Error('GET:/api/user/profile - Failed to retrieve user profile');
+    }
+    res.json(userProfile); // Return user profile data
+});
+exports.getUserProfile = getUserProfile;
 // POST:/api/user - Sync Auth0 user object with MongoDB
 const syncUser = (userData, res) => __awaiter(void 0, void 0, void 0, function* () {
     // Check for auth0 user object
     if (!userData) {
-        throw new Error('Failed to find authorized user');
+        throw new Error('POST:/api/user - Failed to find authorized user');
     }
     // Get user ID from auth0 and check if user already exists in MongoDB
     const userId = userData.userId;
