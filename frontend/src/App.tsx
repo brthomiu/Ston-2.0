@@ -5,8 +5,12 @@ import Navigation from './components/Navigation';
 import NotFound from './pages/NotFound';
 import Profile from './pages/Profile';
 import Recipes from './pages/Recipes';
+import { useSyncProfile } from './hooks/authHooks';
 
 export function App() {
+  // Sync user profile with database
+  useSyncProfile();
+
   return (
     <>
       <Navigation />
