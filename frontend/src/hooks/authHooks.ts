@@ -6,7 +6,7 @@ import { toast } from 'react-hot-toast';
 import { getUserProfile, syncProfile } from '../features/authService';
 
 // useRedirect
-// Redirect unauthenticated users back home
+// Redirects unauthenticated users back home
 export const useRedirect = () => {
   // Initialize authentication
   const { isAuthenticated } = useAuth0(); // Initialize authentication
@@ -21,18 +21,17 @@ export const useRedirect = () => {
 };
 
 // useSyncProfile
-// Sync user auth data with MongoDB
+// Syncs user auth data with MongoDB
 export const useSyncProfile = () => {
   const { user, isAuthenticated } = useAuth0();
 
   if (isAuthenticated && user) {
-    console.log('user object: ', user);
     syncProfile(user);
   }
 };
 
 // useFetchProfile
-// Get user profile data from MongoDB
+// Gets user profile data from MongoDB
 export const useFetchProfile = () => {
   const { user } = useAuth0();
   const [userProfileData, setUserProfileData] = useState<User | null>(null);
