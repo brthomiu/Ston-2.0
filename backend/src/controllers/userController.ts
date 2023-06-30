@@ -1,64 +1,32 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { User } from '../models/userModel';
 import { db } from '../utils/connectToDb';
+import IUser from '../types/auth/authTypes';
 
-// Interface for user data being handled by the client
-export interface IUserData {
-  userId: string;
-  name: string;
-  email: string;
-}
-
-// GET:/api/user - Retrieve user auth object and sync to mongoDB
-export const getUser = async (req: Request, res: Response) => {
-  // Check for auth0 user object
-  if (!req.oidc.user) {
-    throw new Error('GET:/api/user - Failed to find authorized user');
-  }
-  // Return current user object
-  const user = {
-    userId: req.oidc.user.sub,
-    name: req.oidc.user.name,
-    email: req.oidc.user.email,
-    // Add any other desired fields from Auth0's user object
-  };
-  res.json(user);
-};
-
-// GET:/api/user/profile - Retrieve user auth object and sync to mongoDB
-export const getUserProfile = async (req: Request, res: Response) => {
-  // Check for auth0 user object
-  if (!req.oidc.user) {
-    throw new Error('GET:/api/user/profile - Failed to find authorized user');
-  }
-  // Return current user object
-  const user = {
-    userId: req.oidc.user.sub,
-    name: req.oidc.user.name,
-    email: req.oidc.user.email,
-    // Add any other desired fields from Auth0's user object
-  };
+// POST:/api/user/profile - Retrieve user profile from MongoDB
+export const getUserProfile = async (user: IUser, res: Response) => {
   // Find matching user in MongoDB
   const userProfile = await User.find({
-    userId: user.userId,
+    userId: user.sub,
   }).exec();
+  console.log('userController getUserProfile userProfile: ', userProfile);
   if (!userProfile) {
-    throw new Error('GET:/api/user/profile - Failed to retrieve user profile');
+    throw new Error('POST:/api/user/profile - Failed to retrieve user profile');
   }
   res.json(userProfile); // Return user profile data
 };
 
 // POST:/api/user - Sync Auth0 user object with MongoDB
-export const syncUser = async (userData: IUserData, res: Response) => {
+export const syncUser = async (user: IUser, res: Response) => {
   // Check for auth0 user object
-  if (!userData) {
+  if (!user.sub) {
     throw new Error('POST:/api/user - Failed to find authorized user');
   }
 
   // Get user ID from auth0 and check if user already exists in MongoDB
-  const userId = userData.userId;
-  const name = userData.name;
-  const email = userData.email;
+  const userId = user.sub;
+  const name = user.name;
+  const email = user.email;
   const currentUser = await db.collection('users').findOne({ userId });
 
   // Create a user object if there is not a match in MongoDB
@@ -82,9 +50,9 @@ export const syncUser = async (userData: IUserData, res: Response) => {
 };
 
 // DELETE:/api/user - Delete user account from MongoDB and from Auth0
-export const deleteUser = async (userData: IUserData, res: Response) => {
+export const deleteUser = async (user: IUser, res: Response) => {
   try {
-    const userId = userData.userId;
+    const userId = user.sub;
 
     // Delete user account from MongoDB
     await db.collection('users').deleteOne({ userId });

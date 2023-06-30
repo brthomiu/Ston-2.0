@@ -9,58 +9,32 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.syncUser = exports.getUserProfile = exports.getUser = void 0;
+exports.deleteUser = exports.syncUser = exports.getUserProfile = void 0;
 const userModel_1 = require("../models/userModel");
 const connectToDb_1 = require("../utils/connectToDb");
-// GET:/api/user - Retrieve user auth object and sync to mongoDB
-const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // Check for auth0 user object
-    if (!req.oidc.user) {
-        throw new Error('GET:/api/user - Failed to find authorized user');
-    }
-    // Return current user object
-    const user = {
-        userId: req.oidc.user.sub,
-        name: req.oidc.user.name,
-        email: req.oidc.user.email,
-        // Add any other desired fields from Auth0's user object
-    };
-    res.json(user);
-});
-exports.getUser = getUser;
-// GET:/api/user/profile - Retrieve user auth object and sync to mongoDB
-const getUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // Check for auth0 user object
-    if (!req.oidc.user) {
-        throw new Error('GET:/api/user/profile - Failed to find authorized user');
-    }
-    // Return current user object
-    const user = {
-        userId: req.oidc.user.sub,
-        name: req.oidc.user.name,
-        email: req.oidc.user.email,
-        // Add any other desired fields from Auth0's user object
-    };
+// POST:/api/user/profile - Retrieve user profile from MongoDB
+const getUserProfile = (user, res) => __awaiter(void 0, void 0, void 0, function* () {
     // Find matching user in MongoDB
     const userProfile = yield userModel_1.User.find({
-        userId: user.userId,
+        userId: user.sub,
     }).exec();
+    console.log('userController getUserProfile userProfile: ', userProfile);
     if (!userProfile) {
-        throw new Error('GET:/api/user/profile - Failed to retrieve user profile');
+        throw new Error('POST:/api/user/profile - Failed to retrieve user profile');
     }
     res.json(userProfile); // Return user profile data
 });
 exports.getUserProfile = getUserProfile;
 // POST:/api/user - Sync Auth0 user object with MongoDB
-const syncUser = (userData, res) => __awaiter(void 0, void 0, void 0, function* () {
+const syncUser = (user, res) => __awaiter(void 0, void 0, void 0, function* () {
     // Check for auth0 user object
-    if (!userData) {
+    if (!user.sub) {
         throw new Error('POST:/api/user - Failed to find authorized user');
     }
     // Get user ID from auth0 and check if user already exists in MongoDB
-    const userId = userData.userId;
-    const name = userData.name;
-    const email = userData.email;
+    const userId = user.sub;
+    const name = user.name;
+    const email = user.email;
     const currentUser = yield connectToDb_1.db.collection('users').findOne({ userId });
     // Create a user object if there is not a match in MongoDB
     if (!currentUser) {
@@ -83,9 +57,9 @@ const syncUser = (userData, res) => __awaiter(void 0, void 0, void 0, function* 
 });
 exports.syncUser = syncUser;
 // DELETE:/api/user - Delete user account from MongoDB and from Auth0
-const deleteUser = (userData, res) => __awaiter(void 0, void 0, void 0, function* () {
+const deleteUser = (user, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const userId = userData.userId;
+        const userId = user.sub;
         // Delete user account from MongoDB
         yield connectToDb_1.db.collection('users').deleteOne({ userId });
         // Optionally, you can also implement the deletion of the user account from Auth0 here

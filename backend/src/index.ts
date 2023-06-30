@@ -3,6 +3,7 @@ import express, { Express } from 'express';
 import dotenv from 'dotenv';
 import path = require('path');
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 import router from './routes';
 import { connectToDb } from './utils/connectToDb';
 
@@ -10,6 +11,14 @@ dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT || 8000;
+
+// CORS Middleware
+app.use(
+  cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'],
+  })
+);
 
 // Middleware for handling JSON requests, called before the router
 app.use(express.json());
