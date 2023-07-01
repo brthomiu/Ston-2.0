@@ -1,8 +1,11 @@
 /* eslint-disable no-console */
 import { useState } from 'react';
 import { createRecipe } from '../features/recipeService';
+import { useRedirect } from '../hooks/authHooks';
 
 function CreateRecipe() {
+  // Redirect users who aren't logged in
+  useRedirect();
   // Get username from local storage
   const userName = sessionStorage.getItem('userName') as string;
   // State to hold recipe data

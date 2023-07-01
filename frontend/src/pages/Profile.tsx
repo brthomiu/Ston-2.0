@@ -1,4 +1,5 @@
 import { useFetchProfile, useRedirect } from '../hooks/authHooks';
+import Loader from '../components/Loader';
 
 function Profile() {
   // Redirect users who aren't logged in
@@ -12,7 +13,7 @@ function Profile() {
     return (
       <>
         <h1>Profile</h1>
-        <div>Loading...</div>
+        <Loader />
       </>
     );
   }
