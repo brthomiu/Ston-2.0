@@ -1,6 +1,7 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
+import { Toaster } from 'react-hot-toast';
 import Home from './pages/Home';
 import Navigation from './components/navigation/Navigation';
 import NotFound from './pages/NotFound';
@@ -23,6 +24,7 @@ export function App() {
       {!error && !isLoading && (
         <>
           <Navigation />
+          <Toaster />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/profile" element={<Profile />} />

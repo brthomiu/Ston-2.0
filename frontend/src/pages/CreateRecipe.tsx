@@ -1,21 +1,25 @@
 /* eslint-disable no-console */
 import { useState } from 'react';
-import { createRecipe } from '../features/recipeService';
+import { useNavigate } from 'react-router-dom';
+import { handleCreateRecipe } from '../features/recipeService';
 import { useRedirect } from '../hooks/authHooks';
 
 function CreateRecipe() {
   // Redirect users who aren't logged in
   useRedirect();
+  // Initialize navigate
+  const navigate = useNavigate();
   // Get username from local storage
   const userName = sessionStorage.getItem('userName') as string;
   // State to hold recipe data
   const [formData, setFormData] = useState({
     owner: userName,
-    recipeName: 'Test Recipe',
+    recipeName: '',
     ingredients: [],
-    recipeBody: 'This is a test',
+    recipeBody: '',
     likers: [],
-    image: '',
+    images: [],
+    tags: [],
   });
 
   // Function to handle form string input
@@ -26,7 +30,7 @@ function CreateRecipe() {
     }));
   };
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const recipeData = {
@@ -35,10 +39,16 @@ function CreateRecipe() {
       ingredients: formData.ingredients,
       recipeBody: formData.recipeBody,
       likers: formData.likers,
-      image: formData.image,
+      images: formData.images,
+      tags: formData.tags,
     };
-    console.log('CreateRecipe onSubmit recipeData:', recipeData);
-    createRecipe(recipeData);
+    try {
+      await handleCreateRecipe(recipeData);
+      navigate('/recipes');
+    } catch (error) {
+      // Submission failed, stay on CreateRecipe page
+      console.error('Error creating recipe:', error);
+    }
   };
 
   return (

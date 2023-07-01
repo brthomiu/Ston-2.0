@@ -7,7 +7,6 @@ import RecipesButton from './RecipesButton';
 function Navigation() {
   return (
     <nav>
-      <h1>Navbar!</h1>
       <LoginButton />
       <LogoutButton />
       <RecipesButton />

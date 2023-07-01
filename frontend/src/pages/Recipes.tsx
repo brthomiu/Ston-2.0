@@ -4,10 +4,10 @@ import Loader from '../components/Loader';
 import RecipeCard from '../components/recipe/RecipeCard';
 
 function Recipes() {
-  // Fetch user profile data
+  // Fetch recipe data
   const recipeData = useFetchRecipes();
 
-  // Returns loading until profile data loads
+  // Returns loading until recipe data loads
   if (!recipeData || recipeData.length === 0) {
     return (
       <>
@@ -17,7 +17,7 @@ function Recipes() {
     );
   }
 
-  // Return user profile.
+  // Return recipes.
   return (
     <>
       <h1>Recipes</h1>

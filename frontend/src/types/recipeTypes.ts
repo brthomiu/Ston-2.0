@@ -5,7 +5,8 @@ export interface IRecipe {
   ingredients: IIngredients[];
   recipeBody: string;
   likers: string[];
-  image: string;
+  images: string[];
+  tags: string[];
 }
 
 // Create an interface representing the ingredients object

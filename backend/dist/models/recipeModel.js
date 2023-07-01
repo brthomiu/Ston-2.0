@@ -26,14 +26,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Recipe = exports.RecipeSchema = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
 const { Schema } = mongoose_1.default;
-// Create a Schema correspondinsg to the document interface.
+// Create a Schema corresponding to the document interface.
 exports.RecipeSchema = new Schema({
     owner: { type: String, required: true },
-    recipeName: { type: String, required: true, unique: true },
+    recipeName: { type: String, required: true },
     ingredients: { type: [String], required: true },
     recipeBody: { type: String, required: true },
     likers: { type: [String], required: false },
-    image: { type: String, required: false },
+    images: { type: [String], required: false },
+    tags: { type: [String], required: false },
 });
 // 3. Create a Model.
 exports.Recipe = (0, mongoose_1.model)('Recipe', exports.RecipeSchema);
