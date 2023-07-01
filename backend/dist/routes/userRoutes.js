@@ -1,54 +1,18 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-/* eslint-disable import/no-extraneous-dependencies */
 const express_1 = __importDefault(require("express"));
 const userController_1 = require("../controllers/userController");
 const router = express_1.default.Router();
 // POST:/api/user/profile - Get user data object from MongoDB
-router.post('/api/user/profile', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const userData = req.body;
-        yield (0, userController_1.getUserProfile)(userData, res);
-    }
-    catch (error) {
-        console.error('Error retrieving user profile:', error);
-        res.status(500).json({ message: 'Server error' });
-    }
-}));
+router.post('/api/user/profile', userController_1.getUserProfile);
 // POST:/api/user - Sync user auth object with MongoDB
-router.post('/api/user', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const userData = req.body; // User data is sent in the request body
-        (0, userController_1.syncUser)(userData, res);
-    }
-    catch (error) {
-        console.error('Error syncing with database:', error);
-        res.status(500).json({ message: 'Server error' });
-    }
-}));
-// DELETE:/api/user - Delete user account from MongoDB and from Auth0
-router.delete('/api/user', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const userData = req.body; // User data is sent in the request body
-        (0, userController_1.deleteUser)(userData, res);
-    }
-    catch (error) {
-        console.error('Error syncing with database:', error);
-        res.status(500).json({ message: 'Server error' });
-    }
-    // CODE TO DELETE USER FROM AUTH0 GOES HERE
-    // NEED THIS TO BE GDPR COMPLIANT
-}));
+router.post('/api/user', userController_1.syncUser);
+// DELETE:/api/user/profile - Delete user profile from MongoDB
+router.delete('/api/user/profile', userController_1.deleteProfile);
+// UNDER CONSTRUCTION ----------
+// // DELETE:/api/user - Delete user account from Auth0
+// router.delete('/api/user/', deleteAccount);
 exports.default = router;

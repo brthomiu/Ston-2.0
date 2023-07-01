@@ -2,7 +2,19 @@
 import axios from 'axios';
 import { User } from '@auth0/auth0-react';
 
-const API_URL = 'http://localhost:8000/';
+const API_URL = process.env.VITE_API_URL || 'http://localhost:8000/';
+
+// getUserProfile
+// Gets user profile data
+export const getUserProfile = async (user: User) => {
+  // Request user profile data from backend
+  const response = await axios.post(`${API_URL}api/user/profile`, user);
+  // Return user profile data
+  if (!response.data[0]) {
+    throw Error('Error retrieving user profile.');
+  }
+  return response.data[0];
+};
 
 // syncProfile
 // Syncs user profile with MongoDB
@@ -18,16 +30,22 @@ export const syncProfile = async (user: User) => {
   } catch (error) {
     throw Error('Could not sync with database.');
   }
+
+  // Place user data into sessionstorage
+  const userData = await getUserProfile(user);
+  try {
+    sessionStorage.setItem('userName', userData.name);
+    sessionStorage.setItem('email', userData.email);
+  } catch (error) {
+    throw Error('Could not store user data');
+  }
 };
 
-// getUserProfile
-// Gets user profile data
-export const getUserProfile = async (user: User) => {
-  // Request user profile data from backend
-  const response = await axios.post(`${API_URL}api/user/profile`, user);
-  // Return user profile data
-  if (!response.data[0]) {
-    throw Error('Error retrieving user profile.');
-  }
-  return response.data[0];
-};
+// DISABLED UNTIL BACKEND CODE IS FINISHED
+// // deleteAccount
+// // Deletes the user's account from database and from Auth0
+// export const deleteAccount = async (user: User) => {
+//   // Delete user profile data
+//   await axios.delete(`${API_URL}api/user/profile`, { data: user });
+//   await axios.delete(`${API_URL}api/user`, { data: user });
+// };

@@ -8,34 +8,40 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.syncUser = exports.getUserProfile = void 0;
+exports.deleteProfile = exports.syncUser = exports.getUserProfile = void 0;
+/* eslint-disable import/no-extraneous-dependencies */
+const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const userModel_1 = require("../models/userModel");
-const connectToDb_1 = require("../utils/connectToDb");
-// POST:/api/user/profile - Retrieve user profile from MongoDB
-const getUserProfile = (user, res) => __awaiter(void 0, void 0, void 0, function* () {
+// POST:/api/user/profile
+// Retrieve user profile from MongoDB
+exports.getUserProfile = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { sub } = req.body;
     // Find matching user in MongoDB
     const userProfile = yield userModel_1.User.find({
-        userId: user.sub,
+        userId: sub,
     }).exec();
-    console.log('userController getUserProfile userProfile: ', userProfile);
     if (!userProfile) {
-        throw new Error('POST:/api/user/profile - Failed to retrieve user profile');
+        res.status(404);
+        throw new Error('Failed to retrieve user profile');
     }
     res.json(userProfile); // Return user profile data
-});
-exports.getUserProfile = getUserProfile;
-// POST:/api/user - Sync Auth0 user object with MongoDB
-const syncUser = (user, res) => __awaiter(void 0, void 0, void 0, function* () {
+}));
+// POST:/api/user
+// Sync Auth0 user object with MongoDB
+exports.syncUser = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { sub, name, email } = req.body;
     // Check for auth0 user object
-    if (!user.sub) {
-        throw new Error('POST:/api/user - Failed to find authorized user');
+    if (!sub) {
+        res.status(400);
+        throw new Error('Failed to find authorized user');
     }
     // Get user ID from auth0 and check if user already exists in MongoDB
-    const userId = user.sub;
-    const name = user.name;
-    const email = user.email;
-    const currentUser = yield connectToDb_1.db.collection('users').findOne({ userId });
+    const userId = sub;
+    const currentUser = yield userModel_1.User.findOne({ userId });
     // Create a user object if there is not a match in MongoDB
     if (!currentUser) {
         yield userModel_1.User.create({
@@ -54,20 +60,31 @@ const syncUser = (user, res) => __awaiter(void 0, void 0, void 0, function* () {
         // Send a response indicating the user already exists
         res.status(200).json({ message: 'User already exists' });
     }
-});
-exports.syncUser = syncUser;
-// DELETE:/api/user - Delete user account from MongoDB and from Auth0
-const deleteUser = (user, res) => __awaiter(void 0, void 0, void 0, function* () {
+}));
+// DELETE:/api/user/profile
+// Delete user account from MongoDB
+exports.deleteProfile = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { sub } = req.body;
     try {
-        const userId = user.sub;
         // Delete user account from MongoDB
-        yield connectToDb_1.db.collection('users').deleteOne({ userId });
-        // Optionally, you can also implement the deletion of the user account from Auth0 here
+        yield userModel_1.User.deleteOne({ userId: sub });
+        // Send a response indicating the profile has been deleted
         res.status(200).json({ message: 'User deleted successfully' });
     }
     catch (error) {
-        console.error('Error deleting user:', error);
-        res.status(500).json({ message: 'Server error' });
+        res.status(500);
+        throw new Error('Error deleting user');
     }
-});
-exports.deleteUser = deleteUser;
+}));
+// // UNDER CONSTRUCTION
+// // DELETE:/api/user
+// // Delete user account from MongoDB and from Auth0
+// export const deleteAccount = expressAsyncHandler(async (req, res) => {
+//   try {
+//     // Implement the deletion of the user account from Auth0 here
+//     res.status(200).json({ message: 'Account deleted successfully' });
+//   } catch (error) {
+//     res.status(500);
+//     throw new Error('Error deleting account');
+//   }
+// });

@@ -1,3 +1,4 @@
+import CreateRecipeButton from './CreateRecipeButton';
 import LoginButton from './LoginButton';
 import LogoutButton from './LogoutButton';
 import ProfileButton from './ProfileButton';
@@ -10,6 +11,7 @@ function Navigation() {
       <LoginButton />
       <LogoutButton />
       <RecipesButton />
+      <CreateRecipeButton />
       <ProfileButton />
     </nav>
   );
