@@ -13,19 +13,12 @@ export const getRecipes = expressAsyncHandler(async (req, res) => {
 // POST:/api/recipe
 // Post a new recipe to MongoDB
 export const createRecipe = expressAsyncHandler(async (req, res) => {
-  const { owner, recipeName, ingredients, recipeBody } = req.body;
+  const { owner, recipeName, ingredients, recipeBody, tags } = req.body;
 
   if (!owner || !recipeName || !ingredients || !recipeBody) {
     res.status(400);
     throw new Error('Please add all fields');
   }
-
-  // // Check if the recipe name is already used
-  // const existingRecipe = await Recipe.findOne({ recipeName });
-  // if (existingRecipe) {
-  //   res.status(400);
-  //   throw new Error('Recipe name already exists');
-  // }
 
   // Create recipe
   const recipe = await Recipe.create({
@@ -35,9 +28,9 @@ export const createRecipe = expressAsyncHandler(async (req, res) => {
     recipeBody,
     likers: [],
     images: [],
-    tags: [],
+    tags,
   });
-
+  console.log('recipeController recipe object:', recipe);
   if (recipe) {
     res.status(201).json({
       _id: recipe._id,
@@ -54,38 +47,3 @@ export const createRecipe = expressAsyncHandler(async (req, res) => {
     throw new Error('Invalid user data');
   }
 });
-
-// POST:/api/recipe
-// Post a new recipe to MongoDB
-// export const createRecipe = expressAsyncHandler(async (req, res) => {
-//   const { owner, recipeName, ingredients, recipeBody } = req.body;
-
-//   if (!owner || !recipeName || !ingredients || !recipeBody) {
-//     res.status(400);
-//     throw new Error('Please add all fields');
-//   }
-
-//   // Create recipe
-//   const recipe = await Recipe.create({
-//     owner,
-//     recipeName,
-//     ingredients,
-//     recipeBody,
-//     likers: [],
-//     image: '',
-//   });
-
-//   if (recipe) {
-//     res.status(201).json({
-//       _id: recipe._id,
-//       owner: recipe.owner,
-//       recipeName: recipe.recipeName,
-//       ingredients: recipe.ingredients,
-//       recipe: recipe.recipeBody,
-//       likers: recipe.likers,
-//     });
-//   } else {
-//     res.status(400);
-//     throw new Error('Invalid user data');
-//   }
-// });

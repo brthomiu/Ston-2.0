@@ -9,7 +9,6 @@ export const getRecipes = async () => {
   try {
     const response = await axios.get(`${API_URL}api/recipe/`);
     const recipes = response.data;
-    console.log('recipeService getRecipes recipe data:', recipes);
     return recipes;
   } catch (error) {
     throw new Error('Could not sync with the database.');
