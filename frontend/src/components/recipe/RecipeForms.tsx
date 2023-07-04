@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { handleCreateRecipe } from '../../features/recipeService';
 import TagForm from './TagForm';
-// import { IIngredients } from '../../types/recipeTypes';
+import { IRecipeProps } from '../../types/recipeTypes';
 import IngredientEntry from './IngredientEntry';
 
 function RecipeForms() {
@@ -15,11 +15,16 @@ function RecipeForms() {
   // State to hold tag list
   const [tagList, setTagList] = useState<string[]>([]);
 
+  // State to hold ingredient list (added to recipe object on submit)
+  const [ingredientList, setIngredientList] = useState<
+    IRecipeProps['ingredientList']
+  >([]);
+
   // State to hold recipe data
   const [formData, setFormData] = useState({
     owner: userName,
     recipeName: '',
-    ingredients: [],
+    ingredients: ingredientList,
     recipeBody: '',
     likers: [],
     images: [],
@@ -40,7 +45,7 @@ function RecipeForms() {
     const recipeData = {
       owner: userName,
       recipeName: formData.recipeName,
-      ingredients: formData.ingredients,
+      ingredients: ingredientList,
       recipeBody: formData.recipeBody,
       likers: formData.likers,
       images: formData.images,
@@ -73,7 +78,10 @@ function RecipeForms() {
         </div>
         {/* Ingredient entry section */}
         <div>
-          <IngredientEntry />
+          <IngredientEntry
+            ingredientList={ingredientList}
+            setIngredientList={setIngredientList}
+          />
           <TagForm tagList={tagList} setTagList={setTagList} />
         </div>
         {/* Recipe body entry section */}

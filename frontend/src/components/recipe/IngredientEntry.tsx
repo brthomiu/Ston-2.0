@@ -2,12 +2,15 @@
 import { useState } from 'react';
 import IngredientRow from './IngredientRow';
 import IngredientForm from './IngredientForm';
-import { IIngredients } from '../../types/recipeTypes';
+import { IIngredients, IRecipeProps } from '../../types/recipeTypes';
 
-function IngredientEntry() {
-  // State to hold ingredient list (added to recipe object on submit)
-  const [ingredientList, setIngredientList] = useState<IIngredients[]>([]);
-  // State to hold ingredient object (pushed to ingredientList on submit)
+function IngredientEntry({
+  ingredientList,
+  setIngredientList,
+}: {
+  ingredientList: IIngredients[];
+  setIngredientList: IRecipeProps['setIngredientList'];
+}) {
   const defaultIngredientObject = {
     ingredient: '',
     amount: '',
