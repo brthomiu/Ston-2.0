@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { IIngredientProps } from '../../types/recipeTypes';
+import { IIngredientProps } from '../../../types/recipeTypes';
 
 function IngredientForm({
   ingredient,

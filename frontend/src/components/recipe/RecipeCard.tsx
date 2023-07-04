@@ -1,6 +1,6 @@
 import { RecipeCardProps, TagProps } from '../../types/recipeTypes';
-import IngredientCloud from './IngredientCloud';
-import TagCloud from './TagCloud';
+import IngredientCloud from './ingredient/IngredientCloud';
+import TagCloud from './tag/TagCloud';
 
 function RecipeCard({ recipe }: RecipeCardProps) {
   // Convert recipe tags to TagProps[]

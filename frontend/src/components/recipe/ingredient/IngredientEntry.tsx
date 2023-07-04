@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import IngredientRow from './IngredientRow';
 import IngredientForm from './IngredientForm';
-import { IIngredients, IRecipeProps } from '../../types/recipeTypes';
+import { IIngredients, IRecipeProps } from '../../../types/recipeTypes';
 
 function IngredientEntry({
   ingredientList,

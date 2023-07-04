@@ -1,6 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 import Tag from './Tag';
-import { TagProps } from '../../types/recipeTypes';
+import { TagProps } from '../../../types/recipeTypes';
 
 function TagCloud({ tags }: { tags: TagProps[] }) {
   // Render the ingredient cloud component

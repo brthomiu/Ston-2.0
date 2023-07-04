@@ -1,5 +1,5 @@
 import { TagsInput } from 'react-tag-input-component';
-import { IRecipeProps } from '../../types/recipeTypes';
+import { IRecipeProps } from '../../../types/recipeTypes';
 
 function TagForm({
   tagList,

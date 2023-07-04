@@ -2,9 +2,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { handleCreateRecipe } from '../../features/recipeService';
-import TagForm from './TagForm';
+import TagForm from './tag/TagForm';
 import { IRecipeProps } from '../../types/recipeTypes';
-import IngredientEntry from './IngredientEntry';
+import IngredientEntry from './ingredient/IngredientEntry';
 
 function RecipeForms() {
   // Initialize navigate

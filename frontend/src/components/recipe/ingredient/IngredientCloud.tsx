@@ -1,4 +1,4 @@
-import { IIngredients } from '../../types/recipeTypes';
+import { IIngredients } from '../../../types/recipeTypes';
 import Ingredient from './Ingredient';
 
 function IngredientCloud({ ingredients }: { ingredients: IIngredients[] }) {

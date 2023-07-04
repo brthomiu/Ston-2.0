@@ -1,4 +1,4 @@
-import { IngredientProps } from '../../types/recipeTypes';
+import { IngredientProps } from '../../../types/recipeTypes';
 
 function Ingredient({ ingredient }: IngredientProps) {
   // Render the ingredient

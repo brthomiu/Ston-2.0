@@ -1,4 +1,4 @@
-import { IIngredients } from '../../types/recipeTypes';
+import { IIngredients } from '../../../types/recipeTypes';
 
 function IngredientRow({ ingredient }: { ingredient: IIngredients }) {
   return (
