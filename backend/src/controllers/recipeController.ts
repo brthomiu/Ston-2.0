@@ -30,7 +30,6 @@ export const createRecipe = expressAsyncHandler(async (req, res) => {
     images: [],
     tags,
   });
-  console.log('recipeController recipe object:', recipe);
   if (recipe) {
     res.status(201).json({
       _id: recipe._id,

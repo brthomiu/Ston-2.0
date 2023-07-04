@@ -40,7 +40,6 @@ exports.createRecipe = (0, express_async_handler_1.default)((req, res) => __awai
         images: [],
         tags,
     });
-    console.log('recipeController recipe object:', recipe);
     if (recipe) {
         res.status(201).json({
             _id: recipe._id,
