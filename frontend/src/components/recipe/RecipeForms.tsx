@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 import { handleCreateRecipe } from '../../features/recipeService';
 import TagEntry from './tag/TagEntry';
 import { IRecipeProps } from '../../types/recipeTypes';
@@ -44,21 +45,29 @@ function RecipeForms() {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const recipeData = {
-      owner: userName,
-      recipeName: formData.recipeName,
-      ingredients: ingredientList,
-      recipeBody: formData.recipeBody,
-      likers: formData.likers,
-      images: formData.images,
-      tags: tagList,
-    };
-    try {
-      await handleCreateRecipe(recipeData);
-      navigate('/recipes');
-    } catch (error) {
-      // Submission failed, stay on CreateRecipe page
-      console.error('Error creating recipe:', error);
+    if (!formData.recipeName) {
+      toast('Please add recipe name.');
+    } else if (ingredientList.length === 0) {
+      toast('Please add ingredients.');
+    } else if (!formData.recipeBody) {
+      toast('Please add recipe body.');
+    } else {
+      const recipeData = {
+        owner: userName,
+        recipeName: formData.recipeName,
+        ingredients: ingredientList,
+        recipeBody: formData.recipeBody,
+        likers: formData.likers,
+        images: formData.images,
+        tags: tagList,
+      };
+      try {
+        await handleCreateRecipe(recipeData);
+        navigate('/recipes');
+      } catch (error) {
+        // Submission failed, stay on CreateRecipe page
+        console.error('Error creating recipe:', error);
+      }
     }
   };
 
