@@ -17,6 +17,7 @@ function TagEntry({
   // addTag
   // Pushes tagObject to tagList and resets tagObject
   const addTag = async () => {
+    // Input validation to prevent blank or duplicate tags
     if (tagList.includes(tagObject)) {
       toast('Tag already exists.');
     } else if (tagObject === '') {

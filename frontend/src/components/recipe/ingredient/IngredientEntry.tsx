@@ -26,6 +26,7 @@ function IngredientEntry({
   // addIngredient
   // Pushes ingredientObject to ingredientList and resets ingredientObject
   const addIngredient = async () => {
+    // Input validation to prevent blank ingredient fields
     if (
       !ingredientObject.ingredient ||
       !ingredientObject.amount ||

@@ -45,6 +45,7 @@ function RecipeForms() {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    // Input validation to prevent user from submitting blank forms
     if (!formData.recipeName) {
       toast('Please add recipe name.');
     } else if (ingredientList.length === 0) {
