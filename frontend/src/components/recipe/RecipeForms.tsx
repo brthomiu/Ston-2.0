@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { handleCreateRecipe } from '../../features/recipeService';
-import TagForm from './tag/TagForm';
+import TagEntry from './tag/TagEntry';
 import { IRecipeProps } from '../../types/recipeTypes';
 import IngredientEntry from './ingredient/IngredientEntry';
 
@@ -39,6 +39,8 @@ function RecipeForms() {
     }));
   };
 
+  // onSubmit
+  // Sends recipe data to database
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -53,7 +55,6 @@ function RecipeForms() {
     };
     try {
       await handleCreateRecipe(recipeData);
-      console.log('formData.ingredients: ', formData.ingredients);
       navigate('/recipes');
     } catch (error) {
       // Submission failed, stay on CreateRecipe page
@@ -61,6 +62,7 @@ function RecipeForms() {
     }
   };
 
+  // Return recipe entry forms and components
   return (
     <section>
       <form autoComplete="off" onSubmit={onSubmit}>
@@ -76,13 +78,15 @@ function RecipeForms() {
             onChange={onChange}
           />
         </div>
-        {/* Ingredient entry section */}
+        {/* Ingredient entry component */}
         <div>
           <IngredientEntry
             ingredientList={ingredientList}
             setIngredientList={setIngredientList}
           />
-          <TagForm tagList={tagList} setTagList={setTagList} />
+          <br />
+          {/* Tag entry component */}
+          <TagEntry tagList={tagList} setTagList={setTagList} />
         </div>
         {/* Recipe body entry section */}
         <div>

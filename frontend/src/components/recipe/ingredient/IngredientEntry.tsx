@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { useState } from 'react';
 import IngredientRow from './IngredientRow';
 import IngredientForm from './IngredientForm';
@@ -45,6 +44,7 @@ function IngredientEntry({
         uom={ingredientObject.uom}
         setIngredientObject={setIngredientObject}
       />
+      <br />
       <button type="button" onClick={() => addIngredient()}>
         Add Ingredient
       </button>

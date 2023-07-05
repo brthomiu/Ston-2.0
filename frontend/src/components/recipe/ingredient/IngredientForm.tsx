@@ -22,11 +22,11 @@ function IngredientForm({
 
   return (
     <>
-      <h2>INGREDIENT FORM</h2>
+      <br />
       <textarea
-        maxLength={20}
+        maxLength={40}
         rows={1}
-        cols={20}
+        cols={32}
         name="ingredient"
         value={ingredient}
         placeholder="Ingredient Name"
@@ -35,7 +35,7 @@ function IngredientForm({
       <textarea
         maxLength={20}
         rows={1}
-        cols={20}
+        cols={12}
         name="amount"
         value={amount}
         placeholder="Ingredient Amount"
@@ -44,7 +44,7 @@ function IngredientForm({
       <textarea
         maxLength={20}
         rows={1}
-        cols={20}
+        cols={12}
         name="uom"
         value={uom}
         placeholder="Unit of Measure"

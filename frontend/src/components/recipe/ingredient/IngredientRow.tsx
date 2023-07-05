@@ -6,6 +6,7 @@ function IngredientRow({ ingredient }: { ingredient: IIngredients }) {
       <p>{ingredient.ingredient}</p>
       <p>{ingredient.amount}</p>
       <p>{ingredient.uom}</p>
+      <button type="button">X</button>
     </>
   );
 }

@@ -42,3 +42,7 @@ export interface IngredientProps {
 export interface TagProps {
   tag: string;
 }
+
+export interface TagObjectProps {
+  setTagObject: Dispatch<SetStateAction<string>>;
+}
