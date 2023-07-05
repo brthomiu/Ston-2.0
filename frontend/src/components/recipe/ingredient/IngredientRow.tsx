@@ -1,12 +1,23 @@
 import { IIngredients } from '../../../types/recipeTypes';
 
-function IngredientRow({ ingredient }: { ingredient: IIngredients }) {
+function IngredientRow({
+  ingredient,
+  removeIngredient,
+}: {
+  ingredient: IIngredients;
+  removeIngredient: (ingredient: IIngredients) => void;
+}) {
+  // Return ingredient component
   return (
     <>
       <p>{ingredient.ingredient}</p>
       <p>{ingredient.amount}</p>
       <p>{ingredient.uom}</p>
-      <button type="button">X</button>
+
+      {/* Button to remove current ingredientObject from ingredientList */}
+      <button type="button" onClick={() => removeIngredient(ingredient)}>
+        X
+      </button>
     </>
   );
 }

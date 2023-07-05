@@ -1,11 +1,17 @@
-import { TagProps } from '../../../types/recipeTypes';
-
-function TagRow({ tag }: TagProps) {
+function TagRow({
+  tag,
+  removeTag,
+}: {
+  tag: string;
+  removeTag: (tag: string) => void;
+}) {
   // Render the ingredient
   return (
     <>
       <p>{tag}</p>
-      <button type="button">X</button>
+      <button type="button" onClick={() => removeTag(tag)}>
+        X
+      </button>
     </>
   );
 }

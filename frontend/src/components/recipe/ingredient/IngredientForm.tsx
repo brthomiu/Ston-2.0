@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { IIngredientProps } from '../../../types/recipeTypes';
 
 function IngredientForm({
@@ -20,9 +19,11 @@ function IngredientForm({
     }));
   };
 
+  // Return ingredient input forms
   return (
     <>
       <br />
+      {/* Ingredient name input */}
       <textarea
         maxLength={40}
         rows={1}
@@ -32,6 +33,8 @@ function IngredientForm({
         placeholder="Ingredient Name"
         onChange={onIngredientInput}
       />
+
+      {/* Ingredient amount input */}
       <textarea
         maxLength={20}
         rows={1}
@@ -41,6 +44,8 @@ function IngredientForm({
         placeholder="Ingredient Amount"
         onChange={onIngredientInput}
       />
+
+      {/* Ingredient unit of measure input */}
       <textarea
         maxLength={20}
         rows={1}

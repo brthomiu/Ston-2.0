@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { toast } from 'react-hot-toast';
 import IngredientRow from './IngredientRow';
 import IngredientForm from './IngredientForm';
 import { IIngredients, IRecipeProps } from '../../../types/recipeTypes';
@@ -10,11 +11,14 @@ function IngredientEntry({
   ingredientList: IIngredients[];
   setIngredientList: IRecipeProps['setIngredientList'];
 }) {
+  // Empty ingredient object to be used as default state
   const defaultIngredientObject = {
     ingredient: '',
     amount: '',
     uom: '',
   };
+
+  // State to hold ingredient object input
   const [ingredientObject, setIngredientObject] = useState<IIngredients>(
     defaultIngredientObject
   );
@@ -22,28 +26,55 @@ function IngredientEntry({
   // addIngredient
   // Pushes ingredientObject to ingredientList and resets ingredientObject
   const addIngredient = async () => {
-    const ingredientObjectData = {
-      ingredient: ingredientObject.ingredient,
-      amount: ingredientObject.amount,
-      uom: ingredientObject.uom,
-    };
+    if (
+      !ingredientObject.ingredient ||
+      !ingredientObject.amount ||
+      !ingredientObject.uom
+    ) {
+      toast('Please complete all fields.');
+    } else {
+      const ingredientObjectData = {
+        ingredient: ingredientObject.ingredient,
+        amount: ingredientObject.amount,
+        uom: ingredientObject.uom,
+      };
 
-    const newIngredientList = [...ingredientList, ingredientObjectData];
-    setIngredientList(newIngredientList);
-    setIngredientObject(defaultIngredientObject);
+      const newIngredientList = [...ingredientList, ingredientObjectData];
+      setIngredientList(newIngredientList);
+      setIngredientObject(defaultIngredientObject);
+    }
   };
 
+  // removeIngredient
+  // Removes entry from ingredientList
+  const removeIngredient = (ingredient: IIngredients) => {
+    const index = ingredientList.indexOf(ingredient);
+    const newIngredientList = [...ingredientList];
+    newIngredientList.splice(index, 1);
+    setIngredientList(newIngredientList);
+  };
+
+  // Return ingredient entry components
   return (
     <>
+      {/* Map ingredientList to row components */}
       {ingredientList.map((ingredient) => (
-        <IngredientRow ingredient={ingredient} key={ingredient.ingredient} />
+        <IngredientRow
+          ingredient={ingredient}
+          removeIngredient={removeIngredient}
+          key={ingredient.ingredient}
+        />
       ))}
+
+      {/* Ingredient form component */}
       <IngredientForm
         ingredient={ingredientObject.ingredient}
         amount={ingredientObject.amount}
         uom={ingredientObject.uom}
         setIngredientObject={setIngredientObject}
       />
+
+      {/* Button to add current ingredientObject to ingredientList */}
       <br />
       <button type="button" onClick={() => addIngredient()}>
         Add Ingredient
