@@ -1,6 +1,7 @@
 import { RecipeCardProps, TagProps } from '../../types/recipeTypes';
 import IngredientCloud from './ingredient/IngredientCloud';
 import TagCloud from './tag/TagCloud';
+import DeleteRecipeButton from './DeleteRecipeButton';
 
 function RecipeCard({ recipe }: RecipeCardProps) {
   // Convert recipe tags to TagProps[]
@@ -12,6 +13,7 @@ function RecipeCard({ recipe }: RecipeCardProps) {
       <p>Instructions: {recipe.recipeBody}</p>
       <IngredientCloud ingredients={recipe.ingredients} />
       <TagCloud tags={tags} />
+      <DeleteRecipeButton recipeId={recipe.recipeId} />
     </>
   );
 }

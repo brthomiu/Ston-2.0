@@ -4,6 +4,7 @@ const { Schema } = mongoose;
 
 // Create an interface representing a document in MongoDB.
 export interface IRecipe {
+  recipeId: string;
   owner: string;
   recipeName: string;
   ingredients: IIngredients[];
@@ -28,6 +29,7 @@ const IngredientSchema = new Schema<IIngredients>({
 
 // Create a Schema corresponding to the document interface.
 export const RecipeSchema = new Schema<IRecipe>({
+  recipeId: { type: String, required: true, unique: true },
   owner: { type: String, required: true },
   recipeName: { type: String, required: true },
   ingredients: { type: [IngredientSchema], required: true },

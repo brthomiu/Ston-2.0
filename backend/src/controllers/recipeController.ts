@@ -13,7 +13,8 @@ export const getRecipes = expressAsyncHandler(async (req, res) => {
 // POST:/api/recipe
 // Post a new recipe to MongoDB
 export const createRecipe = expressAsyncHandler(async (req, res) => {
-  const { owner, recipeName, ingredients, recipeBody, tags } = req.body;
+  const { recipeId, owner, recipeName, ingredients, recipeBody, tags } =
+    req.body;
 
   if (!owner || !recipeName || !ingredients || !recipeBody) {
     res.status(400);
@@ -22,6 +23,7 @@ export const createRecipe = expressAsyncHandler(async (req, res) => {
 
   // Create recipe
   const recipe = await Recipe.create({
+    recipeId,
     owner,
     recipeName,
     ingredients,
@@ -33,6 +35,7 @@ export const createRecipe = expressAsyncHandler(async (req, res) => {
   if (recipe) {
     res.status(201).json({
       _id: recipe._id,
+      recipeId: recipe.recipeId,
       owner: recipe.owner,
       recipeName: recipe.recipeName,
       ingredients: recipe.ingredients,
@@ -44,5 +47,17 @@ export const createRecipe = expressAsyncHandler(async (req, res) => {
   } else {
     res.status(400);
     throw new Error('Invalid user data');
+  }
+});
+
+// DELETE:/api/recipe
+// Delete a recipe from MongoDB
+export const deleteRecipe = expressAsyncHandler(async (req, res) => {
+  try {
+    const { recipeId } = req.body;
+    await Recipe.deleteOne({ recipeId: recipeId });
+  } catch (error) {
+    res.status(400);
+    new Error('Could not delete recipe');
   }
 });

@@ -30,7 +30,7 @@ const { Schema } = mongoose_1.default;
 exports.userSchema = new Schema({
     userId: { type: String, required: true, unique: true },
     name: { type: String, required: true, unique: true },
-    email: { type: String, required: true, unique: true },
+    email: { type: String, required: true },
     description: { type: String, required: false },
     private: { type: Boolean, required: false },
     recipes: { type: [String], required: false },

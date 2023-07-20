@@ -33,6 +33,7 @@ const IngredientSchema = new Schema({
 });
 // Create a Schema corresponding to the document interface.
 exports.RecipeSchema = new Schema({
+    recipeId: { type: String, required: true, unique: true },
     owner: { type: String, required: true },
     recipeName: { type: String, required: true },
     ingredients: { type: [IngredientSchema], required: true },

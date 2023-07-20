@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction } from 'react';
 
 // Create an interface representing a document in MongoDB.
 export interface IRecipe {
+  recipeId: string;
   owner: string;
   recipeName: string;
   ingredients: IIngredients[];

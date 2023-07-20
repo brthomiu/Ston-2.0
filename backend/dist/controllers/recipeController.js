@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createRecipe = exports.getRecipes = void 0;
+exports.deleteRecipe = exports.createRecipe = exports.getRecipes = void 0;
 /* eslint-disable import/no-extraneous-dependencies */
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const recipeModel_1 = require("../models/recipeModel");
@@ -25,13 +25,14 @@ exports.getRecipes = (0, express_async_handler_1.default)((req, res) => __awaite
 // POST:/api/recipe
 // Post a new recipe to MongoDB
 exports.createRecipe = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { owner, recipeName, ingredients, recipeBody, tags } = req.body;
+    const { recipeId, owner, recipeName, ingredients, recipeBody, tags } = req.body;
     if (!owner || !recipeName || !ingredients || !recipeBody) {
         res.status(400);
         throw new Error('Please add all fields');
     }
     // Create recipe
     const recipe = yield recipeModel_1.Recipe.create({
+        recipeId,
         owner,
         recipeName,
         ingredients,
@@ -43,6 +44,7 @@ exports.createRecipe = (0, express_async_handler_1.default)((req, res) => __awai
     if (recipe) {
         res.status(201).json({
             _id: recipe._id,
+            recipeId: recipe.recipeId,
             owner: recipe.owner,
             recipeName: recipe.recipeName,
             ingredients: recipe.ingredients,
@@ -55,5 +57,17 @@ exports.createRecipe = (0, express_async_handler_1.default)((req, res) => __awai
     else {
         res.status(400);
         throw new Error('Invalid user data');
+    }
+}));
+// DELETE:/api/recipe
+// Delete a recipe from MongoDB
+exports.deleteRecipe = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { recipeId } = req.body;
+        yield recipeModel_1.Recipe.deleteOne({ recipeId: recipeId });
+    }
+    catch (error) {
+        res.status(400);
+        new Error('Could not delete recipe');
     }
 }));

@@ -30,6 +30,18 @@ export const handleCreateRecipe = async (recipeData: IRecipe) => {
   } catch (error) {
     toast('Could not create recipe.');
     console.log('Could not create recipe.');
-    throw error; // Rethrow the error
+    throw error;
+  }
+};
+
+export const handleDeleteRecipe = async (recipeId: string) => {
+  try {
+    await axios.delete(`${API_URL}api/recipe/`, {
+      data: { recipeId },
+    });
+  } catch (error) {
+    toast('Could not delete recipe.');
+    console.log('Could not delete recipe.');
+    throw error;
   }
 };

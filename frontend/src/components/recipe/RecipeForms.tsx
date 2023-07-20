@@ -54,6 +54,7 @@ function RecipeForms() {
       toast('Please add recipe body.');
     } else {
       const recipeData = {
+        recipeId: `${userName}-${formData.recipeName}-${Date()}`,
         owner: userName,
         recipeName: formData.recipeName,
         ingredients: ingredientList,

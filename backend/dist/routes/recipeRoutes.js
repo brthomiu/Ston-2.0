@@ -11,4 +11,6 @@ const router = express_1.default.Router();
 router.get('/api/recipe/', recipeController_1.getRecipes);
 // POST:/api/recipe - Post recipe to MongoDB
 router.post('/api/recipe/', recipeController_1.createRecipe);
+// DELETE:/api/recipe - Delete recipe from MongoDB
+router.delete('/api/recipe/', recipeController_1.deleteRecipe);
 exports.default = router;
