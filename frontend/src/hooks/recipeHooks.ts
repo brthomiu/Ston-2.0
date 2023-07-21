@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { getRecipes } from '../features/recipeService';
 import { IRecipe } from '../types/recipeTypes';
 
-export const useFetchRecipes = () => {
+export const useFetchRecipes = (reload: boolean) => {
   const [userRecipeData, setUserRecipeData] = useState<IRecipe[]>([]);
 
   useEffect(() => {
@@ -17,7 +17,7 @@ export const useFetchRecipes = () => {
     };
 
     fetchUserRecipe();
-  }, []);
+  }, [reload]);
 
   return userRecipeData;
 };

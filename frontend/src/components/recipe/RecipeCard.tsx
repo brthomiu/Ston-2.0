@@ -1,9 +1,26 @@
-import { RecipeCardProps, TagProps } from '../../types/recipeTypes';
+import { useState } from 'react';
+import { IRecipe, TagProps } from '../../types/recipeTypes';
 import IngredientCloud from './ingredient/IngredientCloud';
 import TagCloud from './tag/TagCloud';
-import DeleteRecipeButton from './DeleteRecipeButton';
+import RecipeModal from './RecipeModal';
 
-function RecipeCard({ recipe }: RecipeCardProps) {
+type Props = {
+  recipe: IRecipe;
+  toggleReload: () => void;
+};
+
+function RecipeCard({ recipe, toggleReload }: Props) {
+  // State to toggle display of modal
+  const [showModal, setShowModal] = useState(false);
+
+  const toggleModal = () => {
+    if (!showModal) {
+      setShowModal(true);
+    } else {
+      setShowModal(false);
+    }
+  };
+
   // Convert recipe tags to TagProps[]
   const tags: TagProps[] = recipe.tags.map((tag) => ({ tag }));
   // Render the recipe card component
@@ -13,7 +30,15 @@ function RecipeCard({ recipe }: RecipeCardProps) {
       <p>Instructions: {recipe.recipeBody}</p>
       <IngredientCloud ingredients={recipe.ingredients} />
       <TagCloud tags={tags} />
-      <DeleteRecipeButton recipeId={recipe.recipeId} />
+      <RecipeModal
+        recipe={recipe}
+        showModal={showModal}
+        setShowModal={setShowModal}
+        toggleReload={toggleReload}
+      />
+      <button onClick={() => toggleModal()} type="button">
+        Show More
+      </button>
     </>
   );
 }

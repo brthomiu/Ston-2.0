@@ -23,22 +23,27 @@ const createRecipe = async (recipeData: IRecipe) => {
 
 export const handleCreateRecipe = async (recipeData: IRecipe) => {
   try {
-    const response = await createRecipe(recipeData);
+    await createRecipe(recipeData);
     // Recipe created successfully
     toast('Created new recipe!');
-    console.log('Recipe created:', response);
   } catch (error) {
     toast('Could not create recipe.');
-    console.log('Could not create recipe.');
     throw error;
   }
 };
 
+const deleteRecipe = async (recipeId: string) => {
+  await axios.delete(`${API_URL}api/recipe/`, {
+    data: { recipeId },
+  });
+};
+
 export const handleDeleteRecipe = async (recipeId: string) => {
   try {
-    await axios.delete(`${API_URL}api/recipe/`, {
-      data: { recipeId },
-    });
+    deleteRecipe(recipeId);
+    // Recipe deleted successfully
+    toast('Recipe deleted!');
+    console.log('Recipe deleted.');
   } catch (error) {
     toast('Could not delete recipe.');
     console.log('Could not delete recipe.');

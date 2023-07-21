@@ -32,10 +32,6 @@ export interface IIngredientProps {
   setIngredientObject: Dispatch<SetStateAction<IIngredients>>;
 }
 
-export interface RecipeCardProps {
-  recipe: IRecipe;
-}
-
 export interface IngredientProps {
   ingredient: IIngredients;
 }
