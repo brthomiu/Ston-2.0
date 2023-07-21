@@ -18,7 +18,7 @@ export default function RecipeModal({
     return (
       <div>
         <DeleteRecipeButton
-          recipeId={recipe.recipeId}
+          recipe={recipe}
           setShowModal={setShowModal}
           toggleReload={toggleReload}
         />

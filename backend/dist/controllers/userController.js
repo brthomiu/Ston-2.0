@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteProfile = exports.syncUser = exports.getUserProfile = void 0;
+exports.deleteProfile = exports.removeProfileRecipe = exports.addProfileRecipe = exports.syncUser = exports.getUserProfile = void 0;
 /* eslint-disable import/no-extraneous-dependencies */
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const userModel_1 = require("../models/userModel");
@@ -59,6 +59,59 @@ exports.syncUser = (0, express_async_handler_1.default)((req, res) => __awaiter(
     else {
         // Send a response indicating the user already exists
         res.status(200).json({ message: 'User already exists' });
+    }
+}));
+// PUT:/api/user/recipes
+// Adds recipe to user's created recipe list
+exports.addProfileRecipe = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { recipeId, owner } = req.body;
+    try {
+        // Get the current user recipe array and push the new recipe onto it
+        const oldUserDoc = yield userModel_1.User.findOne({ name: owner });
+        oldUserDoc === null || oldUserDoc === void 0 ? void 0 : oldUserDoc.recipes.push(recipeId);
+        const newRecipeArray = oldUserDoc === null || oldUserDoc === void 0 ? void 0 : oldUserDoc.recipes;
+        // Update recipes array on user object with the new recipe array
+        const filter = { name: owner };
+        const update = { recipes: newRecipeArray };
+        // `doc` is the document _after_ `update` was applied because of
+        // `new: true`
+        const doc = yield userModel_1.User.findOneAndUpdate(filter, update, {
+            new: true,
+        });
+    }
+    catch (error) {
+        res.status(500);
+        throw new Error('Error updating recipe list');
+    }
+}));
+// DELETE:/api/user/recipes
+// Removes recipe from user profile upon deletion
+exports.removeProfileRecipe = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { owner, recipeId } = req.body.recipeData;
+    console.log(owner, recipeId);
+    try {
+        // Get the current user recipe array and remove the old recipe from it
+        const oldUserDoc = yield userModel_1.User.findOne({ name: owner });
+        console.log('OLD USER DOC-----:', oldUserDoc);
+        const oldRecipeArray = oldUserDoc === null || oldUserDoc === void 0 ? void 0 : oldUserDoc.recipes;
+        const index = oldUserDoc === null || oldUserDoc === void 0 ? void 0 : oldUserDoc.recipes.indexOf(recipeId);
+        if (index > -1) {
+            oldRecipeArray === null || oldRecipeArray === void 0 ? void 0 : oldRecipeArray.splice(index, 1);
+        }
+        const newRecipeArray = oldRecipeArray;
+        console.log('NEW RECIPE ARRAY -----', newRecipeArray);
+        // Update recipes array on user object with the new recipe array
+        const filter = { name: owner };
+        const update = { recipes: newRecipeArray };
+        // `doc` is the document _after_ `update` was applied because of
+        // `new: true`
+        const doc = yield userModel_1.User.findOneAndUpdate(filter, update, {
+            new: true,
+        });
+    }
+    catch (error) {
+        res.status(500);
+        throw new Error('Error updating recipe list');
     }
 }));
 // DELETE:/api/user/profile

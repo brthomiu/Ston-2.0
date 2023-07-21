@@ -2,7 +2,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import { handleCreateRecipe } from '../../features/recipeService';
+import {
+  handleCreateRecipe,
+  handleUpdateProfileRecipes,
+} from '../../features/recipeService';
 import TagEntry from './tag/TagEntry';
 import { IRecipeProps } from '../../types/recipeTypes';
 import IngredientEntry from './ingredient/IngredientEntry';
@@ -64,8 +67,12 @@ function RecipeForms() {
         tags: tagList,
       };
       try {
-        await handleCreateRecipe(recipeData);
-        navigate('/recipes');
+        const submitRequests = () => {
+          handleCreateRecipe(recipeData);
+          handleUpdateProfileRecipes(recipeData);
+          navigate('/recipes');
+        };
+        submitRequests();
       } catch (error) {
         // Submission failed, stay on CreateRecipe page
         console.error('Error creating recipe:', error);

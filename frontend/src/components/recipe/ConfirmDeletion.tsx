@@ -1,22 +1,27 @@
-import { handleDeleteRecipe } from '../../features/recipeService';
+import {
+  handleDeleteRecipe,
+  handleRemoveProfileRecipe,
+} from '../../features/recipeService';
+import { IRecipe } from '../../types/recipeTypes';
 
 type Props = {
-  recipeId: string;
+  recipe: IRecipe;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   setShowConfirmation: React.Dispatch<React.SetStateAction<boolean>>;
   toggleReload: () => void;
 };
 
 export default function ConfirmDeletion({
-  recipeId,
+  recipe,
   setShowModal,
   setShowConfirmation,
   toggleReload,
 }: Props) {
   // Function to delete recipe and close the modal
-  const deleteRecipe = (id: string) => {
+  const deleteRecipe = (recipeData: IRecipe) => {
     try {
-      handleDeleteRecipe(id);
+      handleRemoveProfileRecipe(recipeData);
+      handleDeleteRecipe(recipeData.recipeId);
       setShowConfirmation(false);
       setShowModal(false);
       toggleReload();
@@ -34,7 +39,7 @@ export default function ConfirmDeletion({
       <button type="button" onClick={() => setShowConfirmation(false)}>
         Go Back
       </button>
-      <button type="button" onClick={() => deleteRecipe(recipeId)}>
+      <button type="button" onClick={() => deleteRecipe(recipe)}>
         Delete
       </button>
     </>

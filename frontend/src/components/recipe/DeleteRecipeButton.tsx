@@ -1,15 +1,16 @@
 /* eslint-disable no-console */
 import { useState } from 'react';
 import ConfirmDeletion from './ConfirmDeletion';
+import { IRecipe } from '../../types/recipeTypes';
 
 type Props = {
-  recipeId: string;
+  recipe: IRecipe;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   toggleReload: () => void;
 };
 
 export default function DeleteRecipeButton({
-  recipeId,
+  recipe,
   setShowModal,
   toggleReload,
 }: Props) {
@@ -29,7 +30,7 @@ export default function DeleteRecipeButton({
     return (
       <>
         <ConfirmDeletion
-          recipeId={recipeId}
+          recipe={recipe}
           setShowModal={setShowModal}
           setShowConfirmation={setShowConfirmation}
           toggleReload={toggleReload}

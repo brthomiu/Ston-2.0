@@ -55,6 +55,66 @@ export const syncUser = expressAsyncHandler(async (req, res) => {
   }
 });
 
+// PUT:/api/user/recipes
+// Adds recipe to user's created recipe list
+export const addProfileRecipe = expressAsyncHandler(async (req, res) => {
+  const { recipeId, owner } = req.body;
+
+  try {
+    // Get the current user recipe array and push the new recipe onto it
+    const oldUserDoc = await User.findOne({ name: owner });
+    oldUserDoc?.recipes.push(recipeId);
+    const newRecipeArray = oldUserDoc?.recipes;
+
+    // Update recipes array on user object with the new recipe array
+    const filter = { name: owner };
+    const update = { recipes: newRecipeArray };
+
+    // `doc` is the document _after_ `update` was applied because of
+    // `new: true`
+    const doc = await User.findOneAndUpdate(filter, update, {
+      new: true,
+    });
+  } catch (error) {
+    res.status(500);
+    throw new Error('Error updating recipe list');
+  }
+});
+
+// DELETE:/api/user/recipes
+// Removes recipe from user profile upon deletion
+export const removeProfileRecipe = expressAsyncHandler(async (req, res) => {
+  const { owner, recipeId } = req.body.recipeData;
+  console.log(owner, recipeId);
+
+  try {
+    // Get the current user recipe array and remove the old recipe from it
+    const oldUserDoc = await User.findOne({ name: owner });
+    console.log('OLD USER DOC-----:', oldUserDoc);
+    const oldRecipeArray = oldUserDoc?.recipes;
+    const index: number = oldUserDoc?.recipes.indexOf(recipeId)!;
+    if (index > -1) {
+      oldRecipeArray?.splice(index, 1);
+    }
+
+    const newRecipeArray = oldRecipeArray;
+    console.log('NEW RECIPE ARRAY -----', newRecipeArray);
+
+    // Update recipes array on user object with the new recipe array
+    const filter = { name: owner };
+    const update = { recipes: newRecipeArray };
+
+    // `doc` is the document _after_ `update` was applied because of
+    // `new: true`
+    const doc = await User.findOneAndUpdate(filter, update, {
+      new: true,
+    });
+  } catch (error) {
+    res.status(500);
+    throw new Error('Error updating recipe list');
+  }
+});
+
 // DELETE:/api/user/profile
 // Delete user account from MongoDB
 export const deleteProfile = expressAsyncHandler(async (req, res) => {
