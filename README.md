@@ -1,5 +1,5 @@
-# This is the repository for MKII of Ston-Recipe-Notes
+# This is the repository for Version 2.0 of Ston Recipe Notes
 
-## The application is being rebuilt from the ground up to be more flexible and scaleable.
+## The application is being rebuilt from the ground up with TypeScript.
 
 Stay posted for more information!
