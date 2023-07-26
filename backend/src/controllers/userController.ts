@@ -1,6 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import expressAsyncHandler from 'express-async-handler';
 import { User } from '../models/userModel';
+import { Recipe } from '../models/recipeModel';
 
 // POST:/api/user/profile
 // Retrieve user profile from MongoDB
@@ -20,6 +21,23 @@ export const getUserProfile = expressAsyncHandler(async (req, res) => {
   res.json(userProfile); // Return user profile data
 });
 
+// POST:/api/user/recipes
+// Retrieves users list of recipes from MongoDB
+export const getUserRecipes = expressAsyncHandler(async (req, res) => {
+  const {name} = req.body;
+  console.log(name);
+  // Find matching user in MongoDB
+  const recipes = await Recipe.find({
+    owner: name,
+  }).exec();
+
+  if (!recipes) {
+    res.status(404);
+    throw new Error('Failed to retrieve user recipes');
+  }
+
+  res.json(recipes); // Return user recipe data
+});
 // POST:/api/user
 // Sync Auth0 user object with MongoDB
 export const syncUser = expressAsyncHandler(async (req, res) => {
@@ -85,20 +103,16 @@ export const addProfileRecipe = expressAsyncHandler(async (req, res) => {
 // Removes recipe from user profile upon deletion
 export const removeProfileRecipe = expressAsyncHandler(async (req, res) => {
   const { owner, recipeId } = req.body.recipeData;
-  console.log(owner, recipeId);
 
   try {
     // Get the current user recipe array and remove the old recipe from it
     const oldUserDoc = await User.findOne({ name: owner });
-    console.log('OLD USER DOC-----:', oldUserDoc);
     const oldRecipeArray = oldUserDoc?.recipes;
     const index: number = oldUserDoc?.recipes.indexOf(recipeId)!;
     if (index > -1) {
       oldRecipeArray?.splice(index, 1);
     }
-
     const newRecipeArray = oldRecipeArray;
-    console.log('NEW RECIPE ARRAY -----', newRecipeArray);
 
     // Update recipes array on user object with the new recipe array
     const filter = { name: owner };

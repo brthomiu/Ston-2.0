@@ -12,10 +12,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteProfile = exports.removeProfileRecipe = exports.addProfileRecipe = exports.syncUser = exports.getUserProfile = void 0;
+exports.deleteProfile = exports.removeProfileRecipe = exports.addProfileRecipe = exports.syncUser = exports.getUserRecipes = exports.getUserProfile = void 0;
 /* eslint-disable import/no-extraneous-dependencies */
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const userModel_1 = require("../models/userModel");
+const recipeModel_1 = require("../models/recipeModel");
 // POST:/api/user/profile
 // Retrieve user profile from MongoDB
 exports.getUserProfile = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -29,6 +30,21 @@ exports.getUserProfile = (0, express_async_handler_1.default)((req, res) => __aw
         throw new Error('Failed to retrieve user profile');
     }
     res.json(userProfile); // Return user profile data
+}));
+// POST:/api/user/recipes
+// Retrieves users list of recipes from MongoDB
+exports.getUserRecipes = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { name } = req.body;
+    console.log(name);
+    // Find matching user in MongoDB
+    const recipes = yield recipeModel_1.Recipe.find({
+        owner: name,
+    }).exec();
+    if (!recipes) {
+        res.status(404);
+        throw new Error('Failed to retrieve user recipes');
+    }
+    res.json(recipes); // Return user recipe data
 }));
 // POST:/api/user
 // Sync Auth0 user object with MongoDB
@@ -88,18 +104,15 @@ exports.addProfileRecipe = (0, express_async_handler_1.default)((req, res) => __
 // Removes recipe from user profile upon deletion
 exports.removeProfileRecipe = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { owner, recipeId } = req.body.recipeData;
-    console.log(owner, recipeId);
     try {
         // Get the current user recipe array and remove the old recipe from it
         const oldUserDoc = yield userModel_1.User.findOne({ name: owner });
-        console.log('OLD USER DOC-----:', oldUserDoc);
         const oldRecipeArray = oldUserDoc === null || oldUserDoc === void 0 ? void 0 : oldUserDoc.recipes;
         const index = oldUserDoc === null || oldUserDoc === void 0 ? void 0 : oldUserDoc.recipes.indexOf(recipeId);
         if (index > -1) {
             oldRecipeArray === null || oldRecipeArray === void 0 ? void 0 : oldRecipeArray.splice(index, 1);
         }
         const newRecipeArray = oldRecipeArray;
-        console.log('NEW RECIPE ARRAY -----', newRecipeArray);
         // Update recipes array on user object with the new recipe array
         const filter = { name: owner };
         const update = { recipes: newRecipeArray };

@@ -5,6 +5,7 @@ import {
   deleteProfile,
   addProfileRecipe,
   removeProfileRecipe,
+  getUserRecipes,
 } from '../controllers/userController';
 
 const router = express.Router();
@@ -17,6 +18,9 @@ router.post('/api/user', syncUser);
 
 // PUT:/api/user/recipes - Adds new recipe to user profile
 router.put('/api/user/recipes', addProfileRecipe);
+
+// POST:/api/user/recipes - Get user recipe list from MongoDB
+router.post('/api/user/recipes', getUserRecipes)
 
 // DELETE:/api/user/recipes - Removes recipe from user profile upon deletion
 router.delete('/api/user/recipes', removeProfileRecipe);

@@ -1,14 +1,16 @@
-import { IIngredientProps } from '../../../types/recipeTypes';
+import { IIngredientProps, IIngredients } from '../../../types/recipeTypes';
 
 function IngredientForm({
   ingredient,
   amount,
-  uom,
+  // uom,
+  ingredientObject,
   setIngredientObject,
 }: {
   ingredient: string;
   amount: string;
   uom: string;
+  ingredientObject: IIngredients;
   setIngredientObject: IIngredientProps['setIngredientObject'];
 }) {
   // Function to handle form input
@@ -18,6 +20,27 @@ function IngredientForm({
       [event.target.name]: event.target.value,
     }));
   };
+
+  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const { value } = event.target;
+    setIngredientObject(() => ({
+      ...ingredientObject,
+      uom: value,
+    }));
+  };
+
+  const uomOptions = [
+    'each',
+    'g',
+    'L',
+    'ml',
+    'lb',
+    'oz',
+    'cup',
+    'tbsp',
+    'tsp',
+    'pinch',
+  ];
 
   // Return ingredient input forms
   return (
@@ -46,15 +69,16 @@ function IngredientForm({
       />
 
       {/* Ingredient unit of measure input */}
-      <textarea
-        maxLength={20}
-        rows={1}
-        cols={12}
-        name="uom"
-        value={uom}
-        placeholder="Unit of Measure"
-        onChange={onIngredientInput}
-      />
+      <select name="uom" value={ingredientObject.uom} onChange={handleChange}>
+        <option value="" disabled>
+          Select Unit of Measure
+        </option>
+        {uomOptions.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
     </>
   );
 }

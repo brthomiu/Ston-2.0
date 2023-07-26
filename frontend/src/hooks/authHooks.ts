@@ -3,7 +3,11 @@ import { useEffect, useState } from 'react';
 import { User, useAuth0 } from '@auth0/auth0-react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import { getUserProfile, syncProfile } from '../features/authService';
+import {
+  getUserProfile,
+  getUserRecipes,
+  syncProfile,
+} from '../features/authService';
 
 // useRedirect
 // Redirects unauthenticated users back home
@@ -52,4 +56,29 @@ export const useFetchProfile = () => {
   }, [user]);
 
   return userProfileData;
+};
+
+// useFetchProfileRecipes
+// Gets user recipes from MongoDB
+export const useFetchProfileRecipes = () => {
+  const name = sessionStorage.getItem('userName');
+  console.log('username: ', name);
+  const [userRecipeData, setUserRecipeData] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchUserRecipes = async () => {
+      try {
+        if (name) {
+          const recipeData = await getUserRecipes(name);
+          setUserRecipeData(recipeData);
+        }
+      } catch (error) {
+        console.error('Error fetching user recipe data:', error);
+      }
+    };
+
+    fetchUserRecipes();
+  }, [name]);
+
+  return userRecipeData;
 };

@@ -15,21 +15,10 @@ export const getRecipes = async () => {
   }
 };
 
+// POST:/api/recipe - Creates a new recipe
 const createRecipe = async (recipeData: IRecipe) => {
   const response = await axios.post(`${API_URL}api/recipe/`, recipeData);
-
   return response.data;
-};
-
-export const handleCreateRecipe = async (recipeData: IRecipe) => {
-  try {
-    await createRecipe(recipeData);
-    // Recipe created successfully
-    toast('Created new recipe!');
-  } catch (error) {
-    toast('Could not create recipe.');
-    throw error;
-  }
 };
 
 // PUT:/api/user/recipes - Adds new recipe to user profile
@@ -39,33 +28,66 @@ const updateProfileRecipes = async (recipeData: IRecipe) => {
   return response.data;
 };
 
-export const handleUpdateProfileRecipes = async (recipeData: IRecipe) => {
+// Handler function that creates a new recipe in the database and adds it to the user profile
+export const handleCreateRecipe = async (recipeData: IRecipe) => {
   try {
-    await updateProfileRecipes(recipeData);
-    // Profile updated successfully
+    // Create new recipe
+    createRecipe(recipeData);
+    toast('Created new recipe!');
+    // Update the user's profile recipes
+    updateProfileRecipes(recipeData);
   } catch (error) {
-    toast('Error updating recipe list on profile.');
+    toast('Could not create recipe.');
     throw error;
   }
 };
+
+// PUT:/api/user/recipes - Adds new recipe to user profile
+// const updateProfileRecipes = async (recipeData: IRecipe) => {
+//   const response = await axios.put(`${API_URL}api/user/recipes`, recipeData);
+//   return response.data;
+// };
+
+// const createRecipe = async (recipeData: IRecipe) => {
+//   const response = await axios.post(`${API_URL}api/recipe/`, recipeData);
+
+//   return response.data;
+// };
+
+// export const handleCreateRecipe = async (recipeData: IRecipe) => {
+//   try {
+//     await createRecipe(recipeData);
+//     // Recipe created successfully
+//     toast('Created new recipe!');
+//   } catch (error) {
+//     toast('Could not create recipe.');
+//     throw error;
+//   }
+// };
+
+// // PUT:/api/user/recipes - Adds new recipe to user profile
+// const updateProfileRecipes = async (recipeData: IRecipe) => {
+//   const response = await axios.put(`${API_URL}api/user/recipes`, recipeData);
+
+//   return response.data;
+// };
+
+// export const handleUpdateProfileRecipes = async (recipeData: IRecipe) => {
+//   try {
+//     await updateProfileRecipes(recipeData);
+//     // Profile updated successfully
+//   } catch (error) {
+//     toast('Error updating recipe list on profile.');
+//     throw error;
+//   }
+// };
 
 // DELETE:/api/user/recipes - Removes recipe from user profile
 const removeProfileRecipe = async (recipeData: IRecipe) => {
   const response = await axios.delete(`${API_URL}api/user/recipes`, {
     data: { recipeData },
   });
-
   return response.data;
-};
-
-export const handleRemoveProfileRecipe = async (recipeData: IRecipe) => {
-  try {
-    await removeProfileRecipe(recipeData);
-    // Profile updated successfully
-  } catch (error) {
-    toast('Error removing recipe from profile.');
-    throw error;
-  }
 };
 
 // DELETE:/api/recipes - Removes recipe from database
@@ -75,9 +97,12 @@ const deleteRecipe = async (recipeId: string) => {
   });
 };
 
-export const handleDeleteRecipe = async (recipeId: string) => {
+// Handler function that deletes recipe from user's profile and database
+export const handleDeleteRecipe = async (recipeData: IRecipe) => {
   try {
-    deleteRecipe(recipeId);
+    removeProfileRecipe(recipeData);
+    deleteRecipe(recipeData.recipeId);
+
     // Recipe deleted successfully
     toast('Recipe deleted!');
     console.log('Recipe deleted.');

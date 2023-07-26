@@ -1,7 +1,4 @@
-import {
-  handleDeleteRecipe,
-  handleRemoveProfileRecipe,
-} from '../../features/recipeService';
+import { handleDeleteRecipe } from '../../features/recipeService';
 import { IRecipe } from '../../types/recipeTypes';
 
 type Props = {
@@ -11,17 +8,16 @@ type Props = {
   toggleReload: () => void;
 };
 
-export default function ConfirmDeletion({
+export default function ConfirmRecipeDeletion({
   recipe,
   setShowModal,
   setShowConfirmation,
   toggleReload,
 }: Props) {
   // Function to delete recipe and close the modal
-  const deleteRecipe = (recipeData: IRecipe) => {
+  const deleteRecipe = async (recipeData: IRecipe) => {
     try {
-      handleRemoveProfileRecipe(recipeData);
-      handleDeleteRecipe(recipeData.recipeId);
+      handleDeleteRecipe(recipeData);
       setShowConfirmation(false);
       setShowModal(false);
       toggleReload();

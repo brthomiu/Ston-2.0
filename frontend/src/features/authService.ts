@@ -16,6 +16,19 @@ export const getUserProfile = async (user: User) => {
   return response.data[0];
 };
 
+// getUserRecipes
+// Gets user recipe data
+export const getUserRecipes = async (name: string) => {
+  // Request user profile data from backend
+  console.log('nameInGetUserRecipes: ', name);
+  const response = await axios.post(`${API_URL}api/user/recipes`, { name });
+  // Return user profile data
+  if (!response.data) {
+    throw Error('Error retrieving user recipes.');
+  }
+  return response.data;
+};
+
 // syncProfile
 // Syncs user profile with MongoDB
 export const syncProfile = async (user: User) => {

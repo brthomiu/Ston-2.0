@@ -57,19 +57,6 @@ textarea {
   resize: none;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}
-
 .rti--container {
   --rti-bg: "#2b2a33" !important;
   --rti-border: "#44444d" !important;

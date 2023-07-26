@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { useState } from 'react';
-import ConfirmDeletion from './ConfirmDeletion';
+import ConfirmRecipeDeletion from './ConfirmRecipeDeletion';
 import { IRecipe } from '../../types/recipeTypes';
 
 type Props = {
@@ -29,7 +29,7 @@ export default function DeleteRecipeButton({
   if (showConfirmation) {
     return (
       <>
-        <ConfirmDeletion
+        <ConfirmRecipeDeletion
           recipe={recipe}
           setShowModal={setShowModal}
           setShowConfirmation={setShowConfirmation}

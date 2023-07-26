@@ -72,6 +72,7 @@ function IngredientEntry({
         ingredient={ingredientObject.ingredient}
         amount={ingredientObject.amount}
         uom={ingredientObject.uom}
+        ingredientObject={ingredientObject}
         setIngredientObject={setIngredientObject}
       />
 

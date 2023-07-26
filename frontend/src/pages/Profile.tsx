@@ -1,4 +1,9 @@
-import { useFetchProfile, useRedirect } from '../hooks/authHooks';
+/* eslint-disable no-console */
+import {
+  useFetchProfile,
+  useRedirect,
+  useFetchProfileRecipes,
+} from '../hooks/authHooks';
 import Loader from '../components/Loader';
 
 function Profile() {
@@ -7,6 +12,11 @@ function Profile() {
 
   // Fetch user profile data
   const userProfileData = useFetchProfile();
+
+  // Fetch user recipe list
+  const userRecipes = useFetchProfileRecipes();
+
+  console.log(userRecipes);
 
   // Returns loading until profile data loads
   if (!userProfileData) {
@@ -24,7 +34,6 @@ function Profile() {
       <h1>Profile</h1>
       <h2>Name: {userProfileData.name}</h2>
       <h2>Description: {userProfileData.description}</h2>
-      <h2>Recipes: {userProfileData.recipes}</h2>
       <h2>Favorites: {userProfileData.favorites}</h2>
     </>
   );

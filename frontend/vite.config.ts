@@ -23,7 +23,7 @@ export default defineConfig({
   optimizeDeps: {
     esbuildOptions: {
       keepNames: true,
+      minify: false,
     },
   },
-  // Comment above block out for production
 });
