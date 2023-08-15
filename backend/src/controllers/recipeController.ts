@@ -1,10 +1,12 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import expressAsyncHandler from 'express-async-handler';
 import { Recipe } from '../models/recipeModel';
+import { Like } from '../models/likeModel';
 
 // GET:/api/recipe
-// Retrieve user profile from MongoDB
+// Retrieve recipe data from MongoDB
 export const getRecipes = expressAsyncHandler(async (req, res) => {
+  // Get recipes from MongoDB
   const recipes = await Recipe.find();
 
   res.status(200).json(recipes);
@@ -54,10 +56,57 @@ export const createRecipe = expressAsyncHandler(async (req, res) => {
 // Delete a recipe from MongoDB
 export const deleteRecipe = expressAsyncHandler(async (req, res) => {
   try {
+    // Get recipeId from request
     const { recipeId } = req.body;
-    await Recipe.deleteOne({ recipeId: recipeId });
+
+    // Delete recipe from MongoDB
+    const handleDelete = async () => {
+      await Recipe.deleteOne({ recipeId: recipeId });
+    };
+
+    handleDelete();
   } catch (error) {
     res.status(400);
     new Error('Could not delete recipe');
+  }
+});
+
+// PUT:/api/recipe
+// Like a recipe
+export const likeRecipe = expressAsyncHandler(async (req, res) => {
+  try {
+    // Get recipe and user objects from request
+    const { recipe, user } = req.body;
+    const recipeId = recipe.recipeId;
+    const userId = user.userId;
+
+    // updateLikes
+    // Adds/removes entry to the table of likes
+    const updateLikes = async (recipeId: string, userId: string) => {
+      // find all documents named john and at least 18
+      const likeEntry = await Like.find({
+        userId: userId,
+        recipeId: recipeId,
+      }).exec();
+
+      if (likeEntry.length === 0) {
+        await Like.create({
+          userId: userId,
+          recipeId: recipeId,
+        });
+      } else if (likeEntry[0].userId) {
+        await Like.deleteOne({
+          userId: userId,
+          recipeId: recipeId,
+        });
+      }
+    };
+
+    updateLikes(recipeId, userId);
+
+    res.status(200).json({ id: req.params.id });
+  } catch (error) {
+    res.status(400);
+    new Error('Could not like recipe');
   }
 });

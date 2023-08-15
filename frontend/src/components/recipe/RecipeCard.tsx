@@ -3,6 +3,7 @@ import { IRecipe, TagProps } from '../../types/recipeTypes';
 import IngredientCloud from './ingredient/IngredientCloud';
 import TagCloud from './tag/TagCloud';
 import RecipeModal from './RecipeModal';
+import LikeRecipe from './LikeRecipe';
 
 type Props = {
   recipe: IRecipe;
@@ -39,6 +40,7 @@ function RecipeCard({ recipe, toggleReload }: Props) {
       <button onClick={() => toggleModal()} type="button">
         Show More
       </button>
+      <LikeRecipe recipe={recipe} />
     </>
   );
 }

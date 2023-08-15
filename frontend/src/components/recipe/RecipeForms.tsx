@@ -11,7 +11,7 @@ function RecipeForms() {
   // Initialize navigate
   const navigate = useNavigate();
   // Get username from local storage
-  const userName = sessionStorage.getItem('userName') as string;
+  const userName = localStorage.getItem('name') as string;
 
   // State to hold tag list
   const [tagList, setTagList] = useState<string[]>([]);
