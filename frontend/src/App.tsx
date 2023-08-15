@@ -10,6 +10,7 @@ import Recipes from './pages/Recipes';
 import Loader from './components/Loader';
 import { useSyncProfile } from './hooks/authHooks';
 import CreateRecipe from './pages/CreateRecipe';
+import Introduction from './pages/Introduction';
 
 export function App() {
   const { isLoading, error } = useAuth0();
@@ -30,6 +31,7 @@ export function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/recipes" element={<Recipes />} />
             <Route path="/create" element={<CreateRecipe />} />
+            <Route path="/introduction" element={<Introduction />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </>

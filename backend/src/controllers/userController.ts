@@ -24,7 +24,7 @@ export const getUserProfile = expressAsyncHandler(async (req, res) => {
 // POST:/api/user/recipes
 // Retrieves users list of recipes from MongoDB
 export const getUserRecipes = expressAsyncHandler(async (req, res) => {
-  const {name} = req.body;
+  const { name } = req.body;
   console.log(name);
   // Find matching user in MongoDB
   const recipes = await Recipe.find({
@@ -63,6 +63,7 @@ export const syncUser = expressAsyncHandler(async (req, res) => {
       private: false,
       recipes: [],
       favorites: [],
+      newUser: true,
     });
 
     // Send a response indicating the user has been synced
@@ -132,16 +133,39 @@ export const removeProfileRecipe = expressAsyncHandler(async (req, res) => {
 // DELETE:/api/user/profile
 // Delete user account from MongoDB
 export const deleteProfile = expressAsyncHandler(async (req, res) => {
-  const { sub } = req.body;
+  const { user } = req.body;
 
   try {
     // Delete user account from MongoDB
-    await User.deleteOne({ userId: sub });
+    await Recipe.deleteMany({ owner: user.name });
+    await User.deleteOne({ userId: user.userId });
     // Send a response indicating the profile has been deleted
     res.status(200).json({ message: 'User deleted successfully' });
   } catch (error) {
     res.status(500);
     throw new Error('Error deleting user');
+  }
+});
+
+// POST:/api/user/intro
+// Sets 'newUser' to false when user finishes profile creation
+export const newUserFalse = expressAsyncHandler(async (req, res) => {
+  const { userId } = req.body;
+  console.log('req body: ', req.body);
+
+  try {
+    // Update recipes array on user object with the new recipe array
+    const filter = { userId: userId };
+    const update = { newUser: false };
+
+    // `doc` is the document _after_ `update` was applied because of
+    // `new: true`
+    const doc = await User.findOneAndUpdate(filter, update, {
+      new: true,
+    });
+  } catch (error) {
+    res.status(500);
+    throw new Error('Error finishing introduction');
   }
 });
 

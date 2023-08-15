@@ -5,9 +5,11 @@ export interface IUserDBData {
   email: string;
   favorites: string[];
   name: string;
+  displayName: string;
   private: boolean;
   recipes: string[];
   userId: string;
+  newUser: boolean;
 }
 
 export type SetUserProfileData = React.Dispatch<

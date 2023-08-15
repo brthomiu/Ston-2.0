@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteProfile = exports.removeProfileRecipe = exports.addProfileRecipe = exports.syncUser = exports.getUserRecipes = exports.getUserProfile = void 0;
+exports.newUserFalse = exports.deleteProfile = exports.removeProfileRecipe = exports.addProfileRecipe = exports.syncUser = exports.getUserRecipes = exports.getUserProfile = void 0;
 /* eslint-disable import/no-extraneous-dependencies */
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const userModel_1 = require("../models/userModel");
@@ -68,6 +68,7 @@ exports.syncUser = (0, express_async_handler_1.default)((req, res) => __awaiter(
             private: false,
             recipes: [],
             favorites: [],
+            newUser: true,
         });
         // Send a response indicating the user has been synced
         res.status(201).json({ message: 'User synced successfully' });
@@ -130,16 +131,37 @@ exports.removeProfileRecipe = (0, express_async_handler_1.default)((req, res) =>
 // DELETE:/api/user/profile
 // Delete user account from MongoDB
 exports.deleteProfile = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { sub } = req.body;
+    const { user } = req.body;
     try {
         // Delete user account from MongoDB
-        yield userModel_1.User.deleteOne({ userId: sub });
+        yield recipeModel_1.Recipe.deleteMany({ owner: user.name });
+        yield userModel_1.User.deleteOne({ userId: user.userId });
         // Send a response indicating the profile has been deleted
         res.status(200).json({ message: 'User deleted successfully' });
     }
     catch (error) {
         res.status(500);
         throw new Error('Error deleting user');
+    }
+}));
+// POST:/api/user/intro
+// Sets 'newUser' to false when user finishes profile creation
+exports.newUserFalse = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { userId } = req.body;
+    console.log('req body: ', req.body);
+    try {
+        // Update recipes array on user object with the new recipe array
+        const filter = { userId: userId };
+        const update = { newUser: false };
+        // `doc` is the document _after_ `update` was applied because of
+        // `new: true`
+        const doc = yield userModel_1.User.findOneAndUpdate(filter, update, {
+            new: true,
+        });
+    }
+    catch (error) {
+        res.status(500);
+        throw new Error('Error finishing introduction');
     }
 }));
 // // UNDER CONSTRUCTION

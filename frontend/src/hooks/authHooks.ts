@@ -24,6 +24,32 @@ export const useRedirect = () => {
   }, [isAuthenticated, navigate]);
 };
 
+// useIntroduction
+// Sends new users to new user page on first login
+export const useIntroduction = () => {
+  const newUser = localStorage.getItem('newUser');
+  const navigate = useNavigate(); // Initialize navigate
+
+  useEffect(() => {
+    if (newUser === 'true') {
+      navigate('/introduction');
+    }
+  });
+};
+
+// useNoIntroduction
+// Sends users who are not new away from the intro page
+export const useNoIntroduction = () => {
+  const newUser = localStorage.getItem('newUser');
+  const navigate = useNavigate(); // Initialize navigate
+
+  useEffect(() => {
+    if (newUser === 'false') {
+      navigate('/');
+    }
+  });
+};
+
 // useSyncProfile
 // Syncs user auth data with MongoDB
 export const useSyncProfile = () => {
@@ -61,7 +87,7 @@ export const useFetchProfile = () => {
 // useFetchProfileRecipes
 // Gets user recipes from MongoDB
 export const useFetchProfileRecipes = () => {
-  const name = sessionStorage.getItem('userName');
+  const name = localStorage.getItem('name');
   console.log('username: ', name);
   const [userRecipeData, setUserRecipeData] = useState<string | null>(null);
 

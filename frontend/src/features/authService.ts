@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-console */
 import axios from 'axios';
 import { User } from '@auth0/auth0-react';
@@ -5,7 +6,7 @@ import { User } from '@auth0/auth0-react';
 const API_URL = process.env.VITE_API_URL || 'http://localhost:8000/';
 
 // getUserProfile
-// Gets user profile data
+// POST:/api/user/profile - Gets user profile data
 export const getUserProfile = async (user: User) => {
   // Request user profile data from backend
   const response = await axios.post(`${API_URL}api/user/profile`, user);
@@ -17,7 +18,7 @@ export const getUserProfile = async (user: User) => {
 };
 
 // getUserRecipes
-// Gets user recipe data
+// POST:/api/user/recipes - Gets user recipe data
 export const getUserRecipes = async (name: string) => {
   // Request user profile data from backend
   console.log('nameInGetUserRecipes: ', name);
@@ -30,7 +31,7 @@ export const getUserRecipes = async (name: string) => {
 };
 
 // syncProfile
-// Syncs user profile with MongoDB
+// POST:/api/user - Syncs user profile with MongoDB
 export const syncProfile = async (user: User) => {
   if (!user.sub) {
     throw Error('Could not authenticate user.');
@@ -39,18 +40,36 @@ export const syncProfile = async (user: User) => {
   // Post user auth object to sync with database
   try {
     await axios.post(`${API_URL}api/user/`, user);
-    console.log(`Synced with database.`);
   } catch (error) {
     throw Error('Could not sync with database.');
   }
 
-  // Place user data into sessionstorage
+  // Place user data into local storage
   const userData = await getUserProfile(user);
   try {
-    sessionStorage.setItem('userName', userData.name);
-    sessionStorage.setItem('email', userData.email);
+    localStorage.setItem('_id', userData._id);
+    localStorage.setItem('description', userData.description);
+    localStorage.setItem('name', userData.name);
+    localStorage.setItem('email', userData.email);
+    localStorage.setItem('favorites', userData.favorites);
+    localStorage.setItem('private', userData.private);
+    localStorage.setItem('recipes', userData.recipes);
+    localStorage.setItem('userId', userData.userId);
+    localStorage.setItem('newUser', userData.newUser);
   } catch (error) {
     throw Error('Could not store user data');
+  }
+};
+
+// endIntroduction
+// POST:/api/user/intro
+export const endIntroduction = async (userId: string) => {
+  try {
+    console.log('frontend userId: ', userId);
+    await axios.post(`${API_URL}api/user/intro`, { userId });
+    localStorage.setItem('newUser', 'false');
+  } catch (error) {
+    throw Error('Could not end introduction.');
   }
 };
 

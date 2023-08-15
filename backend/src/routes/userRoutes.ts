@@ -6,6 +6,7 @@ import {
   addProfileRecipe,
   removeProfileRecipe,
   getUserRecipes,
+  newUserFalse,
 } from '../controllers/userController';
 
 const router = express.Router();
@@ -27,6 +28,9 @@ router.delete('/api/user/recipes', removeProfileRecipe);
 
 // DELETE:/api/user/profile - Delete user profile from MongoDB
 router.delete('/api/user/profile', deleteProfile);
+
+// POST:/api/user/intro - Sets 'newUser' to false when user finishes profile creation
+router.post('/api/user/intro', newUserFalse);
 
 // UNDER CONSTRUCTION ----------
 // // DELETE:/api/user - Delete user account from Auth0

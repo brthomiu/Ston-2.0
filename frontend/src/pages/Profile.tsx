@@ -2,13 +2,15 @@
 import {
   useFetchProfile,
   useRedirect,
+  useIntroduction,
   useFetchProfileRecipes,
 } from '../hooks/authHooks';
 import Loader from '../components/Loader';
 
 function Profile() {
-  // Redirect users who aren't logged in
+  // Redirect users who aren't logged in / new users
   useRedirect();
+  useIntroduction();
 
   // Fetch user profile data
   const userProfileData = useFetchProfile();

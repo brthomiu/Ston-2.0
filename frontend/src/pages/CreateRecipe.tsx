@@ -1,9 +1,10 @@
-import { useRedirect } from '../hooks/authHooks';
+import { useRedirect, useIntroduction } from '../hooks/authHooks';
 import RecipeForms from '../components/recipe/RecipeForms';
 
 function CreateRecipe() {
-  // Redirect users who aren't logged in
+  // Redirect users who aren't logged in / new users
   useRedirect();
+  useIntroduction();
 
   return (
     <>

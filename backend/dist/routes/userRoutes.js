@@ -18,6 +18,8 @@ router.post('/api/user/recipes', userController_1.getUserRecipes);
 router.delete('/api/user/recipes', userController_1.removeProfileRecipe);
 // DELETE:/api/user/profile - Delete user profile from MongoDB
 router.delete('/api/user/profile', userController_1.deleteProfile);
+// POST:/api/user/intro - Sets 'newUser' to false when user finishes profile creation
+router.post('/api/user/intro', userController_1.newUserFalse);
 // UNDER CONSTRUCTION ----------
 // // DELETE:/api/user - Delete user account from Auth0
 // router.delete('/api/user/', deleteAccount);

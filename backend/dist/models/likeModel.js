@@ -23,20 +23,13 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = exports.userSchema = void 0;
+exports.Like = exports.likeSchema = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
 const { Schema } = mongoose_1.default;
 // Create a Schema correspondinsg to the document interface.
-exports.userSchema = new Schema({
-    userId: { type: String, required: true, unique: true },
-    name: { type: String, required: true, unique: true },
-    displayName: { type: String, required: false },
-    email: { type: String, required: true },
-    description: { type: String, required: false },
-    private: { type: Boolean, required: false },
-    recipes: { type: [String], required: false },
-    favorites: { type: [String], required: false },
-    newUser: { type: Boolean, required: false }
+exports.likeSchema = new Schema({
+    userId: { type: String, required: true },
+    recipeId: { type: String, required: true },
 });
 // Create a Model.
-exports.User = (0, mongoose_1.model)('User', exports.userSchema);
+exports.Like = (0, mongoose_1.model)('Like', exports.likeSchema);

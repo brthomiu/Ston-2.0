@@ -4,8 +4,12 @@ import { useState } from 'react';
 import useFetchRecipes from '../hooks/recipeHooks';
 import Loader from '../components/Loader';
 import RecipeCard from '../components/recipe/RecipeCard';
+import { useIntroduction } from '../hooks/authHooks';
 
 function Recipes() {
+  // Redirects new users to intro page
+  useIntroduction();
+
   // State to toggle reload of page when a recipe is changed or deleted
   const [reload, setReload] = useState(false);
 
