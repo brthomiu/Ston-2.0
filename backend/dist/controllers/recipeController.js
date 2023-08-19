@@ -67,9 +67,17 @@ exports.deleteRecipe = (0, express_async_handler_1.default)((req, res) => __awai
     try {
         // Get recipeId from request
         const { recipeId } = req.body;
-        // Delete recipe from MongoDB
-        const handleDelete = () => __awaiter(void 0, void 0, void 0, function* () {
+        // Delete recipe
+        const handleDeleteRecipe = () => __awaiter(void 0, void 0, void 0, function* () {
             yield recipeModel_1.Recipe.deleteOne({ recipeId: recipeId });
+        });
+        // Delete corresponding likes
+        const handleDeleteLikes = () => __awaiter(void 0, void 0, void 0, function* () {
+            yield likeModel_1.Like.deleteMany({ recipeId: recipeId });
+        });
+        const handleDelete = () => __awaiter(void 0, void 0, void 0, function* () {
+            yield handleDeleteRecipe();
+            yield handleDeleteLikes();
         });
         handleDelete();
     }

@@ -59,9 +59,19 @@ export const deleteRecipe = expressAsyncHandler(async (req, res) => {
     // Get recipeId from request
     const { recipeId } = req.body;
 
-    // Delete recipe from MongoDB
-    const handleDelete = async () => {
+    // Delete recipe
+    const handleDeleteRecipe = async () => {
       await Recipe.deleteOne({ recipeId: recipeId });
+    };
+
+    // Delete corresponding likes
+    const handleDeleteLikes = async () => {
+      await Like.deleteMany({ recipeId: recipeId });
+    };
+
+    const handleDelete = async () => {
+      await handleDeleteRecipe();
+      await handleDeleteLikes();
     };
 
     handleDelete();
