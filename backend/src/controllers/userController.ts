@@ -64,6 +64,13 @@ export const syncUser = expressAsyncHandler(async (req, res) => {
       recipes: [],
       favorites: [],
       newUser: true,
+      stats: {
+        likes: 0,
+        recipes: 0,
+        follows: 0,
+        followers: 0,
+        recipeLikes: 0,
+      },
     });
 
     // Send a response indicating the user has been synced

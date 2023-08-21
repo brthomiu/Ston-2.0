@@ -26,6 +26,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = exports.userSchema = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
 const { Schema } = mongoose_1.default;
+// Create a Schema corresponding to the stats interface.
+const userStatsSchema = new Schema({
+    likes: { type: Number, required: false },
+    recipes: { type: Number, required: false },
+    follows: { type: Number, required: false },
+    followers: { type: Number, required: false },
+    recipeLikes: { type: Number, required: false },
+});
 // Create a Schema correspondinsg to the document interface.
 exports.userSchema = new Schema({
     userId: { type: String, required: true, unique: true },
@@ -36,7 +44,8 @@ exports.userSchema = new Schema({
     private: { type: Boolean, required: false },
     recipes: { type: [String], required: false },
     favorites: { type: [String], required: false },
-    newUser: { type: Boolean, required: false }
+    newUser: { type: Boolean, required: false },
+    stats: { type: userStatsSchema, required: false },
 });
 // Create a Model.
 exports.User = (0, mongoose_1.model)('User', exports.userSchema);

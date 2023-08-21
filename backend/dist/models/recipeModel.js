@@ -31,6 +31,9 @@ const IngredientSchema = new Schema({
     amount: { type: String, required: true },
     uom: { type: String, required: true },
 });
+const RecipeStatsSchema = new Schema({
+    likes: { type: Number, required: false }
+});
 // Create a Schema corresponding to the document interface.
 exports.RecipeSchema = new Schema({
     recipeId: { type: String, required: true, unique: true },
@@ -41,6 +44,7 @@ exports.RecipeSchema = new Schema({
     likers: { type: [String], required: false },
     images: { type: [String], required: false },
     tags: { type: [String], required: false },
+    stats: { type: RecipeStatsSchema, required: false },
 });
 // 3. Create a Model.
 exports.Recipe = (0, mongoose_1.model)('Recipe', exports.RecipeSchema);

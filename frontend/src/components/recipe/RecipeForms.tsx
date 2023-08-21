@@ -2,7 +2,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import { handleCreateRecipe } from '../../features/recipeService';
+import {
+  handleCreateRecipe,
+  createUserRequestObject,
+} from '../../features/recipeService';
 import TagEntry from './tag/TagEntry';
 import { IRecipeProps } from '../../types/recipeTypes';
 import IngredientEntry from './ingredient/IngredientEntry';
@@ -54,14 +57,17 @@ function RecipeForms() {
       toast('Please add recipe body.');
     } else {
       const recipeData = {
-        recipeId: `${userName}-${formData.recipeName}-${Date()}`,
-        owner: userName,
-        recipeName: formData.recipeName,
-        ingredients: ingredientList,
-        recipeBody: formData.recipeBody,
-        likers: formData.likers,
-        images: formData.images,
-        tags: tagList,
+        recipe: {
+          recipeId: `${userName}-${formData.recipeName}-${Date()}`,
+          owner: userName,
+          recipeName: formData.recipeName,
+          ingredients: ingredientList,
+          recipeBody: formData.recipeBody,
+          likers: formData.likers,
+          images: formData.images,
+          tags: tagList,
+        },
+        user: createUserRequestObject(),
       };
       try {
         const submitRequests = async () => {

@@ -17,6 +17,7 @@ exports.likeRecipe = exports.deleteRecipe = exports.createRecipe = exports.getRe
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const recipeModel_1 = require("../models/recipeModel");
 const likeModel_1 = require("../models/likeModel");
+const userModel_1 = require("../models/userModel");
 // GET:/api/recipe
 // Retrieve recipe data from MongoDB
 exports.getRecipes = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -27,7 +28,13 @@ exports.getRecipes = (0, express_async_handler_1.default)((req, res) => __awaite
 // POST:/api/recipe
 // Post a new recipe to MongoDB
 exports.createRecipe = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { recipeId, owner, recipeName, ingredients, recipeBody, tags } = req.body;
+    console.log(req.body.user);
+    console.log(req.body.recipe);
+    const { recipeId, owner, recipeName, ingredients, recipeBody, tags } = req.body.recipe;
+    const userName = req.body.user.name;
+    const stats = JSON.parse(req.body.user.stats);
+    console.log('stats ------------------------------------', stats);
+    console.log('req.body.user ------------------------------------', req.body.user.stats);
     if (!owner || !recipeName || !ingredients || !recipeBody) {
         res.status(400);
         throw new Error('Please add all fields');
@@ -42,8 +49,19 @@ exports.createRecipe = (0, express_async_handler_1.default)((req, res) => __awai
         likers: [],
         images: [],
         tags,
+        stats: { likes: 0 },
+    });
+    const handleUserRecipesStat = (userName, stats) => __awaiter(void 0, void 0, void 0, function* () {
+        const newStats = Object.assign({}, stats);
+        newStats.recipes += 1;
+        const filter = { name: owner };
+        const update = { stats: newStats };
+        yield userModel_1.User.findOneAndUpdate(filter, update, {
+            new: true,
+        });
     });
     if (recipe) {
+        handleUserRecipesStat(userName, stats);
         res.status(201).json({
             _id: recipe._id,
             recipeId: recipe.recipeId,
@@ -54,6 +72,7 @@ exports.createRecipe = (0, express_async_handler_1.default)((req, res) => __awai
             likers: recipe.likers,
             tags: recipe.tags,
             images: recipe.images,
+            stats: recipe.stats,
         });
     }
     else {

@@ -2,18 +2,6 @@ import mongoose, { model } from 'mongoose';
 
 const { Schema } = mongoose;
 
-// Create an interface representing a document in MongoDB.
-export interface IRecipe {
-  recipeId: string;
-  owner: string;
-  recipeName: string;
-  ingredients: IIngredients[];
-  recipeBody: string;
-  likers: string[];
-  images: string[];
-  tags: string[];
-}
-
 // Create an interface representing the ingredients object
 export interface IIngredients {
   ingredient: string;
@@ -27,6 +15,28 @@ const IngredientSchema = new Schema<IIngredients>({
   uom: { type: String, required: true },
 });
 
+// Create an interface representing the stats object
+export interface IRecipeStats {
+  likes: number;
+}
+
+const RecipeStatsSchema = new Schema<IRecipeStats>({
+  likes: { type: Number, required: false }
+});
+
+// Create an interface representing a document in MongoDB.
+export interface IRecipe {
+  recipeId: string;
+  owner: string;
+  recipeName: string;
+  ingredients: IIngredients[];
+  recipeBody: string;
+  likers: string[];
+  images: string[];
+  tags: string[];
+  stats: IRecipeStats;
+}
+
 // Create a Schema corresponding to the document interface.
 export const RecipeSchema = new Schema<IRecipe>({
   recipeId: { type: String, required: true, unique: true },
@@ -37,6 +47,8 @@ export const RecipeSchema = new Schema<IRecipe>({
   likers: { type: [String], required: false },
   images: { type: [String], required: false },
   tags: { type: [String], required: false },
+  stats: { type: RecipeStatsSchema, required: false },
+
 });
 
 // 3. Create a Model.

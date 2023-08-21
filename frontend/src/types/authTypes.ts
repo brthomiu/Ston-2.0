@@ -1,3 +1,12 @@
+// Interface for user stats
+export interface IUserStats {
+  likes: number;
+  recipes: number;
+  follows: number;
+  followers: number;
+  recipeLikes: number;
+}
+
 // Interface for user data being retrieved from MongoDB
 export interface IUserDBData {
   _id: string;
@@ -10,6 +19,8 @@ export interface IUserDBData {
   recipes: string[];
   userId: string;
   newUser: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  stats: IUserStats;
 }
 
 export type SetUserProfileData = React.Dispatch<

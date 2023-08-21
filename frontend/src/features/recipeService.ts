@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable no-console */
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { IRecipe } from '../types/recipeTypes';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { IUserDBData } from '../types/authTypes';
 
 const API_URL = process.env.VITE_API_URL || 'http://localhost:8000/';
@@ -19,14 +21,14 @@ export const getRecipes = async () => {
 
 // createRecipe
 // POST:/api/recipe - Creates a new recipe
-const createRecipe = async (recipeData: IRecipe) => {
+const createRecipe = async (recipeData: IUserAndRecipe) => {
   const response = await axios.post(`${API_URL}api/recipe/`, recipeData);
   return response.data;
 };
 
 // updateProfileRecipes
 // PUT:/api/user/recipes - Adds new recipe to user profile
-const updateProfileRecipes = async (recipeData: IRecipe) => {
+const updateProfileRecipes = async (recipeData: IUserAndRecipe) => {
   const response = await axios.put(`${API_URL}api/user/recipes`, recipeData);
 
   return response.data;
@@ -34,7 +36,7 @@ const updateProfileRecipes = async (recipeData: IRecipe) => {
 
 // handleCreateRecipe
 // Handler function that creates a new recipe in the database and adds it to the user profile
-export const handleCreateRecipe = async (recipeData: IRecipe) => {
+export const handleCreateRecipe = async (recipeData: IUserAndRecipe) => {
   try {
     // Create new recipe
     createRecipe(recipeData);
@@ -102,4 +104,56 @@ export const handleDeleteRecipe = async (recipeData: IRecipe) => {
     console.log('Could not delete recipe.');
     throw error;
   }
+};
+
+// createUserRequestObject
+// Creates properly typed user object for backend requst
+
+export const createUserRequestObject = () => {
+  const parseCSV = (input: string) => {
+    return input.split(',').map((item: string) => item.trim());
+  };
+
+  // Create the correctly typed object to send to the backend
+  const getFavorites = () => {
+    const storedFavorites = localStorage.getItem('favorites');
+    if (!storedFavorites) {
+      return [];
+    }
+    console.log('favorites', storedFavorites);
+    return parseCSV(storedFavorites);
+  };
+
+  const getPrivate = () => {
+    const isPrivate = localStorage.getItem('private');
+    if (!isPrivate) {
+      return false;
+    }
+    return true;
+  };
+
+  const getUserRecipes = () => {
+    const storedRecipes = localStorage.getItem('recipes');
+    if (!storedRecipes) {
+      return [];
+    }
+    return parseCSV(storedRecipes);
+  };
+
+  const user: IUserDBData = {
+    _id: localStorage.getItem('_id')! as string,
+    description: localStorage.getItem('description')! as string,
+    name: localStorage.getItem('name')! as string,
+    displayName: localStorage.getItem('displayName')! as string,
+    email: localStorage.getItem('email')! as string,
+    favorites: getFavorites(),
+    private: getPrivate(),
+    recipes: getUserRecipes(),
+    userId: localStorage.getItem('userId')! as string,
+    newUser: JSON.parse(localStorage.getItem('newUser')!) as boolean,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    stats: localStorage.getItem('stats')! as any,
+  };
+
+  return user;
 };

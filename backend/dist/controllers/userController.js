@@ -69,6 +69,13 @@ exports.syncUser = (0, express_async_handler_1.default)((req, res) => __awaiter(
             recipes: [],
             favorites: [],
             newUser: true,
+            stats: {
+                likes: 0,
+                recipes: 0,
+                follows: 0,
+                followers: 0,
+                recipeLikes: 0,
+            },
         });
         // Send a response indicating the user has been synced
         res.status(201).json({ message: 'User synced successfully' });

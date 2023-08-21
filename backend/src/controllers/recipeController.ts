@@ -2,6 +2,8 @@
 import expressAsyncHandler from 'express-async-handler';
 import { Recipe } from '../models/recipeModel';
 import { Like } from '../models/likeModel';
+import { IUserStats, User } from '../models/userModel';
+import IUserDBData from '../types/auth/authTypes';
 
 // GET:/api/recipe
 // Retrieve recipe data from MongoDB
@@ -15,8 +17,20 @@ export const getRecipes = expressAsyncHandler(async (req, res) => {
 // POST:/api/recipe
 // Post a new recipe to MongoDB
 export const createRecipe = expressAsyncHandler(async (req, res) => {
+  console.log(req.body.user);
+  console.log(req.body.recipe);
   const { recipeId, owner, recipeName, ingredients, recipeBody, tags } =
-    req.body;
+    req.body.recipe;
+
+  const userName = req.body.user.name;
+  const stats = JSON.parse(req.body.user.stats);
+
+  console.log('stats ------------------------------------', stats);
+
+  console.log(
+    'req.body.user ------------------------------------',
+    req.body.user.stats
+  );
 
   if (!owner || !recipeName || !ingredients || !recipeBody) {
     res.status(400);
@@ -33,8 +47,24 @@ export const createRecipe = expressAsyncHandler(async (req, res) => {
     likers: [],
     images: [],
     tags,
+    stats: { likes: 0 },
   });
+
+  const handleUserRecipesStat = async (userName: string, stats: IUserStats) => {
+    const newStats = { ...stats };
+
+    newStats.recipes += 1;
+
+    const filter = { name: owner };
+    const update = { stats: newStats };
+
+    await User.findOneAndUpdate(filter, update, {
+      new: true,
+    });
+  };
+
   if (recipe) {
+    handleUserRecipesStat(userName, stats);
     res.status(201).json({
       _id: recipe._id,
       recipeId: recipe.recipeId,
@@ -45,6 +75,7 @@ export const createRecipe = expressAsyncHandler(async (req, res) => {
       likers: recipe.likers,
       tags: recipe.tags,
       images: recipe.images,
+      stats: recipe.stats,
     });
   } else {
     res.status(400);

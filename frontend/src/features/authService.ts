@@ -56,6 +56,7 @@ export const syncProfile = async (user: User) => {
     localStorage.setItem('recipes', userData.recipes);
     localStorage.setItem('userId', userData.userId);
     localStorage.setItem('newUser', userData.newUser);
+    localStorage.setItem('stats', JSON.stringify(userData.stats));
   } catch (error) {
     throw Error('Could not store user data');
   }
