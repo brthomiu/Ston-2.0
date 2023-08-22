@@ -3,7 +3,6 @@ import expressAsyncHandler from 'express-async-handler';
 import { Recipe } from '../models/recipeModel';
 import { Like } from '../models/likeModel';
 import { IUserStats, User } from '../models/userModel';
-import IUserDBData from '../types/auth/authTypes';
 
 // GET:/api/recipe
 // Retrieve recipe data from MongoDB
@@ -17,20 +16,13 @@ export const getRecipes = expressAsyncHandler(async (req, res) => {
 // POST:/api/recipe
 // Post a new recipe to MongoDB
 export const createRecipe = expressAsyncHandler(async (req, res) => {
-  console.log(req.body.user);
-  console.log(req.body.recipe);
+  console.log('create-req.body-user------------------------------', req.body.user);
+  console.log('create-req.body-recipe------------------------------', req.body.recipe);
   const { recipeId, owner, recipeName, ingredients, recipeBody, tags } =
     req.body.recipe;
 
   const userName = req.body.user.name;
-  const stats = JSON.parse(req.body.user.stats);
-
-  console.log('stats ------------------------------------', stats);
-
-  console.log(
-    'req.body.user ------------------------------------',
-    req.body.user.stats
-  );
+  const stats = req.body.user.stats;
 
   if (!owner || !recipeName || !ingredients || !recipeBody) {
     res.status(400);
@@ -50,6 +42,7 @@ export const createRecipe = expressAsyncHandler(async (req, res) => {
     stats: { likes: 0 },
   });
 
+  // Increment user recipe stat
   const handleUserRecipesStat = async (userName: string, stats: IUserStats) => {
     const newStats = { ...stats };
 
@@ -87,8 +80,16 @@ export const createRecipe = expressAsyncHandler(async (req, res) => {
 // Delete a recipe from MongoDB
 export const deleteRecipe = expressAsyncHandler(async (req, res) => {
   try {
-    // Get recipeId from request
-    const { recipeId } = req.body;
+    // Get data from request
+    console.log('delete-req.body--------------------------', req.body);
+
+    const recipeId = req.body.userAndRecipe.recipe.recipeId;
+    const owner = req.body.userAndRecipe.user.name;
+    const userStats = req.body.userAndRecipe.user.stats;
+
+    console.log('delete-recipeId---------------------------------- ', recipeId);
+    console.log('delete-owner---------------------------------- ', owner);
+    console.log('delete-userStats---------------------------------- ', userStats);
 
     // Delete recipe
     const handleDeleteRecipe = async () => {
@@ -100,7 +101,22 @@ export const deleteRecipe = expressAsyncHandler(async (req, res) => {
       await Like.deleteMany({ recipeId: recipeId });
     };
 
+    // Decrement user recipe stat
+    const handleUserRecipesStat = async () => {
+      const newStats = { ...userStats };
+
+      newStats.recipes -= 1;
+
+      const filter = { name: owner };
+      const update = { stats: newStats };
+
+      await User.findOneAndUpdate(filter, update, {
+        new: true,
+      });
+    };
+
     const handleDelete = async () => {
+      await handleUserRecipesStat();
       await handleDeleteRecipe();
       await handleDeleteLikes();
     };
