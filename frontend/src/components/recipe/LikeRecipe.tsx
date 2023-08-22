@@ -3,9 +3,8 @@
 import {
   createUserRequestObject,
   handleLikeRecipe,
-  IUserAndRecipe,
 } from '../../features/recipeService';
-import { IRecipe } from '../../types/recipeTypes';
+import { IRecipe, IUserAndRecipe } from '../../types/recipeTypes';
 
 type Props = { recipe: IRecipe };
 

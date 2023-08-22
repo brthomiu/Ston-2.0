@@ -6,14 +6,9 @@ import { IRecipe } from '../../types/recipeTypes';
 type Props = {
   recipe: IRecipe;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-  toggleReload: () => void;
 };
 
-export default function DeleteRecipeButton({
-  recipe,
-  setShowModal,
-  toggleReload,
-}: Props) {
+export default function DeleteRecipeButton({ recipe, setShowModal }: Props) {
   // State to toggle the confirm deletion prompt
   const [showConfirmation, setShowConfirmation] = useState(false);
 
@@ -33,7 +28,6 @@ export default function DeleteRecipeButton({
           recipe={recipe}
           setShowModal={setShowModal}
           setShowConfirmation={setShowConfirmation}
-          toggleReload={toggleReload}
         />
         <button type="button" onClick={() => toggleShowConfirmation()}>
           Delete Recipe

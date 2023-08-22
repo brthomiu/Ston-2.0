@@ -28,13 +28,11 @@ exports.getRecipes = (0, express_async_handler_1.default)((req, res) => __awaite
 // POST:/api/recipe
 // Post a new recipe to MongoDB
 exports.createRecipe = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(req.body.user);
-    console.log(req.body.recipe);
+    console.log('create-req.body-user------------------------------', req.body.user);
+    console.log('create-req.body-recipe------------------------------', req.body.recipe);
     const { recipeId, owner, recipeName, ingredients, recipeBody, tags } = req.body.recipe;
     const userName = req.body.user.name;
-    const stats = JSON.parse(req.body.user.stats);
-    console.log('stats ------------------------------------', stats);
-    console.log('req.body.user ------------------------------------', req.body.user.stats);
+    const stats = req.body.user.stats;
     if (!owner || !recipeName || !ingredients || !recipeBody) {
         res.status(400);
         throw new Error('Please add all fields');
@@ -51,6 +49,7 @@ exports.createRecipe = (0, express_async_handler_1.default)((req, res) => __awai
         tags,
         stats: { likes: 0 },
     });
+    // Increment user recipe stat
     const handleUserRecipesStat = (userName, stats) => __awaiter(void 0, void 0, void 0, function* () {
         const newStats = Object.assign({}, stats);
         newStats.recipes += 1;
@@ -84,8 +83,14 @@ exports.createRecipe = (0, express_async_handler_1.default)((req, res) => __awai
 // Delete a recipe from MongoDB
 exports.deleteRecipe = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        // Get recipeId from request
-        const { recipeId } = req.body;
+        // Get data from request
+        console.log('delete-req.body--------------------------', req.body);
+        const recipeId = req.body.userAndRecipe.recipe.recipeId;
+        const owner = req.body.userAndRecipe.user.name;
+        const userStats = req.body.userAndRecipe.user.stats;
+        console.log('delete-recipeId---------------------------------- ', recipeId);
+        console.log('delete-owner---------------------------------- ', owner);
+        console.log('delete-userStats---------------------------------- ', userStats);
         // Delete recipe
         const handleDeleteRecipe = () => __awaiter(void 0, void 0, void 0, function* () {
             yield recipeModel_1.Recipe.deleteOne({ recipeId: recipeId });
@@ -94,7 +99,18 @@ exports.deleteRecipe = (0, express_async_handler_1.default)((req, res) => __awai
         const handleDeleteLikes = () => __awaiter(void 0, void 0, void 0, function* () {
             yield likeModel_1.Like.deleteMany({ recipeId: recipeId });
         });
+        // Decrement user recipe stat
+        const handleUserRecipesStat = () => __awaiter(void 0, void 0, void 0, function* () {
+            const newStats = Object.assign({}, userStats);
+            newStats.recipes -= 1;
+            const filter = { name: owner };
+            const update = { stats: newStats };
+            yield userModel_1.User.findOneAndUpdate(filter, update, {
+                new: true,
+            });
+        });
         const handleDelete = () => __awaiter(void 0, void 0, void 0, function* () {
+            yield handleUserRecipesStat();
             yield handleDeleteRecipe();
             yield handleDeleteLikes();
         });

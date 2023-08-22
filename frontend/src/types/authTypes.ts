@@ -19,7 +19,6 @@ export interface IUserDBData {
   recipes: string[];
   userId: string;
   newUser: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   stats: IUserStats;
 }
 

@@ -5,23 +5,17 @@ type Props = {
   recipe: IRecipe;
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-  toggleReload: () => void;
 };
 
 export default function RecipeModal({
   recipe,
   showModal,
   setShowModal,
-  toggleReload,
 }: Props) {
   if (showModal) {
     return (
       <div>
-        <DeleteRecipeButton
-          recipe={recipe}
-          setShowModal={setShowModal}
-          toggleReload={toggleReload}
-        />
+        <DeleteRecipeButton recipe={recipe} setShowModal={setShowModal} />
       </div>
     );
   }

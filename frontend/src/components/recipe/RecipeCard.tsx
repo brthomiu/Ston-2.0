@@ -7,10 +7,9 @@ import LikeRecipe from './LikeRecipe';
 
 type Props = {
   recipe: IRecipe;
-  toggleReload: () => void;
 };
 
-function RecipeCard({ recipe, toggleReload }: Props) {
+function RecipeCard({ recipe }: Props) {
   // State to toggle display of modal
   const [showModal, setShowModal] = useState(false);
 
@@ -35,7 +34,6 @@ function RecipeCard({ recipe, toggleReload }: Props) {
         recipe={recipe}
         showModal={showModal}
         setShowModal={setShowModal}
-        toggleReload={toggleReload}
       />
       <button onClick={() => toggleModal()} type="button">
         Show More

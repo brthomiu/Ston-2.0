@@ -66,6 +66,7 @@ function RecipeForms() {
           likers: formData.likers,
           images: formData.images,
           tags: tagList,
+          stats: { likes: 0 },
         },
         user: createUserRequestObject(),
       };

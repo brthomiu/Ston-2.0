@@ -1,6 +1,12 @@
 import { Dispatch, SetStateAction } from 'react';
+import { IUserDBData } from './authTypes';
 
-// Create an interface representing a document in MongoDB.
+// Interface for recipe stats
+export interface IRecipeStats {
+  likes: number;
+}
+
+// Interface for recipe object
 export interface IRecipe {
   recipeId: string;
   owner: string;
@@ -10,16 +16,24 @@ export interface IRecipe {
   likers: string[];
   images: string[];
   tags: string[];
+  stats: IRecipeStats;
 }
 
-// Create an interface representing the ingredients object
+// Interface representing the ingredients object
 export interface IIngredients {
   ingredient: string;
   amount: string;
   uom: string;
 }
 
-// Create an interface representing recipe form props
+// IUserAndRecipe
+// Type interface for like request object
+export interface IUserAndRecipe {
+  recipe: IRecipe;
+  user: IUserDBData;
+}
+
+// Interface representing recipe form props
 export interface IRecipeProps {
   ingredientList: IIngredients[];
   setIngredientList: Dispatch<SetStateAction<IIngredients[]>>;
