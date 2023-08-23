@@ -16,8 +16,6 @@ export const getRecipes = expressAsyncHandler(async (req, res) => {
 // POST:/api/recipe
 // Post a new recipe to MongoDB
 export const createRecipe = expressAsyncHandler(async (req, res) => {
-  console.log('create-req.body-user------------------------------', req.body.user);
-  console.log('create-req.body-recipe------------------------------', req.body.recipe);
   const { recipeId, owner, recipeName, ingredients, recipeBody, tags } =
     req.body.recipe;
 
@@ -81,15 +79,9 @@ export const createRecipe = expressAsyncHandler(async (req, res) => {
 export const deleteRecipe = expressAsyncHandler(async (req, res) => {
   try {
     // Get data from request
-    console.log('delete-req.body--------------------------', req.body);
-
     const recipeId = req.body.userAndRecipe.recipe.recipeId;
     const owner = req.body.userAndRecipe.user.name;
     const userStats = req.body.userAndRecipe.user.stats;
-
-    console.log('delete-recipeId---------------------------------- ', recipeId);
-    console.log('delete-owner---------------------------------- ', owner);
-    console.log('delete-userStats---------------------------------- ', userStats);
 
     // Delete recipe
     const handleDeleteRecipe = async () => {

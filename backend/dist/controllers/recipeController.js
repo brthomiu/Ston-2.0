@@ -28,8 +28,6 @@ exports.getRecipes = (0, express_async_handler_1.default)((req, res) => __awaite
 // POST:/api/recipe
 // Post a new recipe to MongoDB
 exports.createRecipe = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log('create-req.body-user------------------------------', req.body.user);
-    console.log('create-req.body-recipe------------------------------', req.body.recipe);
     const { recipeId, owner, recipeName, ingredients, recipeBody, tags } = req.body.recipe;
     const userName = req.body.user.name;
     const stats = req.body.user.stats;
@@ -84,13 +82,9 @@ exports.createRecipe = (0, express_async_handler_1.default)((req, res) => __awai
 exports.deleteRecipe = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // Get data from request
-        console.log('delete-req.body--------------------------', req.body);
         const recipeId = req.body.userAndRecipe.recipe.recipeId;
         const owner = req.body.userAndRecipe.user.name;
         const userStats = req.body.userAndRecipe.user.stats;
-        console.log('delete-recipeId---------------------------------- ', recipeId);
-        console.log('delete-owner---------------------------------- ', owner);
-        console.log('delete-userStats---------------------------------- ', userStats);
         // Delete recipe
         const handleDeleteRecipe = () => __awaiter(void 0, void 0, void 0, function* () {
             yield recipeModel_1.Recipe.deleteOne({ recipeId: recipeId });

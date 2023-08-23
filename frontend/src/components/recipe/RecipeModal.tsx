@@ -12,10 +12,18 @@ export default function RecipeModal({
   showModal,
   setShowModal,
 }: Props) {
+  // Get userName from local storage
+  const userName = localStorage.getItem('name')! as string;
+
   if (showModal) {
     return (
       <div>
-        <DeleteRecipeButton recipe={recipe} setShowModal={setShowModal} />
+        <h1>Recipe Modal</h1>
+
+        {/* Render the delete button only if the user is the owner of the recipe */}
+        {userName === recipe.owner && (
+          <DeleteRecipeButton recipe={recipe} setShowModal={setShowModal} />
+        )}
       </div>
     );
   }
