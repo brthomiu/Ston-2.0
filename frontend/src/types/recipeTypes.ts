@@ -12,7 +12,7 @@ export interface IRecipe {
   owner: string;
   recipeName: string;
   ingredients: IIngredients[];
-  recipeBody: string;
+  description: string;
   images: string[];
   tags: string[];
   stats: IRecipeStats;

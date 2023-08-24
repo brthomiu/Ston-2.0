@@ -40,7 +40,7 @@ exports.RecipeSchema = new Schema({
     owner: { type: String, required: true },
     recipeName: { type: String, required: true },
     ingredients: { type: [IngredientSchema], required: true },
-    recipeBody: { type: String, required: true },
+    description: { type: String, required: true },
     images: { type: [String], required: false },
     tags: { type: [String], required: false },
     stats: { type: RecipeStatsSchema, required: false },

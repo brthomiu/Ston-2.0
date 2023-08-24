@@ -29,7 +29,7 @@ function RecipeForms() {
     owner: userName,
     recipeName: '',
     ingredients: ingredientList,
-    recipeBody: '',
+    description: '',
     images: [],
     tags: tagList,
   });
@@ -52,7 +52,7 @@ function RecipeForms() {
       toast('Please add recipe name.');
     } else if (ingredientList.length === 0) {
       toast('Please add ingredients.');
-    } else if (!formData.recipeBody) {
+    } else if (!formData.description) {
       toast('Please add recipe body.');
     } else {
       const recipeData = {
@@ -61,7 +61,7 @@ function RecipeForms() {
           owner: userName,
           recipeName: formData.recipeName,
           ingredients: ingredientList,
-          recipeBody: formData.recipeBody,
+          description: formData.description,
           images: formData.images,
           tags: tagList,
           stats: { likes: 0 },
@@ -97,6 +97,19 @@ function RecipeForms() {
             onChange={onChange}
           />
         </div>
+        {/* Recipe description entry section */}
+        <div>
+          <textarea
+            maxLength={3000}
+            rows={5}
+            cols={40}
+            id="description"
+            name="description"
+            value={formData.description}
+            placeholder="Give a brief description of your recipe."
+            onChange={onChange}
+          />
+        </div>
         {/* Ingredient entry component */}
         <div>
           <IngredientEntry
@@ -106,19 +119,6 @@ function RecipeForms() {
           <br />
           {/* Tag entry component */}
           <TagEntry tagList={tagList} setTagList={setTagList} />
-        </div>
-        {/* Recipe body entry section */}
-        <div>
-          <textarea
-            maxLength={3000}
-            rows={5}
-            cols={40}
-            id="recipeBody"
-            name="recipeBody"
-            value={formData.recipeBody}
-            placeholder="Add your recipe."
-            onChange={onChange}
-          />
         </div>
         {/* Recipe submission button */}
         <div />

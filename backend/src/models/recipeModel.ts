@@ -30,7 +30,7 @@ export interface IRecipe {
   owner: string;
   recipeName: string;
   ingredients: IIngredients[];
-  recipeBody: string;
+  description: string;
   images: string[];
   tags: string[];
   stats: IRecipeStats;
@@ -42,7 +42,7 @@ export const RecipeSchema = new Schema<IRecipe>({
   owner: { type: String, required: true },
   recipeName: { type: String, required: true },
   ingredients: { type: [IngredientSchema], required: true },
-  recipeBody: { type: String, required: true },
+  description: { type: String, required: true },
   images: { type: [String], required: false },
   tags: { type: [String], required: false },
   stats: { type: RecipeStatsSchema, required: false },

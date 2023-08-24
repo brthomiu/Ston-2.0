@@ -27,7 +27,7 @@ function RecipeCard({ recipe }: Props) {
   return (
     <>
       <h2>{recipe.recipeName}</h2>
-      <p>Instructions: {recipe.recipeBody}</p>
+      <p>Description: {recipe.description}</p>
       <IngredientCloud ingredients={recipe.ingredients} />
       <TagCloud tags={tags} />
       <RecipeModal
