@@ -83,20 +83,7 @@ export const handleDeleteRecipe = async (userAndRecipe: IUserAndRecipe) => {
 // Creates properly typed user object for backend requst
 
 export const createUserRequestObject = () => {
-  const parseCSV = (input: string) => {
-    return input.split(',').map((item: string) => item.trim());
-  };
-
   // Create the correctly typed object to send to the backend
-  const getFavorites = () => {
-    const storedFavorites = localStorage.getItem('favorites');
-    if (!storedFavorites) {
-      return [];
-    }
-    console.log('favorites', storedFavorites);
-    return parseCSV(storedFavorites);
-  };
-
   const getPrivate = () => {
     const isPrivate = localStorage.getItem('private');
     if (!isPrivate) {
@@ -105,23 +92,13 @@ export const createUserRequestObject = () => {
     return true;
   };
 
-  const getUserRecipes = () => {
-    const storedRecipes = localStorage.getItem('recipes');
-    if (!storedRecipes) {
-      return [];
-    }
-    return parseCSV(storedRecipes);
-  };
-
   const user: IUserDBData = {
     _id: localStorage.getItem('_id')! as string,
     description: localStorage.getItem('description')! as string,
     name: localStorage.getItem('name')! as string,
     displayName: localStorage.getItem('displayName')! as string,
     email: localStorage.getItem('email')! as string,
-    favorites: getFavorites(),
     private: getPrivate(),
-    recipes: getUserRecipes(),
     userId: localStorage.getItem('userId')! as string,
     newUser: JSON.parse(localStorage.getItem('newUser')!) as boolean,
     stats: JSON.parse(localStorage.getItem('stats')!) as IUserStats,

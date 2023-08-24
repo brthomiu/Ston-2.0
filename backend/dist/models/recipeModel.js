@@ -41,7 +41,6 @@ exports.RecipeSchema = new Schema({
     recipeName: { type: String, required: true },
     ingredients: { type: [IngredientSchema], required: true },
     recipeBody: { type: String, required: true },
-    likers: { type: [String], required: false },
     images: { type: [String], required: false },
     tags: { type: [String], required: false },
     stats: { type: RecipeStatsSchema, required: false },

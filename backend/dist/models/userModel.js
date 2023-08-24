@@ -42,8 +42,6 @@ exports.userSchema = new Schema({
     email: { type: String, required: true },
     description: { type: String, required: false },
     private: { type: Boolean, required: false },
-    recipes: { type: [String], required: false },
-    favorites: { type: [String], required: false },
     newUser: { type: Boolean, required: false },
     stats: { type: userStatsSchema, required: false },
 });

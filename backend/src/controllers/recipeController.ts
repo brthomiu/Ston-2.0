@@ -65,7 +65,6 @@ export const createRecipe = expressAsyncHandler(async (req, res) => {
       recipeName: recipe.recipeName,
       ingredients: recipe.ingredients,
       recipe: recipe.recipeBody,
-      likers: recipe.likers,
       tags: recipe.tags,
       images: recipe.images,
       stats: recipe.stats,

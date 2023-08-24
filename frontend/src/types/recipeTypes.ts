@@ -13,7 +13,6 @@ export interface IRecipe {
   recipeName: string;
   ingredients: IIngredients[];
   recipeBody: string;
-  likers: string[];
   images: string[];
   tags: string[];
   stats: IRecipeStats;

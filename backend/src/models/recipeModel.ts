@@ -31,7 +31,6 @@ export interface IRecipe {
   recipeName: string;
   ingredients: IIngredients[];
   recipeBody: string;
-  likers: string[];
   images: string[];
   tags: string[];
   stats: IRecipeStats;
@@ -44,7 +43,6 @@ export const RecipeSchema = new Schema<IRecipe>({
   recipeName: { type: String, required: true },
   ingredients: { type: [IngredientSchema], required: true },
   recipeBody: { type: String, required: true },
-  likers: { type: [String], required: false },
   images: { type: [String], required: false },
   tags: { type: [String], required: false },
   stats: { type: RecipeStatsSchema, required: false },

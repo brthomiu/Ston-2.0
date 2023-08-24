@@ -30,7 +30,6 @@ function RecipeForms() {
     recipeName: '',
     ingredients: ingredientList,
     recipeBody: '',
-    likers: [],
     images: [],
     tags: tagList,
   });
@@ -63,7 +62,6 @@ function RecipeForms() {
           recipeName: formData.recipeName,
           ingredients: ingredientList,
           recipeBody: formData.recipeBody,
-          likers: formData.likers,
           images: formData.images,
           tags: tagList,
           stats: { likes: 0 },

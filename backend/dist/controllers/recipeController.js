@@ -72,7 +72,6 @@ exports.createRecipe = (0, express_async_handler_1.default)((req, res) => __awai
             recipeName: recipe.recipeName,
             ingredients: recipe.ingredients,
             recipe: recipe.recipeBody,
-            likers: recipe.likers,
             tags: recipe.tags,
             images: recipe.images,
             stats: recipe.stats,
