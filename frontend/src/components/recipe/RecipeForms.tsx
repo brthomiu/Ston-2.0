@@ -9,6 +9,7 @@ import {
 import TagEntry from './tag/TagEntry';
 import { IRecipeProps } from '../../types/recipeTypes';
 import IngredientEntry from './ingredient/IngredientEntry';
+import StepEntry from './steps/StepEntry';
 
 function RecipeForms() {
   // Initialize navigate
@@ -24,11 +25,15 @@ function RecipeForms() {
     IRecipeProps['ingredientList']
   >([]);
 
+  // State to hold ingredient list (added to recipe object on submit)
+  const [stepList, setStepList] = useState<IRecipeProps['stepList']>([]);
+
   // State to hold recipe data
   const [formData, setFormData] = useState({
     owner: userName,
     recipeName: '',
     ingredients: ingredientList,
+    steps: stepList,
     description: '',
     images: [],
     tags: tagList,
@@ -50,10 +55,12 @@ function RecipeForms() {
     // Input validation to prevent user from submitting blank forms
     if (!formData.recipeName) {
       toast('Please add recipe name.');
+    } else if (!formData.description) {
+      toast('Please add a description.');
     } else if (ingredientList.length === 0) {
       toast('Please add ingredients.');
-    } else if (!formData.description) {
-      toast('Please add recipe body.');
+    } else if (stepList.length === 0) {
+      toast('Please add at least one step.');
     } else {
       const recipeData = {
         recipe: {
@@ -62,6 +69,7 @@ function RecipeForms() {
           recipeName: formData.recipeName,
           ingredients: ingredientList,
           description: formData.description,
+          steps: stepList,
           images: formData.images,
           tags: tagList,
           stats: { likes: 0 },
@@ -116,6 +124,8 @@ function RecipeForms() {
             ingredientList={ingredientList}
             setIngredientList={setIngredientList}
           />
+          {/* Step entry component */}
+          <StepEntry stepList={stepList} setStepList={setStepList} />
           <br />
           {/* Tag entry component */}
           <TagEntry tagList={tagList} setTagList={setTagList} />

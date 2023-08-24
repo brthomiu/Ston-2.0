@@ -6,6 +6,11 @@ export interface IRecipeStats {
   likes: number;
 }
 
+// Interface for recipe steps
+export interface IRecipeSteps {
+  step: string;
+}
+
 // Interface for recipe object
 export interface IRecipe {
   recipeId: string;
@@ -13,6 +18,7 @@ export interface IRecipe {
   recipeName: string;
   ingredients: IIngredients[];
   description: string;
+  steps: IRecipeSteps[];
   images: string[];
   tags: string[];
   stats: IRecipeStats;
@@ -38,6 +44,10 @@ export interface IRecipeProps {
   setIngredientList: Dispatch<SetStateAction<IIngredients[]>>;
   tagList: string[];
   setTagList: (tags: string[]) => void;
+  stepList: IRecipeSteps[];
+  setStepList: Dispatch<SetStateAction<IRecipeSteps[]>>;
+  stepObject: IRecipeSteps;
+  setStepObject: Dispatch<SetStateAction<IRecipeSteps>>;
 }
 
 export interface IIngredientProps {

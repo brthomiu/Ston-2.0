@@ -31,8 +31,11 @@ const IngredientSchema = new Schema({
     amount: { type: String, required: true },
     uom: { type: String, required: true },
 });
+const RecipeStepsSchema = new Schema({
+    step: { type: String, required: true },
+});
 const RecipeStatsSchema = new Schema({
-    likes: { type: Number, required: false }
+    likes: { type: Number, required: false },
 });
 // Create a Schema corresponding to the document interface.
 exports.RecipeSchema = new Schema({
@@ -41,6 +44,7 @@ exports.RecipeSchema = new Schema({
     recipeName: { type: String, required: true },
     ingredients: { type: [IngredientSchema], required: true },
     description: { type: String, required: true },
+    steps: { type: [RecipeStepsSchema], required: true },
     images: { type: [String], required: false },
     tags: { type: [String], required: false },
     stats: { type: RecipeStatsSchema, required: false },

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { IRecipe, TagProps } from '../../types/recipeTypes';
 import IngredientCloud from './ingredient/IngredientCloud';
+import StepCloud from './steps/StepCloud';
 import TagCloud from './tag/TagCloud';
 import RecipeModal from './RecipeModal';
 import LikeRecipe from './LikeRecipe';
@@ -29,6 +30,7 @@ function RecipeCard({ recipe }: Props) {
       <h2>{recipe.recipeName}</h2>
       <p>Description: {recipe.description}</p>
       <IngredientCloud ingredients={recipe.ingredients} />
+      <StepCloud steps={recipe.steps} />
       <TagCloud tags={tags} />
       <RecipeModal
         recipe={recipe}

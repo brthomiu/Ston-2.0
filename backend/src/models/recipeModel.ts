@@ -2,7 +2,7 @@ import mongoose, { model } from 'mongoose';
 
 const { Schema } = mongoose;
 
-// Create an interface representing the ingredients object
+// Create interface and schema to represent the ingredients object
 export interface IIngredients {
   ingredient: string;
   amount: string;
@@ -15,13 +15,22 @@ const IngredientSchema = new Schema<IIngredients>({
   uom: { type: String, required: true },
 });
 
-// Create an interface representing the stats object
+// Create interface and schema to represent the steps object
+export interface IRecipeSteps {
+  step: string;
+}
+
+const RecipeStepsSchema = new Schema<IRecipeSteps>({
+  step: { type: String, required: true },
+});
+
+// Create interface and schema to represent the stats object
 export interface IRecipeStats {
   likes: number;
 }
 
 const RecipeStatsSchema = new Schema<IRecipeStats>({
-  likes: { type: Number, required: false }
+  likes: { type: Number, required: false },
 });
 
 // Create an interface representing a document in MongoDB.
@@ -31,6 +40,7 @@ export interface IRecipe {
   recipeName: string;
   ingredients: IIngredients[];
   description: string;
+  steps: IRecipeSteps[];
   images: string[];
   tags: string[];
   stats: IRecipeStats;
@@ -43,10 +53,10 @@ export const RecipeSchema = new Schema<IRecipe>({
   recipeName: { type: String, required: true },
   ingredients: { type: [IngredientSchema], required: true },
   description: { type: String, required: true },
+  steps: { type: [RecipeStepsSchema], required: true },
   images: { type: [String], required: false },
   tags: { type: [String], required: false },
   stats: { type: RecipeStatsSchema, required: false },
-
 });
 
 // 3. Create a Model.
