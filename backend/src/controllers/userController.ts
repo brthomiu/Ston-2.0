@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import expressAsyncHandler from 'express-async-handler';
 import { User } from '../models/userModel';
 import { Recipe } from '../models/recipeModel';
@@ -78,62 +77,6 @@ export const syncUser = expressAsyncHandler(async (req, res) => {
   } else {
     // Send a response indicating the user already exists
     res.status(200).json({ message: 'User already exists' });
-  }
-});
-
-// PUT:/api/user/recipes
-// Adds recipe to user's created recipe list
-export const addProfileRecipe = expressAsyncHandler(async (req, res) => {
-  const { recipeId, owner } = req.body;
-
-  try {
-    // Get the current user recipe array and push the new recipe onto it
-    const oldUserDoc = await User.findOne({ name: owner });
-    oldUserDoc?.recipes.push(recipeId);
-    const newRecipeArray = oldUserDoc?.recipes;
-
-    // Update recipes array on user object with the new recipe array
-    const filter = { name: owner };
-    const update = { recipes: newRecipeArray };
-
-    // `doc` is the document _after_ `update` was applied because of
-    // `new: true`
-    const doc = await User.findOneAndUpdate(filter, update, {
-      new: true,
-    });
-  } catch (error) {
-    res.status(500);
-    throw new Error('Error updating recipe list');
-  }
-});
-
-// DELETE:/api/user/recipes
-// Removes recipe from user profile upon deletion
-export const removeProfileRecipe = expressAsyncHandler(async (req, res) => {
-  const { owner, recipeId } = req.body.recipeData;
-
-  try {
-    // Get the current user recipe array and remove the old recipe from it
-    const oldUserDoc = await User.findOne({ name: owner });
-    const oldRecipeArray = oldUserDoc?.recipes;
-    const index: number = oldUserDoc?.recipes.indexOf(recipeId)!;
-    if (index > -1) {
-      oldRecipeArray?.splice(index, 1);
-    }
-    const newRecipeArray = oldRecipeArray;
-
-    // Update recipes array on user object with the new recipe array
-    const filter = { name: owner };
-    const update = { recipes: newRecipeArray };
-
-    // `doc` is the document _after_ `update` was applied because of
-    // `new: true`
-    const doc = await User.findOneAndUpdate(filter, update, {
-      new: true,
-    });
-  } catch (error) {
-    res.status(500);
-    throw new Error('Error updating recipe list');
   }
 });
 

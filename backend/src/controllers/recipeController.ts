@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import expressAsyncHandler from 'express-async-handler';
 import { Recipe } from '../models/recipeModel';
 import { Like } from '../models/likeModel';
@@ -16,12 +15,13 @@ export const getRecipes = expressAsyncHandler(async (req, res) => {
 // POST:/api/recipe
 // Post a new recipe to MongoDB
 export const createRecipe = expressAsyncHandler(async (req, res) => {
+  // Get data from request
   const { recipeId, owner, recipeName, ingredients, recipeBody, tags } =
     req.body.recipe;
-
   const userName = req.body.user.name;
   const stats = req.body.user.stats;
 
+  // Check that recipe object contains all fields
   if (!owner || !recipeName || !ingredients || !recipeBody) {
     res.status(400);
     throw new Error('Please add all fields');
@@ -40,15 +40,17 @@ export const createRecipe = expressAsyncHandler(async (req, res) => {
     stats: { likes: 0 },
   });
 
+  // handleUserRecipesStat
   // Increment user recipe stat
   const handleUserRecipesStat = async (userName: string, stats: IUserStats) => {
+    // Create a new stats object
     const newStats = { ...stats };
-
+    // Increment the new stats object
     newStats.recipes += 1;
-
+    // Filters for mongoose search
     const filter = { name: owner };
     const update = { stats: newStats };
-
+    // Update DB with incremented stats
     await User.findOneAndUpdate(filter, update, {
       new: true,
     });
@@ -81,7 +83,7 @@ export const deleteRecipe = expressAsyncHandler(async (req, res) => {
     // Get data from request
     const recipeId = req.body.userAndRecipe.recipe.recipeId;
     const owner = req.body.userAndRecipe.user.name;
-    const userStats = req.body.userAndRecipe.user.stats;
+    const stats = req.body.userAndRecipe.user.stats;
 
     // Delete recipe
     const handleDeleteRecipe = async () => {
@@ -93,26 +95,29 @@ export const deleteRecipe = expressAsyncHandler(async (req, res) => {
       await Like.deleteMany({ recipeId: recipeId });
     };
 
+    // handleUserRecipesStat
     // Decrement user recipe stat
     const handleUserRecipesStat = async () => {
-      const newStats = { ...userStats };
-
+      // Create a new stats object
+      const newStats = { ...stats };
+      // Increment the new stats object
       newStats.recipes -= 1;
-
+      // Filters for mongoose search
       const filter = { name: owner };
       const update = { stats: newStats };
-
+      // Update DB with incremented stats
       await User.findOneAndUpdate(filter, update, {
         new: true,
       });
     };
 
+    // Handler for all of the delete functions
     const handleDelete = async () => {
       await handleUserRecipesStat();
       await handleDeleteRecipe();
       await handleDeleteLikes();
     };
-
+    // Call the delete handler
     handleDelete();
   } catch (error) {
     res.status(400);
@@ -132,12 +137,12 @@ export const likeRecipe = expressAsyncHandler(async (req, res) => {
     // updateLikes
     // Adds/removes entry to the table of likes
     const updateLikes = async (recipeId: string, userId: string) => {
-      // find all documents named john and at least 18
+      // Check to see if the user/recipe has an entry in the like table
       const likeEntry = await Like.find({
         userId: userId,
         recipeId: recipeId,
       }).exec();
-
+      // If the entry does not exist, create it, if it does, delete it
       if (likeEntry.length === 0) {
         await Like.create({
           userId: userId,
@@ -150,7 +155,7 @@ export const likeRecipe = expressAsyncHandler(async (req, res) => {
         });
       }
     };
-
+    // Call updateLikes
     updateLikes(recipeId, userId);
 
     res.status(200).json({ id: req.params.id });

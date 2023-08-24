@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { IRecipe } from '../../types/recipeTypes';
 import DeleteRecipeButton from './DeleteRecipeButton';
 

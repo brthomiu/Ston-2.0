@@ -13,7 +13,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.likeRecipe = exports.deleteRecipe = exports.createRecipe = exports.getRecipes = void 0;
-/* eslint-disable import/no-extraneous-dependencies */
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const recipeModel_1 = require("../models/recipeModel");
 const likeModel_1 = require("../models/likeModel");
@@ -28,9 +27,11 @@ exports.getRecipes = (0, express_async_handler_1.default)((req, res) => __awaite
 // POST:/api/recipe
 // Post a new recipe to MongoDB
 exports.createRecipe = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // Get data from request
     const { recipeId, owner, recipeName, ingredients, recipeBody, tags } = req.body.recipe;
     const userName = req.body.user.name;
     const stats = req.body.user.stats;
+    // Check that recipe object contains all fields
     if (!owner || !recipeName || !ingredients || !recipeBody) {
         res.status(400);
         throw new Error('Please add all fields');
@@ -47,12 +48,17 @@ exports.createRecipe = (0, express_async_handler_1.default)((req, res) => __awai
         tags,
         stats: { likes: 0 },
     });
+    // handleUserRecipesStat
     // Increment user recipe stat
     const handleUserRecipesStat = (userName, stats) => __awaiter(void 0, void 0, void 0, function* () {
+        // Create a new stats object
         const newStats = Object.assign({}, stats);
+        // Increment the new stats object
         newStats.recipes += 1;
+        // Filters for mongoose search
         const filter = { name: owner };
         const update = { stats: newStats };
+        // Update DB with incremented stats
         yield userModel_1.User.findOneAndUpdate(filter, update, {
             new: true,
         });
@@ -84,7 +90,7 @@ exports.deleteRecipe = (0, express_async_handler_1.default)((req, res) => __awai
         // Get data from request
         const recipeId = req.body.userAndRecipe.recipe.recipeId;
         const owner = req.body.userAndRecipe.user.name;
-        const userStats = req.body.userAndRecipe.user.stats;
+        const stats = req.body.userAndRecipe.user.stats;
         // Delete recipe
         const handleDeleteRecipe = () => __awaiter(void 0, void 0, void 0, function* () {
             yield recipeModel_1.Recipe.deleteOne({ recipeId: recipeId });
@@ -93,21 +99,28 @@ exports.deleteRecipe = (0, express_async_handler_1.default)((req, res) => __awai
         const handleDeleteLikes = () => __awaiter(void 0, void 0, void 0, function* () {
             yield likeModel_1.Like.deleteMany({ recipeId: recipeId });
         });
+        // handleUserRecipesStat
         // Decrement user recipe stat
         const handleUserRecipesStat = () => __awaiter(void 0, void 0, void 0, function* () {
-            const newStats = Object.assign({}, userStats);
+            // Create a new stats object
+            const newStats = Object.assign({}, stats);
+            // Increment the new stats object
             newStats.recipes -= 1;
+            // Filters for mongoose search
             const filter = { name: owner };
             const update = { stats: newStats };
+            // Update DB with incremented stats
             yield userModel_1.User.findOneAndUpdate(filter, update, {
                 new: true,
             });
         });
+        // Handler for all of the delete functions
         const handleDelete = () => __awaiter(void 0, void 0, void 0, function* () {
             yield handleUserRecipesStat();
             yield handleDeleteRecipe();
             yield handleDeleteLikes();
         });
+        // Call the delete handler
         handleDelete();
     }
     catch (error) {
@@ -126,11 +139,12 @@ exports.likeRecipe = (0, express_async_handler_1.default)((req, res) => __awaite
         // updateLikes
         // Adds/removes entry to the table of likes
         const updateLikes = (recipeId, userId) => __awaiter(void 0, void 0, void 0, function* () {
-            // find all documents named john and at least 18
+            // Check to see if the user/recipe has an entry in the like table
             const likeEntry = yield likeModel_1.Like.find({
                 userId: userId,
                 recipeId: recipeId,
             }).exec();
+            // If the entry does not exist, create it, if it does, delete it
             if (likeEntry.length === 0) {
                 yield likeModel_1.Like.create({
                     userId: userId,
@@ -144,6 +158,7 @@ exports.likeRecipe = (0, express_async_handler_1.default)((req, res) => __awaite
                 });
             }
         });
+        // Call updateLikes
         updateLikes(recipeId, userId);
         res.status(200).json({ id: req.params.id });
     }
