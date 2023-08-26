@@ -11,6 +11,12 @@ export interface IRecipeSteps {
   step: string;
 }
 
+// Interface for recipe time
+export interface IRecipeTime {
+  minutes: string;
+  hours: string;
+}
+
 // Interface for recipe object
 export interface IRecipe {
   recipeId: string;
@@ -21,6 +27,8 @@ export interface IRecipe {
   steps: IRecipeSteps[];
   images: string[];
   tags: string[];
+  difficulty: string;
+  time: IRecipeTime;
   stats: IRecipeStats;
 }
 
@@ -48,6 +56,10 @@ export interface IRecipeProps {
   setStepList: Dispatch<SetStateAction<IRecipeSteps[]>>;
   stepObject: IRecipeSteps;
   setStepObject: Dispatch<SetStateAction<IRecipeSteps>>;
+  timeObject: IRecipeTime;
+  setTimeObject: Dispatch<SetStateAction<IRecipeTime>>;
+  difficultySelection: string;
+  setDifficultySelection: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export interface IIngredientProps {

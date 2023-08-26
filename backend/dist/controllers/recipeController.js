@@ -28,11 +28,11 @@ exports.getRecipes = (0, express_async_handler_1.default)((req, res) => __awaite
 // Post a new recipe to MongoDB
 exports.createRecipe = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // Get data from request
-    const { recipeId, owner, recipeName, ingredients, description, tags, steps } = req.body.recipe;
+    const { recipeId, owner, recipeName, ingredients, description, tags, difficulty, time, steps } = req.body.recipe;
     const userName = req.body.user.name;
     const stats = req.body.user.stats;
     // Check that recipe object contains all fields
-    if (!owner || !recipeName || !ingredients || !description || !steps) {
+    if (!owner || !recipeName || !ingredients || !description || !steps || !difficulty || !time) {
         res.status(400);
         throw new Error('Please add all fields');
     }
@@ -47,6 +47,8 @@ exports.createRecipe = (0, express_async_handler_1.default)((req, res) => __awai
         likers: [],
         images: [],
         tags,
+        difficulty,
+        time,
         stats: { likes: 0 },
     });
     // handleUserRecipesStat
@@ -75,6 +77,8 @@ exports.createRecipe = (0, express_async_handler_1.default)((req, res) => __awai
             description: recipe.description,
             steps: recipe.steps,
             tags: recipe.tags,
+            difficulty: recipe.difficulty,
+            time: recipe.time,
             images: recipe.images,
             stats: recipe.stats,
         });

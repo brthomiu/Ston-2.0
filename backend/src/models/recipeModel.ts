@@ -33,6 +33,17 @@ const RecipeStatsSchema = new Schema<IRecipeStats>({
   likes: { type: Number, required: false },
 });
 
+// Create interface and schema to represent the time object
+export interface IRecipeTime {
+  minutes: string;
+  hours: string;
+}
+
+const RecipeTimeSchema = new Schema<IRecipeTime>({
+  minutes: { type: String, required: true },
+  hours: { type: String, required: true },
+});
+
 // Create an interface representing a document in MongoDB.
 export interface IRecipe {
   recipeId: string;
@@ -43,6 +54,8 @@ export interface IRecipe {
   steps: IRecipeSteps[];
   images: string[];
   tags: string[];
+  difficulty: string;
+  time: IRecipeTime;
   stats: IRecipeStats;
 }
 
@@ -56,6 +69,8 @@ export const RecipeSchema = new Schema<IRecipe>({
   steps: { type: [RecipeStepsSchema], required: true },
   images: { type: [String], required: false },
   tags: { type: [String], required: false },
+  difficulty: { type: String, required: true },
+  time: { type: RecipeTimeSchema, required: true },
   stats: { type: RecipeStatsSchema, required: false },
 });
 

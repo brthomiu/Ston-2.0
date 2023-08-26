@@ -37,6 +37,10 @@ const RecipeStepsSchema = new Schema({
 const RecipeStatsSchema = new Schema({
     likes: { type: Number, required: false },
 });
+const RecipeTimeSchema = new Schema({
+    minutes: { type: String, required: true },
+    hours: { type: String, required: true },
+});
 // Create a Schema corresponding to the document interface.
 exports.RecipeSchema = new Schema({
     recipeId: { type: String, required: true, unique: true },
@@ -47,6 +51,8 @@ exports.RecipeSchema = new Schema({
     steps: { type: [RecipeStepsSchema], required: true },
     images: { type: [String], required: false },
     tags: { type: [String], required: false },
+    difficulty: { type: String, required: true },
+    time: { type: RecipeTimeSchema, required: true },
     stats: { type: RecipeStatsSchema, required: false },
 });
 // 3. Create a Model.

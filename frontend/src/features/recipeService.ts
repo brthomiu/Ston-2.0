@@ -66,9 +66,7 @@ const deleteRecipe = async (userAndRecipe: IUserAndRecipe) => {
 // Handler function that deletes recipe from user's profile and database
 export const handleDeleteRecipe = async (userAndRecipe: IUserAndRecipe) => {
   try {
-    console.log('userAndRecipe-----------------------', userAndRecipe);
     deleteRecipe(userAndRecipe);
-
     // Recipe deleted successfully
     toast('Recipe deleted!');
     console.log('Recipe deleted.');

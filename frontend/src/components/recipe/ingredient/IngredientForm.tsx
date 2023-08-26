@@ -13,12 +13,24 @@ function IngredientForm({
   ingredientObject: IIngredients;
   setIngredientObject: IIngredientProps['setIngredientObject'];
 }) {
-  // Function to handle form input
+  // Function to handle form input - Any input
   const onIngredientInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setIngredientObject((prevState) => ({
       ...prevState,
       [event.target.name]: event.target.value,
     }));
+  };
+
+  // Function to handle form input - Numbers only
+  const onNumberInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    // Validation to make sure user can only enter numbers
+    const digits = ['', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    if (digits.includes(event.target.value.slice(-1))) {
+      setIngredientObject((prevState) => ({
+        ...prevState,
+        [event.target.name]: event.target.value,
+      }));
+    }
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -65,7 +77,7 @@ function IngredientForm({
         name="amount"
         value={amount}
         placeholder="Ingredient Amount"
-        onChange={onIngredientInput}
+        onChange={onNumberInput}
       />
 
       {/* Ingredient unit of measure input */}

@@ -10,6 +10,8 @@ import TagEntry from './tag/TagEntry';
 import { IRecipeProps } from '../../types/recipeTypes';
 import IngredientEntry from './ingredient/IngredientEntry';
 import StepEntry from './steps/StepEntry';
+import DifficultyForm from './difficultyAndTime/DifficultyForm';
+import TimeForm from './difficultyAndTime/TimeForm';
 
 function RecipeForms() {
   // Initialize navigate
@@ -19,6 +21,16 @@ function RecipeForms() {
 
   // State to hold tag list
   const [tagList, setTagList] = useState<string[]>([]);
+
+  // State to hold difficulty
+  const [difficultySelection, setDifficultySelection] = useState<string>('');
+
+  // State to hold time object (added to recipe object on submit)
+  const [timeObject, setTimeObject] = useState<IRecipeProps['timeObject']>({
+    minutes: '0',
+    hours: '0',
+  });
+  console.log('ignore', setTimeObject);
 
   // State to hold ingredient list (added to recipe object on submit)
   const [ingredientList, setIngredientList] = useState<
@@ -36,6 +48,8 @@ function RecipeForms() {
     steps: stepList,
     description: '',
     images: [],
+    difficulty: difficultySelection,
+    time: timeObject,
     tags: tagList,
   });
 
@@ -57,10 +71,21 @@ function RecipeForms() {
       toast('Please add recipe name.');
     } else if (!formData.description) {
       toast('Please add a description.');
+    } else if (!difficultySelection) {
+      toast('Please select recipe difficulty level.');
+    } else if (Number(timeObject.hours) > 168) {
+      toast('Recipes may not take longer than one week!');
+    } else if (
+      Number(timeObject.hours) === 0 &&
+      Number(timeObject.minutes) === 0
+    ) {
+      toast('Please add a recipe length.');
     } else if (ingredientList.length === 0) {
-      toast('Please add ingredients.');
+      toast('Please add at least one ingredient.');
     } else if (stepList.length === 0) {
       toast('Please add at least one step.');
+    } else if (tagList.length === 0) {
+      toast('Please add at least one tag.');
     } else {
       const recipeData = {
         recipe: {
@@ -72,6 +97,8 @@ function RecipeForms() {
           steps: stepList,
           images: formData.images,
           tags: tagList,
+          difficulty: difficultySelection,
+          time: timeObject,
           stats: { likes: 0 },
         },
         user: createUserRequestObject(),
@@ -118,6 +145,12 @@ function RecipeForms() {
             onChange={onChange}
           />
         </div>
+        {/* Recipe difficulty and time entry section */}
+        <DifficultyForm
+          difficultySelection={difficultySelection}
+          setDifficultySelection={setDifficultySelection}
+        />
+        <TimeForm timeObject={timeObject} setTimeObject={setTimeObject} />
         {/* Ingredient entry component */}
         <div>
           <IngredientEntry
