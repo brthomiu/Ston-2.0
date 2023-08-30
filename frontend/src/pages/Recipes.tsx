@@ -24,12 +24,14 @@ function Recipes() {
 
   // Return recipes.
   return (
-    <>
-      <h1>Recipes</h1>
-      {recipeData.map((recipe) => (
-        <RecipeCard recipe={recipe} key={recipe.recipeName} />
-      ))}
-    </>
+    <div className="mt-28">
+      <h2>Recipes</h2>
+      <div className="flex flex-col mt-12 gap-12 lg:grid lg:grid-cols-3">
+        {recipeData.map((recipe) => (
+          <RecipeCard recipe={recipe} key={recipe.recipeId} />
+        ))}
+      </div>
+    </div>
   );
 }
 

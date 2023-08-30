@@ -7,10 +7,14 @@ function CreateRecipe() {
   useIntroduction();
 
   return (
-    <>
-      <h2>New Recipe</h2>
-      <RecipeForms />
-    </>
+    <div className="mt-28">
+      <div className="absolute top-16 left-0 w-full lg:w-[900px]">
+        <h2 className="mt-10">New Recipe</h2>
+        <div className="bg-ston-yellow2 rounded-2xl">
+          <RecipeForms />
+        </div>
+      </div>
+    </div>
   );
 }
 

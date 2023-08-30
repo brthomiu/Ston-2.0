@@ -57,40 +57,53 @@ function IngredientForm({
   // Return ingredient input forms
   return (
     <>
-      <br />
+      <span className="my-4 text-ston-brown font-bold text-xl">
+        Ingredients
+      </span>
       {/* Ingredient name input */}
       <textarea
+        className="mb-4 bg-ston-tan text-ston-brown text-xl p-2 rounded-lg"
         maxLength={40}
         rows={1}
-        cols={32}
+        cols={29}
         name="ingredient"
         value={ingredient}
         placeholder="Ingredient Name"
         onChange={onIngredientInput}
       />
+      <div className="flex flex-row items-end gap-4 m-auto">
+        {/* Ingredient amount input */}
+        <span className="text-ston-brown text-xl mx-2">Amount:</span>
+        <textarea
+          className="p-2 text-ston-brown bg-ston-tan rounded-lg"
+          maxLength={20}
+          rows={1}
+          cols={2}
+          name="amount"
+          value={amount}
+          placeholder=""
+          onChange={onNumberInput}
+        />
 
-      {/* Ingredient amount input */}
-      <textarea
-        maxLength={20}
-        rows={1}
-        cols={12}
-        name="amount"
-        value={amount}
-        placeholder="Ingredient Amount"
-        onChange={onNumberInput}
-      />
+        {/* Ingredient unit of measure input */}
+        <span className="text-ston-brown text-xl mx-2">Hours:</span>
 
-      {/* Ingredient unit of measure input */}
-      <select name="uom" value={ingredientObject.uom} onChange={handleChange}>
-        <option value="" disabled>
-          Select Unit of Measure
-        </option>
-        {uomOptions.map((option) => (
-          <option key={option} value={option}>
-            {option}
+        <select
+          className="p-2 bg-ston-tan text-ston-brown rounded-lg"
+          name="uom"
+          value={ingredientObject.uom}
+          onChange={handleChange}
+        >
+          <option value="" disabled>
+            Unit
           </option>
-        ))}
-      </select>
+          {uomOptions.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+      </div>
     </>
   );
 }

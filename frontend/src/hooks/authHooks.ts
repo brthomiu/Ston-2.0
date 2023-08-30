@@ -19,7 +19,21 @@ export const useRedirect = () => {
   useEffect(() => {
     if (!isAuthenticated) {
       navigate('/');
-      toast('Please login to see recipes.');
+      toast('Please login to access this page.');
+    }
+  }, [isAuthenticated, navigate]);
+};
+
+// useRedirectHome
+// Redirects authenticated users away from the welcome page to the home dashboard
+export const useRedirectHome = () => {
+  // Initialize authentication
+  const { isAuthenticated } = useAuth0(); // Initialize authentication
+  const navigate = useNavigate(); // Initialize navigate
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard');
     }
   }, [isAuthenticated, navigate]);
 };

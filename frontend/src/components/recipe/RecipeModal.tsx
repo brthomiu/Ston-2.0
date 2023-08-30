@@ -16,11 +16,21 @@ export default function RecipeModal({
   // Get userName from local storage
   const userName = localStorage.getItem('name')! as string;
 
+  const toggleModal = () => {
+    if (!showModal) {
+      setShowModal(true);
+    } else {
+      setShowModal(false);
+    }
+  };
+
   if (showModal) {
     return (
-      <div>
+      <div className="fixed left-[5%] top-[13.5%] w-[90%] h-[80%] bg-ston-yellow1 overflow-hidden">
         <h1>Recipe Modal</h1>
-
+        <button onClick={() => toggleModal()} type="button">
+          Close Modal
+        </button>
         {/* Render the delete button only if the user is the owner of the recipe */}
         {userName === recipe.owner && (
           <DeleteRecipeButton recipe={recipe} setShowModal={setShowModal} />

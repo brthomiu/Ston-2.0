@@ -9,7 +9,7 @@ function IngredientRow({
 }) {
   // Return ingredient component
   return (
-    <>
+    <div className="flex flex-row">
       <p>{ingredient.ingredient}</p>
       <p>{ingredient.amount}</p>
       <p>{ingredient.uom}</p>
@@ -18,7 +18,7 @@ function IngredientRow({
       <button type="button" onClick={() => removeIngredient(ingredient)}>
         X
       </button>
-    </>
+    </div>
   );
 }
 

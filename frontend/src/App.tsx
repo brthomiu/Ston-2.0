@@ -11,6 +11,7 @@ import Loader from './components/Loader';
 import { useSyncProfile } from './hooks/authHooks';
 import CreateRecipe from './pages/CreateRecipe';
 import Introduction from './pages/Introduction';
+import Dashboard from './pages/Dashboard';
 
 export function App() {
   const { isLoading, error } = useAuth0();
@@ -28,6 +29,7 @@ export function App() {
           <Toaster />
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/recipes" element={<Recipes />} />
             <Route path="/create" element={<CreateRecipe />} />

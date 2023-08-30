@@ -3,7 +3,8 @@
 import axios from 'axios';
 import { User } from '@auth0/auth0-react';
 
-const API_URL = process.env.VITE_API_URL || 'http://localhost:8000/';
+const API_URL = 'http://localhost:8000/';
+// const API_URL = process.env.VITE_API_URL || 'http://localhost:8000/';
 
 // getUserProfile
 // POST:/api/user/profile - Gets user profile data

@@ -118,14 +118,22 @@ function RecipeForms() {
 
   // Return recipe entry forms and components
   return (
-    <section>
-      <form autoComplete="off" onSubmit={onSubmit}>
+    <section className="flex mt-12 justify-center items-center">
+      <form
+        className="flex flex-col gap-4 items-center"
+        autoComplete="off"
+        onSubmit={onSubmit}
+      >
         {/* Recipe name entry section */}
-        <div>
+        <div className="flex flex-col items-start">
+          <span className="mt-6 mb-2 text-ston-brown font-bold text-xl">
+            Recipe Name
+          </span>
           <textarea
+            className="bg-ston-tan text-ston-brown text-xl p-2 rounded-lg"
             maxLength={40}
-            rows={3}
-            cols={40}
+            rows={1}
+            cols={29}
             name="recipeName"
             value={formData.recipeName}
             placeholder="Name your recipe."
@@ -133,11 +141,15 @@ function RecipeForms() {
           />
         </div>
         {/* Recipe description entry section */}
-        <div>
+        <div className="flex flex-col items-start">
+          <span className="mb-2 mt-6 text-ston-brown font-bold text-xl">
+            Recipe Description
+          </span>
           <textarea
+            className="bg-ston-tan text-ston-brown text-xl p-2 rounded-lg"
             maxLength={3000}
             rows={5}
-            cols={40}
+            cols={29}
             id="description"
             name="description"
             value={formData.description}
@@ -146,13 +158,16 @@ function RecipeForms() {
           />
         </div>
         {/* Recipe difficulty and time entry section */}
-        <DifficultyForm
-          difficultySelection={difficultySelection}
-          setDifficultySelection={setDifficultySelection}
-        />
-        <TimeForm timeObject={timeObject} setTimeObject={setTimeObject} />
+        <div className="flex flex-col items-start">
+          <DifficultyForm
+            difficultySelection={difficultySelection}
+            setDifficultySelection={setDifficultySelection}
+          />
+          <TimeForm timeObject={timeObject} setTimeObject={setTimeObject} />
+        </div>
+
         {/* Ingredient entry component */}
-        <div>
+        <div className="flex flex-col items-start">
           <IngredientEntry
             ingredientList={ingredientList}
             setIngredientList={setIngredientList}

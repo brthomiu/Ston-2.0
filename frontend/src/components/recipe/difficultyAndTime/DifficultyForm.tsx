@@ -19,7 +19,11 @@ function DifficultyForm({
   return (
     <>
       {/* Ingredient unit of measure input */}
+      <span className="mb-2 mt-6 text-ston-brown font-bold text-xl">
+        Recipe Difficulty
+      </span>
       <select
+        className="p-2 w-[348px] bg-ston-tan rounded-lg text-ston-brown"
         name="difficultySelection"
         value={difficultySelection}
         onChange={handleChange}

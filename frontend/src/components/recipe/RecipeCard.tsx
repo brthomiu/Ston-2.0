@@ -26,8 +26,8 @@ function RecipeCard({ recipe }: Props) {
   const tags: TagProps[] = recipe.tags.map((tag) => ({ tag }));
   // Render the recipe card component
   return (
-    <>
-      <h2>{recipe.recipeName}</h2>
+    <div className="bg-ston-yellow1 text-ston-brown">
+      <h2 className="bg-ston-yellow2">{recipe.recipeName}</h2>
       <p>Description: {recipe.description}</p>
       <IngredientCloud ingredients={recipe.ingredients} />
       <StepCloud steps={recipe.steps} />
@@ -37,11 +37,13 @@ function RecipeCard({ recipe }: Props) {
         showModal={showModal}
         setShowModal={setShowModal}
       />
-      <button onClick={() => toggleModal()} type="button">
-        Show More
-      </button>
-      <LikeRecipe recipe={recipe} />
-    </>
+      <div className="flex flex-row justify-around bg-ston-tan">
+        <button onClick={() => toggleModal()} type="button">
+          Show More
+        </button>
+        <LikeRecipe recipe={recipe} />
+      </div>
+    </div>
   );
 }
 

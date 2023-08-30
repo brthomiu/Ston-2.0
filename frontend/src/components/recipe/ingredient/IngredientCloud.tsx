@@ -5,7 +5,7 @@ function IngredientCloud({ ingredients }: { ingredients: IIngredients[] }) {
   // Render the ingredient cloud component
   return (
     <>
-      <h2>Ingredients</h2>
+      <h3>Ingredients</h3>
       {ingredients.map((ingredient) => (
         <Ingredient ingredient={ingredient} key={ingredient.ingredient} />
       ))}

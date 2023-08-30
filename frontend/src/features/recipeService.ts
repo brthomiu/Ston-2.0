@@ -5,7 +5,9 @@ import { toast } from 'react-hot-toast';
 import { IUserAndRecipe } from '../types/recipeTypes';
 import { IUserDBData, IUserStats } from '../types/authTypes';
 
-const API_URL = process.env.VITE_API_URL || 'http://localhost:8000/';
+const API_URL = 'http://localhost:8000/';
+
+// const API_URL = process.env.VITE_API_URL || 'http://localhost:8000/';
 
 // getRecipes
 // GET:/api/recipe - Gets list of recipes
