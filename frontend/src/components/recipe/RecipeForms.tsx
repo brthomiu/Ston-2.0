@@ -187,14 +187,21 @@ function RecipeForms() {
           <StepEntry stepList={stepList} setStepList={setStepList} />
           <br />
           {/* Tag entry component */}
-          <span className="mt-12 mb-4 text-ston-brown self-start font-bold text-xl">
-            Tags
-          </span>
+          {tagList.length > 0 && (
+            <span className="mt-12 mb-4 text-ston-brown self-start font-bold text-xl">
+              Tags
+            </span>
+          )}
           <TagEntry tagList={tagList} setTagList={setTagList} />
         </div>
         {/* Recipe submission button */}
         <div />
-        <button type="submit">Create Recipe</button>
+        <button
+          className="bg-ston-brown text-ston-yellow1 font-bold my-6 w-56 h-20 self-center text-2xl"
+          type="submit"
+        >
+          Create Recipe
+        </button>
       </form>
     </section>
   );

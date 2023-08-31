@@ -9,7 +9,7 @@ function IngredientRow({
 }) {
   // Return ingredient component
   return (
-    <div className="grid grid-cols-4 mb-2 w-[350px] self-center align-top h-fit break-all items-center text-ston-brown bg-ston-yellow1 border rounded-lg">
+    <div className="grid grid-cols-4 mb-2 w-[350px] self-center align-top h-fit items-center text-ston-brown bg-ston-yellow1 border rounded-lg">
       <p>{ingredient.ingredient}</p>
       <p>{ingredient.amount}</p>
       <p>{ingredient.uom}</p>

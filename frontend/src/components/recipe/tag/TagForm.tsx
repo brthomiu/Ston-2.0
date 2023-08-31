@@ -16,11 +16,14 @@ function TagForm({
   // Return form for tag input
   return (
     <>
-      <br />
+      <span className="mt-8 mb-4 text-ston-brown self-start font-bold text-xl">
+        Add Tags
+      </span>
       <textarea
-        maxLength={20}
+        className="bg-ston-tan text-ston-brown text-xl p-2 rounded-lg"
+        maxLength={32}
         rows={1}
-        cols={20}
+        cols={29}
         name="tags"
         value={tagObject}
         placeholder="Enter tag"

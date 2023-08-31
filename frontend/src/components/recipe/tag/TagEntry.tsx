@@ -41,6 +41,11 @@ function TagEntry({
 
   return (
     <>
+      {tagList.length > 0 && (
+        <div className="flex flex-row justify-between pl-2 pr-4 mb-2 w-[350px] self-center align-top h-fit items-center text-ston-brown">
+          <p>Step</p> <p>Delete</p>
+        </div>
+      )}
       {/* Map tag list to tag components */}
       {tagList.map((tag) => (
         <TagRow tag={tag} removeTag={removeTag} key={tag} />
@@ -49,7 +54,11 @@ function TagEntry({
       <TagForm tagObject={tagObject} setTagObject={setTagObject} />
       {/* Button to add current tag to tag list */}
       <br />
-      <button type="button" onClick={() => addTag()}>
+      <button
+        className="bg-ston-green font-bold my-6 w-48 self-center"
+        type="button"
+        onClick={() => addTag()}
+      >
         Add Tag
       </button>
     </>
