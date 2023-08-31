@@ -48,6 +48,11 @@ function StepEntry({
   // Return step entry components
   return (
     <>
+      {stepList.length > 0 && (
+        <div className="flex flex-row justify-between pl-2 pr-4 mb-2 w-[350px] self-center align-top h-fit items-center text-ston-brown">
+          <p>Step</p> <p>Delete</p>
+        </div>
+      )}
       {/* Map stepList to row components */}
       {stepList.map((step) => (
         <StepRow step={step} removeStep={removeStep} key={step.step} />
@@ -57,8 +62,11 @@ function StepEntry({
       <StepForm step={stepObject.step} setStepObject={setStepObject} />
 
       {/* Button to add current stepObject to stepList */}
-      <br />
-      <button type="button" onClick={() => addStep()}>
+      <button
+        className="bg-ston-green font-bold my-6 w-48 self-center"
+        type="button"
+        onClick={() => addStep()}
+      >
         Add Step
       </button>
     </>

@@ -57,8 +57,16 @@ function IngredientEntry({
 
   // Return ingredient entry components
   return (
-    <>
+    <div className="flex flex-col justify-center">
       {/* Map ingredientList to row components */}
+      {ingredientList.length > 0 && (
+        <div className="grid mb-2 grid-cols-4 align-top h-fit items-center text-ston-brown">
+          <p>Name</p>
+          <p>Amount</p>
+          <p>Unit</p>
+          <p>Delete</p>
+        </div>
+      )}
       {ingredientList.map((ingredient) => (
         <IngredientRow
           ingredient={ingredient}
@@ -78,10 +86,14 @@ function IngredientEntry({
 
       {/* Button to add current ingredientObject to ingredientList */}
       <br />
-      <button type="button" onClick={() => addIngredient()}>
+      <button
+        className="bg-ston-green font-bold my-6 w-48 self-center"
+        type="button"
+        onClick={() => addIngredient()}
+      >
         Add Ingredient
       </button>
-    </>
+    </div>
   );
 }
 

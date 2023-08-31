@@ -34,19 +34,19 @@ function TimeForm({
   return (
     <>
       {/* Hours */}
-      <span className="mt-10 text-ston-brown font-bold text-xl">
+      <span className="mt-[72px] text-ston-brown font-bold text-xl">
         Recipe Time
       </span>
-      <div className="flex flex-row mt-6 items-end gap-2">
+      <div className="flex flex-row mt-4 items-end gap-2">
         <span className="text-ston-brown text-xl mx-4">Hours:</span>
         <textarea
-          className="bg-ston-tan text-ston-brown p-2 rounded-lg"
-          maxLength={40}
+          className="bg-ston-tan text-ston-brown p-2 max-h-[38px] rounded-lg overflow-hidden"
+          maxLength={2}
           rows={1}
           cols={2}
           name="hours"
           value={timeObject.hours}
-          placeholder="Hours"
+          placeholder=""
           onChange={onInput}
         />
 

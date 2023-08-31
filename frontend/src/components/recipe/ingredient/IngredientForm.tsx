@@ -57,13 +57,13 @@ function IngredientForm({
   // Return ingredient input forms
   return (
     <>
-      <span className="my-4 text-ston-brown font-bold text-xl">
-        Ingredients
-      </span>
       {/* Ingredient name input */}
+      <span className="mt-8 mb-4 text-ston-brown self-start font-bold text-xl">
+        Add Ingredients
+      </span>
       <textarea
-        className="mb-4 bg-ston-tan text-ston-brown text-xl p-2 rounded-lg"
-        maxLength={40}
+        className="mb-4 bg-ston-tan text-ston-brown text-xl p-2 rounded-lg w-fit self-center"
+        maxLength={64}
         rows={1}
         cols={29}
         name="ingredient"
@@ -75,8 +75,8 @@ function IngredientForm({
         {/* Ingredient amount input */}
         <span className="text-ston-brown text-xl mx-2">Amount:</span>
         <textarea
-          className="p-2 text-ston-brown bg-ston-tan rounded-lg"
-          maxLength={20}
+          className="bg-ston-tan text-ston-brown p-2 max-h-[38px] rounded-lg overflow-hidden"
+          maxLength={3}
           rows={1}
           cols={2}
           name="amount"
@@ -86,7 +86,7 @@ function IngredientForm({
         />
 
         {/* Ingredient unit of measure input */}
-        <span className="text-ston-brown text-xl mx-2">Hours:</span>
+        <span className="text-ston-brown text-xl mx-2">Unit:</span>
 
         <select
           className="p-2 bg-ston-tan text-ston-brown rounded-lg"

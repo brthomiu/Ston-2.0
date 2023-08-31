@@ -142,7 +142,7 @@ function RecipeForms() {
         </div>
         {/* Recipe description entry section */}
         <div className="flex flex-col items-start">
-          <span className="mb-2 mt-6 text-ston-brown font-bold text-xl">
+          <span className="mb-2 mt-12 text-ston-brown font-bold text-xl">
             Recipe Description
           </span>
           <textarea
@@ -167,15 +167,29 @@ function RecipeForms() {
         </div>
 
         {/* Ingredient entry component */}
+
+        {ingredientList.length > 0 && (
+          <span className="mt-12 mb-4 text-ston-brown self-start font-bold text-xl">
+            Ingredients
+          </span>
+        )}
         <div className="flex flex-col items-start">
           <IngredientEntry
             ingredientList={ingredientList}
             setIngredientList={setIngredientList}
           />
           {/* Step entry component */}
+          {stepList.length > 0 && (
+            <span className="mt-12 mb-4 text-ston-brown self-start font-bold text-xl">
+              Steps
+            </span>
+          )}
           <StepEntry stepList={stepList} setStepList={setStepList} />
           <br />
           {/* Tag entry component */}
+          <span className="mt-12 mb-4 text-ston-brown self-start font-bold text-xl">
+            Tags
+          </span>
           <TagEntry tagList={tagList} setTagList={setTagList} />
         </div>
         {/* Recipe submission button */}

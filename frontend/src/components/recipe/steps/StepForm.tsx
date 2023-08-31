@@ -18,12 +18,15 @@ function StepForm({
   // Return Step input forms
   return (
     <>
-      <br />
       {/* Step body input */}
+      <span className="mt-8 mb-4 text-ston-brown self-start font-bold text-xl">
+        Add Steps
+      </span>
       <textarea
-        maxLength={40}
+        className="bg-ston-tan text-ston-brown text-xl p-2 rounded-lg"
+        maxLength={400}
         rows={1}
-        cols={32}
+        cols={29}
         name="step"
         value={step}
         placeholder="Enter a step"
