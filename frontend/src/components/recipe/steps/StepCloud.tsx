@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 import { IRecipeSteps } from '../../../types/recipeTypes';
 import Step from './Step';
 

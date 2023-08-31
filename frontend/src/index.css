@@ -28,8 +28,7 @@
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
   color: rgba(255, 255, 255, 0.87);
-  background-color: #423e36;
-
+  background: rgb(80,60,49);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -80,8 +79,7 @@ button,
   padding: 0.6em 1.2em;
   cursor: pointer;
   text-decoration: none;
-  transition: all .3s ease-in-out;
-
+  transition: all 0.3s ease-in-out;
 }
 
 button:hover {
@@ -89,8 +87,8 @@ button:hover {
 }
 
 button:active {
-scale: 1;
-transition: all .1s ease-in-out;
+  scale: 1;
+  transition: all 0.1s ease-in-out;
 }
 
 textarea {

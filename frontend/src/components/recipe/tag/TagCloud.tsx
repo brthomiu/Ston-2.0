@@ -6,7 +6,6 @@ function TagCloud({ tags }: { tags: TagProps[] }) {
   // Render the ingredient cloud component
   return (
     <>
-      <h2>Tags: </h2>
       {tags.map((tag, index) => (
         <Tag tag={tag.tag} key={index} />
       ))}

@@ -26,9 +26,9 @@ function RecipeCard({ recipe }: Props) {
   const tags: TagProps[] = recipe.tags.map((tag) => ({ tag }));
   // Render the recipe card component
   return (
-    <div className="bg-ston-yellow1 text-ston-brown">
-      <h2 className="bg-ston-yellow2">{recipe.recipeName}</h2>
-      <p>Description: {recipe.description}</p>
+    <div className="bg-ston-yellow1 text-ston-brown w-[320px] h-[320px] lg:w-[400px] lg:h-[400px] rounded-2xl">
+      <h2 className="bg-ston-yellow2 rounded-t-2xl">{recipe.recipeName}</h2>
+      <p>{recipe.description}</p>
       <IngredientCloud ingredients={recipe.ingredients} />
       <StepCloud steps={recipe.steps} />
       <TagCloud tags={tags} />

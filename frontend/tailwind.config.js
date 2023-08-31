@@ -8,8 +8,8 @@ export default {
     extend: {
       colors: {
         ston: {
-          brown: '#423E36',
-          green: '#606C5D',
+          brown: '#4f3629',
+          green: '#7a6552',
           tan: '#FFF4F4',
           yellow1: '#F7E6C4',
           yellow2: '#F1C376'

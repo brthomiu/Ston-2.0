@@ -33,13 +33,13 @@ function Profile() {
 
   // Return user profile.
   return (
-    <>
-      <h1>Profile</h1>
-      <h2>Name: {userProfileData.name}</h2>
-      <h2>Description: {userProfileData.description}</h2>
-      <h2>Favorites: {userProfileData.favorites}</h2>
+    <div className="w-fit">
+      <h2>Profile</h2>
+      <h3>Name: {userProfileData.name}</h3>
+      <h3>Description: {userProfileData.description}</h3>
+      <h3>Favorites: {userProfileData.favorites}</h3>
       <LogoutButton />
-    </>
+    </div>
   );
 }
 

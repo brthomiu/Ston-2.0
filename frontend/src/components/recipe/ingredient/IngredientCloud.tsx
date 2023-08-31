@@ -4,12 +4,16 @@ import Ingredient from './Ingredient';
 function IngredientCloud({ ingredients }: { ingredients: IIngredients[] }) {
   // Render the ingredient cloud component
   return (
-    <>
-      <h3>Ingredients</h3>
+    <div className="mt-4 bg-ston-tan rounded-2xl">
+      <div className="bg-ston-yellow2 grid grid-cols-3 font-bold">
+        <p>Ingredient</p>
+        <p>Amount</p>
+        <p>Unit</p>
+      </div>
       {ingredients.map((ingredient) => (
         <Ingredient ingredient={ingredient} key={ingredient.ingredient} />
       ))}
-    </>
+    </div>
   );
 }
 
