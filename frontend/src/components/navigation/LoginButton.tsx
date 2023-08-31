@@ -5,8 +5,12 @@ function LoginButton() {
 
   return (
     !isAuthenticated && (
-      <button type="button" onClick={() => loginWithRedirect()}>
-        Login
+      <button
+        className="-translate-y-2 text-2xl"
+        type="button"
+        onClick={() => loginWithRedirect()}
+      >
+        Sign up now!
       </button>
     )
   );

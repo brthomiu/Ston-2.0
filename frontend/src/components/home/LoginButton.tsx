@@ -5,7 +5,7 @@ function LoginButton() {
 
   return (
     <button
-      className="w-72 mt-6 mb-8 mx-auto bg-ston-yellow1 text-ston-green text-3xl font-bold border-none"
+      className="w-72 mt-8 mb-8 mx-auto bg-ston-yellow1 text-ston-green text-3xl font-bold border-none"
       type="button"
       onClick={() => loginWithRedirect()}
     >

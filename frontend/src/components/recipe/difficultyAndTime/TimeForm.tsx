@@ -35,7 +35,7 @@ function TimeForm({
     <>
       {/* Hours */}
       <span className="mt-[72px] text-ston-brown font-bold text-xl">
-        Recipe Time
+        Recipe Length
       </span>
       <div className="flex flex-row mt-4 items-end gap-2">
         <span className="text-ston-brown text-xl mx-4">Hours:</span>

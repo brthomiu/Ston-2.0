@@ -6,6 +6,7 @@ import {
   useFetchProfileRecipes,
 } from '../hooks/authHooks';
 import Loader from '../components/Loader';
+import LogoutButton from '../components/navigation/LogoutButton';
 
 function Profile() {
   // Redirect users who aren't logged in / new users
@@ -37,6 +38,7 @@ function Profile() {
       <h2>Name: {userProfileData.name}</h2>
       <h2>Description: {userProfileData.description}</h2>
       <h2>Favorites: {userProfileData.favorites}</h2>
+      <LogoutButton />
     </>
   );
 }
