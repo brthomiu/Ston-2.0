@@ -4,7 +4,7 @@ import Ingredient from './Ingredient';
 function IngredientCloud({ ingredients }: { ingredients: IIngredients[] }) {
   // Render the ingredient cloud component
   return (
-    <div className="mt-4 bg-ston-tan rounded-2xl">
+    <div className="bg-ston-tan rounded-2xl">
       <div className="bg-ston-yellow2 grid grid-cols-3 font-bold">
         <p>Ingredient</p>
         <p>Amount</p>

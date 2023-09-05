@@ -24,11 +24,10 @@
   box-sizing: border-box;
   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
   -moz-box-sizing: border-box; /* Firefox, other Gecko */
-
+  color: rgba(0,0,0,.87);
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
-  color: rgba(255, 255, 255, 0.87);
-  background: rgb(80,60,49);
+  background: #FFF4F4;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -46,7 +45,7 @@ textarea:focus {
 
 a {
   font-weight: 400;
-  color: rgba(255, 255, 255, 0.87);
+  color: rgba(0,0,0,.87);
   text-decoration: none;
 }
 
@@ -76,19 +75,9 @@ h3 {
 button,
 .link {
   border-radius: 16px;
-  padding: 0.6em 1.2em;
+  padding: 0.4em 1.2em;
   cursor: pointer;
   text-decoration: none;
-  transition: all 0.3s ease-in-out;
-}
-
-button:hover {
-  scale: 1.07;
-}
-
-button:active {
-  scale: 1;
-  transition: all 0.1s ease-in-out;
 }
 
 textarea {

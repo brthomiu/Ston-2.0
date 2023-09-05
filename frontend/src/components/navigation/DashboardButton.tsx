@@ -6,9 +6,11 @@ export default function DashboardButton() {
 
   return (
     isAuthenticated && (
-      <Link className="link" to="/dashboard">
-        Dashboard
-      </Link>
+      <div className="flex flex-col border-b-2 pb-4 border-ston-green lg:border-none">
+        <Link className="link" to="/dashboard">
+          Dashboard
+        </Link>
+      </div>
     )
   );
 }

@@ -22,11 +22,11 @@ function Navigation() {
       <div className="fixed left-4 top-4 text-ston-tan text-xl">
         Ston Recipe Notes
       </div>
-      <div className="fixed right-4 top-2">
+      <div className="fixed right-4 top-3">
         <NavButtonRow />
       </div>
       {showMenu && (
-        <div className="fixed flex flex-col gap-4 p-4 w-full mt-16 bg-ston-green lg:w-96 lg:right-0 lg:hidden">
+        <div className="fixed flex flex-col gap-4 pt-4 w-full mt-16 bg-ston-brown lg:w-96 lg:right-0 lg:hidden">
           <DashboardButton />
           <RecipesButton />
           <CreateRecipeButton />

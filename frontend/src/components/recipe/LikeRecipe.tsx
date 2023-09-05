@@ -19,7 +19,11 @@ export default function LikeRecipe({ recipe }: Props) {
 
   return (
     <div>
-      <button onClick={() => handleLikeRecipe(likeData)} type="button">
+      <button
+        className="bg-ston-yellow1 w-24"
+        onClick={() => handleLikeRecipe(likeData)}
+        type="button"
+      >
         Like
       </button>
     </div>

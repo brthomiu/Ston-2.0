@@ -6,9 +6,11 @@ function RecipesButton() {
 
   return (
     isAuthenticated && (
-      <Link className="link" to="/recipes">
-        Recipes
-      </Link>
+      <div className="flex flex-col border-b-2 pb-4 border-ston-green lg:border-none">
+        <Link className="link" to="/recipes">
+          Recipes
+        </Link>
+      </div>
     )
   );
 }

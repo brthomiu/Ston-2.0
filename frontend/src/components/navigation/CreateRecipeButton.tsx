@@ -6,9 +6,11 @@ function CreateRecipeButton() {
 
   return (
     isAuthenticated && (
-      <Link className="link" to="/create">
-        New Recipe
-      </Link>
+      <div className="flex flex-col border-b-2 pb-4 border-ston-green lg:border-none">
+        <Link className="link" to="/create">
+          New Recipe
+        </Link>
+      </div>
     )
   );
 }

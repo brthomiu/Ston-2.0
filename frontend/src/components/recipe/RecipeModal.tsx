@@ -18,15 +18,17 @@ export default function RecipeModal({
 
   const toggleModal = () => {
     if (!showModal) {
+      document.body.style.overflow = 'hidden';
       setShowModal(true);
     } else {
+      document.body.style.overflow = 'revert';
       setShowModal(false);
     }
   };
 
   if (showModal) {
     return (
-      <div className="fixed left-[5%] top-[13.5%] w-[90%] h-[80%] bg-ston-yellow1 overflow-hidden">
+      <div className="fixed left-[5%] top-[13.5%] w-[90%] h-[80%] bg-ston-yellow1">
         <h1>Recipe Modal</h1>
         <button onClick={() => toggleModal()} type="button">
           Close Modal
