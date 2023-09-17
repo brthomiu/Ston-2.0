@@ -20,6 +20,7 @@ function Home() {
           <LoginButton />
           <GuestButton />
         </div>
+
         <HomeAbout1 />
         <HomeAbout2 />
       </div>
