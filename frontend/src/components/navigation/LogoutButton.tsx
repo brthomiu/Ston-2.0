@@ -6,7 +6,7 @@ function LogoutButton() {
   // bigLogout
   // Clears session storage and logs out
   const bigLogout = () => {
-    sessionStorage.clear();
+    localStorage.clear();
     logout();
   };
 

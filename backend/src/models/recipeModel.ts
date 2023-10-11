@@ -52,7 +52,7 @@ export interface IRecipe {
   ingredients: IIngredients[];
   description: string;
   steps: IRecipeSteps[];
-  images: string[];
+  images: String[];
   tags: string[];
   difficulty: string;
   time: IRecipeTime;

@@ -25,7 +25,7 @@ export interface IRecipe {
   ingredients: IIngredients[];
   description: string;
   steps: IRecipeSteps[];
-  images: string[];
+  images: File[] | string[];
   tags: string[];
   difficulty: string;
   time: IRecipeTime;

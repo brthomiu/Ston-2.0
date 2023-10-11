@@ -28,7 +28,10 @@ function Recipes() {
       <h2>Recipes</h2>
       <div className="flex flex-col mt-12 gap-12 lg:grid lg:grid-cols-3">
         {recipeData.map((recipe) => (
-          <RecipeCard recipe={recipe} key={recipe.recipeId} />
+          <RecipeCard
+            recipe={recipe}
+            key={`${recipe.recipeId}-${recipe.owner}-${recipe.recipeName}`}
+          />
         ))}
       </div>
     </div>

@@ -12,6 +12,7 @@ import IngredientEntry from './ingredient/IngredientEntry';
 import StepEntry from './steps/StepEntry';
 import DifficultyForm from './difficultyAndTime/DifficultyForm';
 import TimeForm from './difficultyAndTime/TimeForm';
+import ImageUpload from './image/ImageUpload';
 
 function RecipeForms() {
   // Initialize navigate
@@ -30,7 +31,6 @@ function RecipeForms() {
     minutes: '0',
     hours: '0',
   });
-  console.log('ignore', setTimeObject);
 
   // State to hold ingredient list (added to recipe object on submit)
   const [ingredientList, setIngredientList] = useState<
@@ -40,6 +40,9 @@ function RecipeForms() {
   // State to hold ingredient list (added to recipe object on submit)
   const [stepList, setStepList] = useState<IRecipeProps['stepList']>([]);
 
+  // State to hold images
+  const [imageList, setImageList] = useState<string[] | never[]>([]);
+
   // State to hold recipe data
   const [formData, setFormData] = useState({
     owner: userName,
@@ -47,7 +50,7 @@ function RecipeForms() {
     ingredients: ingredientList,
     steps: stepList,
     description: '',
-    images: [],
+    images: imageList,
     difficulty: difficultySelection,
     time: timeObject,
     tags: tagList,
@@ -86,6 +89,8 @@ function RecipeForms() {
       toast('Please add at least one step.');
     } else if (tagList.length === 0) {
       toast('Please add at least one tag.');
+    } else if (imageList.length === 0) {
+      toast('Please add an image.');
     } else {
       const recipeData = {
         recipe: {
@@ -95,7 +100,7 @@ function RecipeForms() {
           ingredients: ingredientList,
           description: formData.description,
           steps: stepList,
-          images: formData.images,
+          images: imageList,
           tags: tagList,
           difficulty: difficultySelection,
           time: timeObject,
@@ -194,6 +199,10 @@ function RecipeForms() {
           )}
           <TagEntry tagList={tagList} setTagList={setTagList} />
         </div>
+        {/* Recipe Image Upload */}
+        {/* Recipe image upload will go here */}
+        <ImageUpload imageList={imageList} setImageList={setImageList} />
+
         {/* Recipe submission button */}
         <div />
         <button

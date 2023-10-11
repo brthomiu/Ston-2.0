@@ -16,13 +16,13 @@ export const getRecipes = expressAsyncHandler(async (req, res) => {
 // Post a new recipe to MongoDB
 export const createRecipe = expressAsyncHandler(async (req, res) => {
   // Get data from request
-  const { recipeId, owner, recipeName, ingredients, description, tags, difficulty, time, steps } =
+  const { recipeId, owner, recipeName, ingredients, description, tags, difficulty, time, steps, images } =
     req.body.recipe;
   const userName = req.body.user.name;
   const stats = req.body.user.stats;
 
   // Check that recipe object contains all fields
-  if (!owner || !recipeName || !ingredients || !description || !steps || !difficulty || !time ) {
+  if (!owner || !recipeName || !ingredients || !description || !steps || !difficulty || !time || !images ) {
     res.status(400);
     throw new Error('Please add all fields');
   }
@@ -36,7 +36,7 @@ export const createRecipe = expressAsyncHandler(async (req, res) => {
     description,
     steps,
     likers: [],
-    images: [],
+    images,
     tags,
     difficulty,
     time,
