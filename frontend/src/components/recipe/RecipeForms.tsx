@@ -5,6 +5,7 @@ import { toast } from 'react-hot-toast';
 import {
   handleCreateRecipe,
   createUserRequestObject,
+  handleUploadImage,
 } from '../../features/recipeService';
 import TagEntry from './tag/TagEntry';
 import { IRecipeProps } from '../../types/recipeTypes';
@@ -42,6 +43,7 @@ function RecipeForms() {
 
   // State to hold images
   const [imageList, setImageList] = useState<string[] | never[]>([]);
+  const [image, setImage] = useState<File | null>();
 
   // State to hold recipe data
   const [formData, setFormData] = useState({
@@ -94,7 +96,7 @@ function RecipeForms() {
     } else {
       const recipeData = {
         recipe: {
-          recipeId: `${userName}-${formData.recipeName}-${Date()}`,
+          recipeId: `${userName}-${formData.recipeName}-${Date.now()}`,
           owner: userName,
           recipeName: formData.recipeName,
           ingredients: ingredientList,
@@ -110,8 +112,11 @@ function RecipeForms() {
       };
       try {
         const submitRequests = async () => {
-          await handleCreateRecipe(recipeData);
-          navigate('/recipes');
+          if (recipeData && image) {
+            await handleCreateRecipe(recipeData);
+            await handleUploadImage(image);
+            navigate('/recipes');
+          }
         };
         await submitRequests();
       } catch (error) {
@@ -201,7 +206,12 @@ function RecipeForms() {
         </div>
         {/* Recipe Image Upload */}
         {/* Recipe image upload will go here */}
-        <ImageUpload imageList={imageList} setImageList={setImageList} />
+        <ImageUpload
+          image={image}
+          setImage={setImage}
+          imageList={imageList}
+          setImageList={setImageList}
+        />
 
         {/* Recipe submission button */}
         <div />

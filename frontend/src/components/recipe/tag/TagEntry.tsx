@@ -48,7 +48,7 @@ function TagEntry({
       )}
       {/* Map tag list to tag components */}
       {tagList.map((tag) => (
-        <TagRow tag={tag} removeTag={removeTag} key={tag} />
+        <TagRow tag={tag} removeTag={removeTag} key={tag + Date.now()} />
       ))}
       {/* Form for tag input */}
       <TagForm tagObject={tagObject} setTagObject={setTagObject} />

@@ -1,25 +1,24 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
-import { useState } from 'react';
 import ImagePreview from './ImagePreview';
 
 export default function ImageUpload({
   imageList,
   setImageList,
+  image,
+  setImage,
 }: {
+  image: File | null | undefined;
+  setImage: any;
   imageList: string[];
   setImageList: any;
 }) {
-  const [image, setImage] = useState<File | null>();
-
   const submitImage = async () => {
     const imageDateId = `${image?.name}-recipeNo:${Date.now()}`;
     const newImageList = [imageDateId];
-    console.log(image);
     if (image) {
       await setImageList(newImageList);
     }
-    console.log(imageList);
   };
 
   const onInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {

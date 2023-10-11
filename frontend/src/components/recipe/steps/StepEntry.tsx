@@ -55,7 +55,11 @@ function StepEntry({
       )}
       {/* Map stepList to row components */}
       {stepList.map((step) => (
-        <StepRow step={step} removeStep={removeStep} key={step.step} />
+        <StepRow
+          step={step}
+          removeStep={removeStep}
+          key={step.step + Date.now()}
+        />
       ))}
 
       {/* Step form component */}

@@ -40,6 +40,28 @@ export const handleCreateRecipe = async (recipeData: IUserAndRecipe) => {
   }
 };
 
+// uploadImage
+// POST:/api/recipe/image - Upload recipe image to MongoDB
+const uploadImage = async (image: File) => {
+  const imageForm = new FormData();
+  imageForm.append('image', image);
+  const response = await axios.post(`${API_URL}api/recipe/image`, imageForm);
+  return response.data;
+};
+
+// handleUploadImage
+// Handler function that creates a new recipe in the database and adds it to the user profile
+export const handleUploadImage = async (image: File) => {
+  try {
+    // Create new recipe
+    uploadImage(image);
+    toast('Image uploaded!');
+  } catch (error) {
+    toast('Could not upload image.');
+    throw error;
+  }
+};
+
 // likeRecipe
 // PUT:/api/recipe - Handles liking/disliking recipes
 const likeRecipe = async (likeData: IUserAndRecipe) => {

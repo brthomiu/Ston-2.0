@@ -8,7 +8,7 @@ function StepCloud({ steps }: { steps: IRecipeSteps[] }) {
     <>
       <h2>Steps</h2>
       {steps.map((step) => (
-        <Step step={step.step} key={step.step} />
+        <Step step={step.step} key={step.step + Date.now()} />
       ))}
     </>
   );

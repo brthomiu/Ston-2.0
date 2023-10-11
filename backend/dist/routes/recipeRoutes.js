@@ -15,4 +15,6 @@ router.post('/api/recipe/', recipeController_1.createRecipe);
 router.delete('/api/recipe/', recipeController_1.deleteRecipe);
 // PUT:/api/recipe - Like a recipe
 router.put('/api/recipe/', recipeController_1.likeRecipe);
+// POST:/api/recipe/image - Upload recipe image to MongoDB
+router.post('/api/recipe/image', recipeController_1.uploadRecipeImage);
 exports.default = router;

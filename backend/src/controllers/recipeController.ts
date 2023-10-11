@@ -2,6 +2,7 @@ import expressAsyncHandler from 'express-async-handler';
 import { Recipe } from '../models/recipeModel';
 import { Like } from '../models/likeModel';
 import { IUserStats, User } from '../models/userModel';
+import multer from 'multer';
 
 // GET:/api/recipe
 // Retrieve recipe data from MongoDB
@@ -16,13 +17,32 @@ export const getRecipes = expressAsyncHandler(async (req, res) => {
 // Post a new recipe to MongoDB
 export const createRecipe = expressAsyncHandler(async (req, res) => {
   // Get data from request
-  const { recipeId, owner, recipeName, ingredients, description, tags, difficulty, time, steps, images } =
-    req.body.recipe;
+  const {
+    recipeId,
+    owner,
+    recipeName,
+    ingredients,
+    description,
+    tags,
+    difficulty,
+    time,
+    steps,
+    images,
+  } = req.body.recipe;
   const userName = req.body.user.name;
   const stats = req.body.user.stats;
 
   // Check that recipe object contains all fields
-  if (!owner || !recipeName || !ingredients || !description || !steps || !difficulty || !time || !images ) {
+  if (
+    !owner ||
+    !recipeName ||
+    !ingredients ||
+    !description ||
+    !steps ||
+    !difficulty ||
+    !time ||
+    !images
+  ) {
     res.status(400);
     throw new Error('Please add all fields');
   }
@@ -168,4 +188,29 @@ export const likeRecipe = expressAsyncHandler(async (req, res) => {
     res.status(400);
     new Error('Could not like recipe');
   }
+});
+
+// POST:/api/recipe/image - Upload recipe image to MongoDB
+
+// Multer upload path
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/');
+  },
+  filename: function (req, file, cb) {
+    const uniquePrefix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    cb(null, uniquePrefix + '-' + file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
+
+export const uploadRecipeImage = expressAsyncHandler(async (req, res) => {
+  upload.single('image')(req, res, function (err) {
+    if (err) {
+      // Handle the error
+      return res.status(400).send('Could not upload image');
+    }
+    res.status(200);
+  });
 });

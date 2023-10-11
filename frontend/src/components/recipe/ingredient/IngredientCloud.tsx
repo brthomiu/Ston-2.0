@@ -11,7 +11,10 @@ function IngredientCloud({ ingredients }: { ingredients: IIngredients[] }) {
         <p>Unit</p>
       </div>
       {ingredients.map((ingredient) => (
-        <Ingredient ingredient={ingredient} key={ingredient.ingredient} />
+        <Ingredient
+          ingredient={ingredient}
+          key={ingredient.ingredient + Date.now()}
+        />
       ))}
     </div>
   );

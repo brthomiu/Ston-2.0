@@ -71,7 +71,7 @@ function IngredientEntry({
         <IngredientRow
           ingredient={ingredient}
           removeIngredient={removeIngredient}
-          key={ingredient.ingredient}
+          key={ingredient.ingredient + Date.now()}
         />
       ))}
 

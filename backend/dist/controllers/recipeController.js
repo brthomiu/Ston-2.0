@@ -12,11 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.likeRecipe = exports.deleteRecipe = exports.createRecipe = exports.getRecipes = void 0;
+exports.uploadRecipeImage = exports.likeRecipe = exports.deleteRecipe = exports.createRecipe = exports.getRecipes = void 0;
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const recipeModel_1 = require("../models/recipeModel");
 const likeModel_1 = require("../models/likeModel");
 const userModel_1 = require("../models/userModel");
+const multer_1 = __importDefault(require("multer"));
 // GET:/api/recipe
 // Retrieve recipe data from MongoDB
 exports.getRecipes = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -28,11 +29,18 @@ exports.getRecipes = (0, express_async_handler_1.default)((req, res) => __awaite
 // Post a new recipe to MongoDB
 exports.createRecipe = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // Get data from request
-    const { recipeId, owner, recipeName, ingredients, description, tags, difficulty, time, steps, images } = req.body.recipe;
+    const { recipeId, owner, recipeName, ingredients, description, tags, difficulty, time, steps, images, } = req.body.recipe;
     const userName = req.body.user.name;
     const stats = req.body.user.stats;
     // Check that recipe object contains all fields
-    if (!owner || !recipeName || !ingredients || !description || !steps || !difficulty || !time || !images) {
+    if (!owner ||
+        !recipeName ||
+        !ingredients ||
+        !description ||
+        !steps ||
+        !difficulty ||
+        !time ||
+        !images) {
         res.status(400);
         throw new Error('Please add all fields');
     }
@@ -171,4 +179,25 @@ exports.likeRecipe = (0, express_async_handler_1.default)((req, res) => __awaite
         res.status(400);
         new Error('Could not like recipe');
     }
+}));
+// POST:/api/recipe/image - Upload recipe image to MongoDB
+// Multer upload path
+const storage = multer_1.default.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/');
+    },
+    filename: function (req, file, cb) {
+        const uniquePrefix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+        cb(null, uniquePrefix + '-' + file.originalname);
+    },
+});
+const upload = (0, multer_1.default)({ storage: storage });
+exports.uploadRecipeImage = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    upload.single('image')(req, res, function (err) {
+        if (err) {
+            // Handle the error
+            return res.status(400).send('Could not upload image');
+        }
+        res.status(200);
+    });
 }));
