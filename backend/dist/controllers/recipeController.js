@@ -18,6 +18,8 @@ const recipeModel_1 = require("../models/recipeModel");
 const likeModel_1 = require("../models/likeModel");
 const userModel_1 = require("../models/userModel");
 const multer_1 = __importDefault(require("multer"));
+const fs_1 = __importDefault(require("fs"));
+const imageModel_1 = require("../models/imageModel");
 // GET:/api/recipe
 // Retrieve recipe data from MongoDB
 exports.getRecipes = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -194,10 +196,26 @@ const storage = multer_1.default.diskStorage({
 const upload = (0, multer_1.default)({ storage: storage });
 exports.uploadRecipeImage = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     upload.single('image')(req, res, function (err) {
-        if (err) {
-            // Handle the error
-            return res.status(400).send('Could not upload image');
-        }
-        res.status(200);
+        return __awaiter(this, void 0, void 0, function* () {
+            if (err) {
+                return res.status(400).send('Could not upload image to server!');
+            }
+            const imageId = req.body.imageId;
+            const fileName = req.file.filename;
+            console.log('fileName------------------', fileName);
+            console.log('imageId-----------------------', imageId);
+            const imageData = {
+                imageId: imageId,
+                image: fs_1.default.readFileSync(`./uploads/${fileName}`),
+            };
+            res.status(200).send('Image uploaded to server successfully!');
+            try {
+                yield imageModel_1.Image.create(imageData);
+                res.status(200).send('Image uploaded to DB successfully!');
+            }
+            catch (error) {
+                new Error('Could not upload image to DB!');
+            }
+        });
     });
 }));

@@ -44,6 +44,7 @@ function RecipeForms() {
   // State to hold images
   const [imageList, setImageList] = useState<string[] | never[]>([]);
   const [image, setImage] = useState<File | null>();
+  const [imageId, setImageId] = useState<string>('');
 
   // State to hold recipe data
   const [formData, setFormData] = useState({
@@ -114,7 +115,7 @@ function RecipeForms() {
         const submitRequests = async () => {
           if (recipeData && image) {
             await handleCreateRecipe(recipeData);
-            await handleUploadImage(image);
+            await handleUploadImage(image, imageId);
             navigate('/recipes');
           }
         };
@@ -133,6 +134,8 @@ function RecipeForms() {
         className="flex flex-col gap-4 items-center"
         autoComplete="off"
         onSubmit={onSubmit}
+        method="post"
+        encType="multipart/form-data"
       >
         {/* Recipe name entry section */}
         <div className="flex flex-col items-start">
@@ -205,12 +208,12 @@ function RecipeForms() {
           <TagEntry tagList={tagList} setTagList={setTagList} />
         </div>
         {/* Recipe Image Upload */}
-        {/* Recipe image upload will go here */}
         <ImageUpload
           image={image}
           setImage={setImage}
           imageList={imageList}
           setImageList={setImageList}
+          setImageId={setImageId}
         />
 
         {/* Recipe submission button */}

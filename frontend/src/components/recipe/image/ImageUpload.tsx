@@ -7,17 +7,20 @@ export default function ImageUpload({
   setImageList,
   image,
   setImage,
+  setImageId,
 }: {
   image: File | null | undefined;
   setImage: any;
   imageList: string[];
   setImageList: any;
+  setImageId: any;
 }) {
   const submitImage = async () => {
-    const imageDateId = `${image?.name}-recipeNo:${Date.now()}`;
-    const newImageList = [imageDateId];
+    const imageId = `${Date.now()}-${image?.name}`;
+    const newImageList = [imageId];
     if (image) {
       await setImageList(newImageList);
+      await setImageId(imageId);
     }
   };
 

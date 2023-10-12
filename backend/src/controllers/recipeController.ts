@@ -3,6 +3,8 @@ import { Recipe } from '../models/recipeModel';
 import { Like } from '../models/likeModel';
 import { IUserStats, User } from '../models/userModel';
 import multer from 'multer';
+import fs from 'fs';
+import { Image } from '../models/imageModel';
 
 // GET:/api/recipe
 // Retrieve recipe data from MongoDB
@@ -206,11 +208,29 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 export const uploadRecipeImage = expressAsyncHandler(async (req, res) => {
-  upload.single('image')(req, res, function (err) {
+  upload.single('image')(req, res, async function (err) {
     if (err) {
-      // Handle the error
-      return res.status(400).send('Could not upload image');
+      return res.status(400).send('Could not upload image to server!');
     }
-    res.status(200);
+
+    const imageId = req.body.imageId;
+    const fileName = req.file!.filename;
+
+    console.log('fileName------------------', fileName);
+    console.log('imageId-----------------------', imageId);
+
+    const imageData = {
+      imageId: imageId,
+      image: fs.readFileSync(`./uploads/${fileName}`),
+    };
+
+    res.status(200).send('Image uploaded to server successfully!');
+
+    try {
+      await Image.create(imageData);
+      res.status(200).send('Image uploaded to DB successfully!');
+    } catch (error) {
+      new Error('Could not upload image to DB!');
+    }
   });
 });

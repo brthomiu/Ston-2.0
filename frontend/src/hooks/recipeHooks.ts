@@ -19,7 +19,7 @@ export const useFetchRecipes = () => {
     };
 
     fetchUserRecipe();
-  }, [userRecipeData]);
+  }, []);
 
   return userRecipeData;
 };

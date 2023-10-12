@@ -42,19 +42,25 @@ export const handleCreateRecipe = async (recipeData: IUserAndRecipe) => {
 
 // uploadImage
 // POST:/api/recipe/image - Upload recipe image to MongoDB
-const uploadImage = async (image: File) => {
+const uploadImage = async (image: File, imageId: string) => {
   const imageForm = new FormData();
   imageForm.append('image', image);
-  const response = await axios.post(`${API_URL}api/recipe/image`, imageForm);
+  imageForm.append('imageId', imageId);
+  console.log(imageForm);
+  const response = await axios.post(`${API_URL}api/recipe/image`, imageForm, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
   return response.data;
 };
 
 // handleUploadImage
 // Handler function that creates a new recipe in the database and adds it to the user profile
-export const handleUploadImage = async (image: File) => {
+export const handleUploadImage = async (image: File, imageId: string) => {
   try {
     // Create new recipe
-    uploadImage(image);
+    uploadImage(image, imageId);
     toast('Image uploaded!');
   } catch (error) {
     toast('Could not upload image.');

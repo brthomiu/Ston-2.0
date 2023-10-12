@@ -2,7 +2,7 @@ import mongoose, { model } from 'mongoose';
 
 const { Schema } = mongoose;
 
-// Create an interface representing user object.
+// Create an interface representing like object.
 export interface ILike {
   userId: string;
   recipeId: string;
