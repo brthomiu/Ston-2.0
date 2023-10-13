@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
+import toast from 'react-hot-toast';
 import ImagePreview from './ImagePreview';
 
 export default function ImageUpload({
@@ -27,7 +28,13 @@ export default function ImageUpload({
   const onInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setImageList([]);
     if (e.target.files) {
-      setImage(e.target.files[0]);
+      const imageFile = e.target.files[0];
+
+      if (imageFile.size > 1.5e7) {
+        toast('Image too large, maximum size is 15 MB.');
+      } else {
+        setImage(imageFile);
+      }
     }
   };
 

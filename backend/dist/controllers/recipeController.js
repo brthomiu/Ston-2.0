@@ -183,18 +183,20 @@ exports.likeRecipe = (0, express_async_handler_1.default)((req, res) => __awaite
     }
 }));
 // POST:/api/recipe/image - Upload recipe image to MongoDB
-// Multer upload path
-const storage = multer_1.default.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'uploads/');
-    },
-    filename: function (req, file, cb) {
-        const uniquePrefix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-        cb(null, uniquePrefix + '-' + file.originalname);
-    },
-});
-const upload = (0, multer_1.default)({ storage: storage });
+// uploadRecipeImage - Gets the image file from the HTTP request and uploads it to MongoDB
 exports.uploadRecipeImage = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // Settings for multer
+    const storage = multer_1.default.diskStorage({
+        destination: function (req, file, cb) {
+            cb(null, 'uploads/'); // Output path
+        },
+        filename: function (req, file, cb) {
+            const uniquePrefix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+            cb(null, uniquePrefix + '-' + file.originalname); // Filenames with unique ID added
+        },
+    });
+    // Initialize multer
+    const upload = (0, multer_1.default)({ storage: storage });
     upload.single('image')(req, res, function (err) {
         return __awaiter(this, void 0, void 0, function* () {
             if (err) {
@@ -202,19 +204,18 @@ exports.uploadRecipeImage = (0, express_async_handler_1.default)((req, res) => _
             }
             const imageId = req.body.imageId;
             const fileName = req.file.filename;
-            console.log('fileName------------------', fileName);
             console.log('imageId-----------------------', imageId);
-            const imageData = {
-                imageId: imageId,
-                image: fs_1.default.readFileSync(`./uploads/${fileName}`),
-            };
-            res.status(200).send('Image uploaded to server successfully!');
             try {
+                const imageData = {
+                    imageId: imageId,
+                    image: fs_1.default.readFileSync(`./uploads/${fileName}`),
+                };
                 yield imageModel_1.Image.create(imageData);
                 res.status(200).send('Image uploaded to DB successfully!');
             }
             catch (error) {
-                new Error('Could not upload image to DB!');
+                console.error(error); // Log the error for debugging
+                res.status(500).send('Could not upload image to DB!');
             }
         });
     });
